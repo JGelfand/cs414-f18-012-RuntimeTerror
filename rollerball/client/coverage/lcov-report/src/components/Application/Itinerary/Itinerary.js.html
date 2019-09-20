@@ -1,0 +1,1340 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for src/components/Application/Itinerary/Itinerary.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../../../index.html">All files</a> / <a href="index.html">src/components/Application/Itinerary</a> Itinerary.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/108</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/28</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/38</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/108</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, {Component} from 'react';
+import {Table} from 'reactstrap';
+import {Container, Button, ButtonGroup, ButtonToolbar, Form, Col, Row, FormGroup, Label, Input, ListGroup, ListGroupItem} from 'reactstrap';
+import Pane from '../Pane';
+import ItineraryListItem from './ItineraryListItem';
+import ItineraryFindListItem from './ItineraryFindListItem';
+import {sendServerRequestWithBody} from "../../../api/restfulAPI";
+import { Map, Marker, Popup, TileLayer, Polyline} from 'react-leaflet';
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import 'leaflet/dist/leaflet.css';
+&nbsp;
+&nbsp;
+export default class Itinerary extends Component{
+<span class="fstat-no" title="function not covered" >    co</span>nstructor(props) {
+<span class="cstat-no" title="statement not covered" >        super(props);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        this.addLocation = this.addLocation.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.onChange = this.onChange.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.sendItinerary = this.sendItinerary.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.displayItinerary = this.displayItinerary.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.removeLocation = this.removeLocation.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.readFile = this.readFile.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.handleFileRead = this.handleFileRead.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.downloadItinerary = this.downloadItinerary.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.itineraryToJson = this.itineraryToJson.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.moveLocation = this.moveLocation.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.createFindRequest = this.createFindRequest.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.sendFindRequest = this.sendFindRequest.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >        this.addFindLocation = this.addFindLocation.bind(this);</span>
+      
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    re</span>nder() {
+<span class="cstat-no" title="statement not covered" >        return(</span>
+            &lt;Container&gt;
+                &lt;Form&gt;
+                    &lt;Row&gt;
+                        &lt;Col md={3}&gt;
+                            &lt;Pane header={'Enter Destination'}
+                                  bodyJSX={
+                                      &lt;FormGroup&gt;
+                                          &lt;Label for="nameField"&gt;Name of destination:&lt;/Label&gt;
+                                          &lt;Input name="inputDestinationName" type="text"
+                                                 value={this.props.inputDestinationName} onChange={this.onChange}
+                                                 id="nameField"/&gt;
+&nbsp;
+                                          &lt;Label for="latitudeField"&gt;Latitude:&lt;/Label&gt;
+                                          &lt;Input name="inputDestinationLatitude" type="text" value={this.props.inputDestinationLatitude} onChange={this.onChange} id="nameField" /&gt;
+&nbsp;
+                                          &lt;Label for="longitudeField"&gt;Longitude:&lt;/Label&gt;
+                                          &lt;Input name="inputDestinationLongitude" type="text" value={this.props.inputDestinationLongitude} onChange={this.onChange} id="nameField" /&gt;
+&nbsp;
+                                          &lt;br&gt;&lt;/br&gt;
+                                          &lt;Button onClick={this.addLocation}&gt;Add Location&lt;/Button&gt;
+&nbsp;
+                                      &lt;/FormGroup&gt;
+                                  }/&gt;
+                        &lt;/Col&gt;
+                        &lt;Col md={3}&gt;
+                            &lt;Pane header={'Search for Destination'}
+                                  bodyJSX={
+                                      &lt;FormGroup&gt;
+                                          &lt;Label for="findSearchField"&gt;Search for Location:&lt;/Label&gt;
+                                          &lt;Input name="match" type="text" value={this.props.match} onChange={this.onChange} id="nameFields" /&gt;
+&nbsp;
+                                          &lt;Label for="findLimitField"&gt;Maximum Location Limit:&lt;/Label&gt;
+                                          &lt;Input name="limit" type="text" value={this.props.limit} onChange={this.onChange} id="nameFields" /&gt;
+&nbsp;
+                                          &lt;br&gt;&lt;/br&gt;
+                                          &lt;Button onClick={this.sendFindRequest}&gt;Search&lt;/Button&gt;
+                                      &lt;/FormGroup&gt;
+                                  }/&gt;
+                        &lt;/Col&gt;
+                        &lt;Col&gt;
+                            {this.listFoundLocations()}
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;br&gt;&lt;/br&gt;
+                    {this.displayItinerary()}
+                    &lt;Row&gt;
+                        &lt;Col md={10}&gt;
+                            &lt;FormGroup&gt;
+                                &lt;Label for="tripNameField"&gt;Name of Trip&lt;/Label&gt;
+                                &lt;Input name="inputTripName" type="text" value={this.props.inputTripName} onChange={this.onChange} id="nameField" /&gt;
+                            &lt;/FormGroup&gt;
+                        &lt;/Col&gt;
+                    &lt;/Row&gt;
+                    &lt;ButtonToolbar&gt;
+                        &lt;ButtonGroup&gt;
+                            &lt;Button onClick={this.sendItinerary}&gt;Submit Itinerary&lt;/Button&gt;
+                            &lt;Button onClick={this.downloadItinerary}&gt;Download Itinerary&lt;/Button&gt;
+                        &lt;/ButtonGroup&gt;
+                        &lt;ButtonGroup&gt;
+                            &lt;Button onClick={this.props.setOptimizationtoNone}&gt;No Optimization&lt;/Button&gt;
+                            &lt;Button onClick={this.props.setOptimizationtoShort}&gt;Nearest Neighbor&lt;/Button&gt;
+                        &lt;/ButtonGroup&gt;
+                        &lt;ButtonGroup&gt;
+                            &lt;Button onClick={this.props.reverseItineraryOrder}&gt;Reverse Itinerary&lt;/Button&gt;
+                        &lt;/ButtonGroup&gt;
+                    &lt;/ButtonToolbar&gt;
+                    &lt;FormGroup&gt;
+                        &lt;Label for="exampleFile"&gt;Upload Itinerary&lt;/Label&gt;
+                        &lt;Input type="file" name="file" id="exampleFile" onChange={ <span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >this.readFile(e.target.files) </span>}/&gt;
+                    &lt;/FormGroup&gt;
+                &lt;/Form&gt;
+                &lt;Row&gt;
+                    &lt;Col xs={12} sm={12} md={7} lg={8} xl={9}&gt;
+                        {this.renderMap()}
+                    &lt;/Col&gt;
+                &lt;/Row&gt;
+                {this.createDistanceTable()}
+            &lt;/Container&gt;
+        )
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    he</span>ading() {
+<span class="cstat-no" title="statement not covered" >        return (</span>
+            &lt;Pane header={'Itinerary'}
+                  bodyJSX={'This is your itinerary'}/&gt;
+        );
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    li</span>stFoundLocations(){
+<span class="cstat-no" title="statement not covered" >        if(this.props.itineraryFindPlaces.length &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >            return (</span>
+                &lt;Pane header={this.props.foundPlaces + " Places Found with a Limit of " + this.props.limit}
+                      bodyJSX={
+                          &lt;ListGroup&gt;
+                              {
+                                  this.props.itineraryFindPlaces.map(<span class="fstat-no" title="function not covered" >it</span>ineraryFindListItem =&gt;
+<span class="cstat-no" title="statement not covered" >                                      &lt;ListGroupItem&gt;</span>
+                                          &lt;ItineraryFindListItem itineraryFindListItem={itineraryFindListItem}
+                                                                 addLocation={this.addFindLocation}/&gt;
+                                      &lt;/ListGroupItem&gt;
+                                  )
+                              }
+                          &lt;/ListGroup&gt;
+                      }/&gt;);
+        }
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    ad</span>dFindLocation(itineraryFindListItem){
+<span class="cstat-no" title="statement not covered" >        this.props.addFindLocation(itineraryFindListItem);</span>
+    }
+&nbsp;
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    cr</span>eateFindRequest() {
+<span class="cstat-no" title="statement not covered" >        return{</span>
+            'requestType': 'find',
+            'requestVersion': 3,
+            'match': this.props.match,
+            'limit': this.props.limit,
+            'found': this.props.foundPlaces,
+            'places': this.props.itineraryFindPlaces
+        };
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    se</span>ndFindRequest() {
+        const request = <span class="cstat-no" title="statement not covered" >this.createFindRequest();</span>
+<span class="cstat-no" title="statement not covered" >        sendServerRequestWithBody('find', request, this.props.settings.serverPort)</span>
+            .then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
+<span class="cstat-no" title="statement not covered" >                if (response.statusCode &gt;= 200 &amp;&amp; response.statusCode &lt;= 299) {</span>
+<span class="cstat-no" title="statement not covered" >                    this.updatePlacesFind(response.body.places);</span>
+<span class="cstat-no" title="statement not covered" >                    this.updateFoundFind(response.body.found);</span>
+<span class="cstat-no" title="statement not covered" >                    this.setState({errorMessage: null});</span>
+                }
+                else {
+<span class="cstat-no" title="statement not covered" >                    this.setState({</span>
+                        errorMessage: this.props.createErrorBanner(
+                            response.statusText,
+                            response.statusCode,
+                            `Request to ${ this.props.settings.serverPort } failed.`
+                        )
+                    });
+                }
+            });
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    up</span>datePlacesFind(value){
+<span class="cstat-no" title="statement not covered" >        this.props.updateFindPlaces(value);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    up</span>dateFoundFind(value){
+<span class="cstat-no" title="statement not covered" >        this.props.updateFindFound(value);</span>
+    }
+&nbsp;
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    re</span>adFile(files){
+        let fileReader = <span class="cstat-no" title="statement not covered" >new FileReader();</span>
+<span class="cstat-no" title="statement not covered" >        fileReader.onloadend = this.handleFileRead;</span>
+<span class="cstat-no" title="statement not covered" >        fileReader.readAsText(files[0]);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    ha</span>ndleFileRead(event){
+<span class="cstat-no" title="statement not covered" >        this.props.handleFileRead(event);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    on</span>Change(event){
+<span class="cstat-no" title="statement not covered" >        this.props.onChange(event.target.name, event.target.value);</span>
+    };
+&nbsp;
+<span class="fstat-no" title="function not covered" >    ad</span>dLocation(){
+<span class="cstat-no" title="statement not covered" >        this.props.addLocation();</span>
+    };
+<span class="fstat-no" title="function not covered" >    it</span>ineraryToJson(){
+<span class="cstat-no" title="statement not covered" >        return {</span>
+            //let tripTitle = {'title' : this.props.inputTripName};
+            'requestType'        : 'itinerary',
+            'requestVersion'     : 3,
+            'options'      : {'title' : this.props.options.title, 'earthRadius' : this.props.options.units[this.props.options.activeUnit], 'optimization' : this.props.activeOptimization},
+            'places' : this.props.itineraryPlaces,
+            'distances' : this.props.itineraryDistances
+        };
+&nbsp;
+&nbsp;
+    }
+<span class="fstat-no" title="function not covered" >    se</span>ndItinerary() {
+        const tipConfigRequest = <span class="cstat-no" title="statement not covered" >this.itineraryToJson();</span>
+<span class="cstat-no" title="statement not covered" >        sendServerRequestWithBody('itinerary', tipConfigRequest, this.props.settings.serverPort)</span>
+            .then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
+<span class="cstat-no" title="statement not covered" >                if(response.statusCode &gt;= 200 &amp;&amp; response.statusCode &lt;= 299) {</span>
+<span class="cstat-no" title="statement not covered" >                    this.updateDistances(response.body.distances);</span>
+<span class="cstat-no" title="statement not covered" >                    this.props.updatePlaces(response.body.places);</span>
+<span class="cstat-no" title="statement not covered" >                    this.setState({errorMessage: null});</span>
+                }
+                else {
+<span class="cstat-no" title="statement not covered" >                    this.setState({</span>
+                        errorMessage: this.props.createErrorBanner(
+                            response.statusText,
+                            response.statusCode,
+                            `Request to ${ this.props.settings.serverPort } failed.`
+                        )
+                    });
+                }
+            });
+    }
+<span class="fstat-no" title="function not covered" >    di</span>splayItinerary(){
+<span class="cstat-no" title="statement not covered" >        if(this.locationListReady()){</span>
+<span class="cstat-no" title="statement not covered" >            return (</span>
+                &lt;ListGroup&gt;
+                    {
+                        this.props.itineraryPlaces.map(<span class="fstat-no" title="function not covered" >it</span>ineraryListItem =&gt;
+<span class="cstat-no" title="statement not covered" >                            &lt;ListGroupItem&gt;</span>
+                                &lt;ItineraryListItem itineraryListItem={itineraryListItem}
+                                                   removeLocation={this.removeLocation}
+                                                   moveLocation={this.moveLocation}
+                                /&gt;
+                            &lt;/ListGroupItem&gt;
+                        )
+                    }
+                &lt;/ListGroup&gt;
+            )
+        }
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    re</span>moveLocation(itineraryListItem){
+<span class="cstat-no" title="statement not covered" >        this.props.removeLocation(itineraryListItem);</span>
+    }
+<span class="fstat-no" title="function not covered" >    mo</span>veLocation(itineraryListItem, direction){
+<span class="cstat-no" title="statement not covered" >        this.props.moveLocation(itineraryListItem, direction);</span>
+    }
+<span class="fstat-no" title="function not covered" >    up</span>dateDistances(distances){
+<span class="cstat-no" title="statement not covered" >        this.props.updateDistances(distances);</span>
+    }
+<span class="fstat-no" title="function not covered" >    re</span>nderMap() {
+<span class="cstat-no" title="statement not covered" >        return (</span>
+            &lt;Pane header={'Itinerary Map'}
+                  bodyJSX={this.renderLeafletMap()}/&gt;
+        );
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    re</span>nderLeafletMap() {
+        // initial map placement can use either of these approaches:
+        // 1: bounds={this.coloradoGeographicBoundaries()}
+        // 2: center={this.csuOvalGeographicCoordinates()} zoom={10}
+<span class="cstat-no" title="statement not covered" >        return (</span>
+            &lt;Map bounds={this.coloradoGeographicBoundaries()}
+                 style={{height: 500, maxwidth: 700}}&gt;
+                &lt;TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                           attribution="&amp;copy; &lt;a href=&amp;quot;http://osm.org/copyright&amp;quot;&gt;OpenStreetMap&lt;/a&gt; contributors"
+                /&gt;
+                {this.props.itineraryPlaces.map( <span class="fstat-no" title="function not covered" >it</span>ineraryListItem =&gt;
+<span class="cstat-no" title="statement not covered" >                    &lt;Marker position={(this.locationListReady())? L.latLng(itineraryListItem.latitude, itineraryListItem.longitude): this.csuOvalGeographicCoordinates()}</span>
+                            icon={this.markerIcon()}&gt;
+                        &lt;Popup className="font-weight-extrabold"&gt;{itineraryListItem.name}&lt;/Popup&gt;
+                    &lt;/Marker&gt;
+                )}
+                /*{this.createLatLonDistList().map( <span class="fstat-no" title="function not covered" >la</span>tLongDistPair =&gt;
+<span class="cstat-no" title="statement not covered" >                    &lt;Polyline</span>
+                        positions={[latLongDistPair[0]]}
+                        color = 'blue'&gt;
+                        &lt;Popup className="font-weight-extrabold"&gt;{(this.distanceListReady())? latLongDistPair[1] + " " + this.props.options.activeUnit: 'calculating'}&lt;/Popup&gt;
+                    &lt;/Polyline&gt;
+                )}*/
+            &lt;/Map&gt;
+        )
+    }
+<span class="fstat-no" title="function not covered" >    do</span>wnloadItinerary(){
+&nbsp;
+        const tipConfigRequest = <span class="cstat-no" title="statement not covered" >this.itineraryToJson();</span>
+&nbsp;
+        let json = <span class="cstat-no" title="statement not covered" >JSON.stringify(tipConfigRequest);</span>
+        let blob = <span class="cstat-no" title="statement not covered" >new Blob([json], {type: "octet/stream"});</span>
+        let url = <span class="cstat-no" title="statement not covered" >window.URL.createObjectURL(blob);</span>
+<span class="cstat-no" title="statement not covered" >        window.location.assign(url);</span>
+    };
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    ma</span>rkerIcon() {
+        // react-leaflet does not currently handle default marker icons correctly,
+        // so we must create our own
+<span class="cstat-no" title="statement not covered" >        return L.icon({</span>
+            iconUrl: icon,
+            shadowUrl: iconShadow,
+            iconAnchor: [12,40]  // for proper placement
+        })
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    lo</span>cationListReady(){
+<span class="cstat-no" title="statement not covered" >        return !(this.props.itineraryPlaces === undefined || this.props.itineraryPlaces.length === 0);</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    di</span>stanceListReady(){
+<span class="cstat-no" title="statement not covered" >        return !(this.props.itineraryDistances === undefined || this.props.itineraryDistances === 0);</span>
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    cr</span>eateLatLonDistList(){
+<span class="cstat-no" title="statement not covered" >        if(!this.locationListReady() || !this.distanceListReady()){</span>
+<span class="cstat-no" title="statement not covered" >            return this.csuOvalGeographicCoordinates();</span>
+        }
+        let latlongs = <span class="cstat-no" title="statement not covered" >[];</span>
+<span class="cstat-no" title="statement not covered" >        for(let i = 0; i &lt; this.props.itineraryPlaces.length-1; i++){</span>
+            let pair = <span class="cstat-no" title="statement not covered" >[];</span>
+            let halfpair1 = <span class="cstat-no" title="statement not covered" >[];</span>
+            let halfpair2 = <span class="cstat-no" title="statement not covered" >[];</span>
+<span class="cstat-no" title="statement not covered" >            halfpair1.push(this.props.itineraryPlaces[i].latitude);</span>
+<span class="cstat-no" title="statement not covered" >            halfpair1.push(this.props.itineraryPlaces[i].longitude);</span>
+<span class="cstat-no" title="statement not covered" >            halfpair2.push(this.props.itineraryPlaces[i+1].latitude);</span>
+<span class="cstat-no" title="statement not covered" >            halfpair2.push(this.props.itineraryPlaces[i+1].longitude);</span>
+<span class="cstat-no" title="statement not covered" >            pair.push(halfpair1);</span>
+<span class="cstat-no" title="statement not covered" >            pair.push(halfpair2);</span>
+<span class="cstat-no" title="statement not covered" >            latlongs.push([pair, this.props.itineraryDistances[i]]);</span>
+        }
+        let lastpair = <span class="cstat-no" title="statement not covered" >[];</span>
+        let firstloc = <span class="cstat-no" title="statement not covered" >[];</span>
+        let lastloc = <span class="cstat-no" title="statement not covered" >[];</span>
+<span class="cstat-no" title="statement not covered" >        firstloc.push(this.props.itineraryPlaces[0].latitude);</span>
+<span class="cstat-no" title="statement not covered" >        firstloc.push(this.props.itineraryPlaces[0].longitude);</span>
+<span class="cstat-no" title="statement not covered" >        lastloc.push(this.props.itineraryPlaces[this.props.itineraryPlaces.length-1].latitude);</span>
+<span class="cstat-no" title="statement not covered" >        lastloc.push(this.props.itineraryPlaces[this.props.itineraryPlaces.length-1].longitude);</span>
+<span class="cstat-no" title="statement not covered" >        lastpair.push(lastloc);</span>
+<span class="cstat-no" title="statement not covered" >        lastpair.push(firstloc);</span>
+<span class="cstat-no" title="statement not covered" >        latlongs.push([lastpair, this.props.itineraryDistances[this.props.itineraryDistances.length-1]]);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        return latlongs;</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    cr</span>eateTableEntryList(){
+<span class="cstat-no" title="statement not covered" >        if(!this.locationListReady() || !this.distanceListReady()){</span>
+<span class="cstat-no" title="statement not covered" >            return [];</span>
+        }
+        let tableEntryList = <span class="cstat-no" title="statement not covered" >[];</span>
+        let totDist = <span class="cstat-no" title="statement not covered" >0;</span>
+<span class="cstat-no" title="statement not covered" >        for(let i = 0; i &lt; this.props.itineraryPlaces.length; i++){</span>
+            let tableEntry = <span class="cstat-no" title="statement not covered" >[];</span>
+<span class="cstat-no" title="statement not covered" >            tableEntry.push(i+1);</span>
+<span class="cstat-no" title="statement not covered" >            tableEntry.push(this.props.itineraryPlaces[i].name);</span>
+<span class="cstat-no" title="statement not covered" >            tableEntry.push(this.props.itineraryPlaces[i].latitude);</span>
+<span class="cstat-no" title="statement not covered" >            tableEntry.push(this.props.itineraryPlaces[i].longitude);</span>
+<span class="cstat-no" title="statement not covered" >            tableEntry.push(this.props.itineraryDistances[i]);</span>
+<span class="cstat-no" title="statement not covered" >            totDist = totDist + this.props.itineraryDistances[i];</span>
+<span class="cstat-no" title="statement not covered" >            tableEntry.push(totDist);</span>
+<span class="cstat-no" title="statement not covered" >            tableEntryList.push(tableEntry);</span>
+        }
+<span class="cstat-no" title="statement not covered" >        return tableEntryList;</span>
+    }
+&nbsp;
+&nbsp;
+<span class="fstat-no" title="function not covered" >    cs</span>uOvalGeographicCoordinates() {
+<span class="cstat-no" title="statement not covered" >        return ([[[40.576179, -105.080773]]]);</span>
+    }
+<span class="fstat-no" title="function not covered" >    co</span>loradoGeographicBoundaries() {
+        // northwest and southeast corners of the state of Colorado
+<span class="cstat-no" title="statement not covered" >        return L.latLngBounds(L.latLng(41, -109), L.latLng(37, -102));</span>
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    cr</span>eateDistanceTable(){
+&nbsp;
+        let entryList = <span class="cstat-no" title="statement not covered" >this.createTableEntryList();</span>
+<span class="cstat-no" title="statement not covered" >        return (</span>
+&nbsp;
+            &lt;Table&gt;
+                &lt;thead&gt;
+                &lt;tr&gt;
+                    &lt;th&gt;#&lt;/th&gt;
+                    &lt;th&gt;Name&lt;/th&gt;
+                    &lt;th&gt;Latitude&lt;/th&gt;
+                    &lt;th&gt;Longitude&lt;/th&gt;
+                    &lt;th&gt;Distance To Next&lt;/th&gt;
+                    &lt;th&gt;Total Distance&lt;/th&gt;
+                &lt;/tr&gt;
+                &lt;/thead&gt;
+                &lt;tbody&gt;
+                    {entryList.map( <span class="fstat-no" title="function not covered" >en</span>tryListItem =&gt;
+<span class="cstat-no" title="statement not covered" >                        &lt;tr&gt;</span>
+                            &lt;th scope="row"&gt;{entryListItem[0]}&lt;/th&gt;
+                            &lt;td&gt;{entryListItem[1]}&lt;/td&gt;
+                            &lt;td&gt;{entryListItem[2]}&lt;/td&gt;
+                            &lt;td&gt;{entryListItem[3]}&lt;/td&gt;
+                            &lt;td&gt;{entryListItem[4]} {this.props.options.activeUnit}&lt;/td&gt;
+                            &lt;td&gt;{entryListItem[5]} {this.props.options.activeUnit}&lt;/td&gt;
+                        &lt;/tr&gt;
+                    )}
+                &lt;/tbody&gt;
+            &lt;/Table&gt;
+        );
+    }
+&nbsp;
+&nbsp;
+}</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Thu Mar 28 2019 17:53:04 GMT-0600 (MDT)
+</div>
+</div>
+<script src="../../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../../sorter.js"></script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'war'
+    id 'application'
 }
 
 version '1.0-SNAPSHOT'
@@ -20,3 +21,11 @@ dependencies {
 task compileTest (dependsOn: build, type:Exec){
     commandLine 'java','-classpath', 'build/classes/java/main', 'DoesItCompile'
 }
+
+
+
+application {
+    mainClassName = 'Server.MicroServer'
+}
+
+

@@ -1,0 +1,81 @@
+package Server;
+import spark.Request;
+import spark.Response;
+import spark.Spark;
+import static spark.Spark.secure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+class MicroServer {
+
+    private final Logger log = LoggerFactory.getLogger(MicroServer.class);
+
+    MicroServer(int serverPort) {
+        configureServer(serverPort);
+        serveStaticPages();
+        processRestfulAPIrequests();
+
+    }
+
+    private void configureServer(int serverPort) {
+        Spark.port(serverPort);
+        log.trace("got here");
+        String keystoreFile = System.getenv("KEYSTORE_FILE");
+        String keystorePassword = System.getenv("KEYSTORE_PASSWORD");
+        if (keystoreFile != null && keystorePassword != null) {
+            secure(keystoreFile, keystorePassword, null, null);
+        }
+    }
+
+
+    private void serveStaticPages() {
+        String path = "/public/";
+        Spark.staticFileLocation(path);
+        Spark.get("/", (req, res) -> { res.redirect("index.html"); return null; });
+    }
+
+    private void processRestfulAPIrequests() {
+        //Spark.get("/api/config", this::processTIPconfigRequest);
+        Spark.get("/api/echo", this::echoHTTPrequest);
+    }
+
+    private String echoHTTPrequest(Request request, Response response) {
+        response.type("application/json");
+        response.header("Access-Control-Allow-Origin", "*");
+        return HTTPrequestToJson(request);
+    }
+
+
+
+    private String HTTPrequestToJson(Request request) {
+        return "{\n"
+                + "\"attributes\":\"" + request.attributes() + "\",\n"
+                + "\"body\":\"" + request.body() + "\",\n"
+                + "\"contentLength\":\"" + request.contentLength() + "\",\n"
+                + "\"contentType\":\"" + request.contentType() + "\",\n"
+                + "\"contextPath\":\"" + request.contextPath() + "\",\n"
+                + "\"cookies\":\"" + request.cookies() + "\",\n"
+                + "\"headers\":\"" + request.headers() + "\",\n"
+                + "\"host\":\"" + request.host() + "\",\n"
+                + "\"ip\":\"" + request.ip() + "\",\n"
+                + "\"params\":\"" + request.params() + "\",\n"
+                + "\"pathInfo\":\"" + request.pathInfo() + "\",\n"
+                + "\"serverPort\":\"" + request.port() + "\",\n"
+                + "\"protocol\":\"" + request.protocol() + "\",\n"
+                + "\"queryParams\":\"" + request.queryParams() + "\",\n"
+                + "\"requestMethod\":\"" + request.requestMethod() + "\",\n"
+                + "\"scheme\":\"" + request.scheme() + "\",\n"
+                + "\"servletPath\":\"" + request.servletPath() + "\",\n"
+                + "\"session\":\"" + request.session() + "\",\n"
+                + "\"uri()\":\"" + request.uri() + "\",\n"
+                + "\"url()\":\"" + request.url() + "\",\n"
+                + "\"userAgent\":\"" + request.userAgent() + "\"\n"
+                + "}";
+    }
+
+    public static void main(String[] args){
+        MicroServer myServer = new MicroServer(8085);
+
+    }
+
+}

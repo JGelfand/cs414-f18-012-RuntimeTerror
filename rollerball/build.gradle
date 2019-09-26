@@ -17,6 +17,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'com.sparkjava', name: 'spark-core', version: '2.8.0'
     compile group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.56'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
 }
 
 task compileTest (dependsOn: build, type:Exec){
@@ -26,7 +27,7 @@ task compileTest (dependsOn: build, type:Exec){
 
 
 application {
-    mainClassName = 'Server.MicroServer'
+    mainClassName = 'server.MicroServer'
 }
 
 

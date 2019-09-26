@@ -1,4 +1,8 @@
 package server;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import server.api.RegistrationRequest;
+import server.api.RegistrationResponse;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -37,12 +41,21 @@ class MicroServer {
     private void processRestfulAPIrequests() {
         //Spark.get("/api/config", this::processTIPconfigRequest);
         Spark.get("/api/echo", this::echoHTTPrequest);
+        Spark.get("/api/register", this::handleRegisterRequest);
     }
 
     private String echoHTTPrequest(Request request, Response response) {
         response.type("application/json");
         response.header("Access-Control-Allow-Origin", "*");
         return HTTPrequestToJson(request);
+    }
+
+    private String handleRegisterRequest(Request request, Response response){
+        response.type("application/json");
+        Gson gson = new GsonBuilder().create();
+        RegistrationRequest registrationRequest= gson.fromJson(request.body(), RegistrationRequest.class);
+        //do stuff here
+        return gson.toJson(new RegistrationResponse());
     }
 
 

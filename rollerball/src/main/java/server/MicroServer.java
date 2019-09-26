@@ -1,4 +1,4 @@
-package Server;
+package server;
 import spark.Request;
 import spark.Response;
 import spark.Spark;

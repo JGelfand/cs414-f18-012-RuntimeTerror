@@ -1,23 +1,29 @@
-The user can play Rollerball. 
+SD The user can play Rollerball. 
 
-The user can register an account using email, nickname, and password.
+MD The user can register an account using email, nickname, and password.
 
-The user can create a match.
+MD As a user, I can log in after creating my account
 
-The user can join a match. 
+MD The user can create a match.
 
-The user can invite other users. 
+SD The user can join a match. 
 
-The user can accept or reject invitations.
+MD The user can invite other users. 
 
-The user can play multiple games at the same time.
+SD The user can accept or reject invitations.
 
-The user has a user profile with their history that other users can view.
+CD The user can play multiple games at the same time.
 
-The user who created the match has the first move.
+TBD The user has a user profile with
+  -their history 
+  -that other users can view.
 
-The user can only make moves on their turn.
+SD As a user, if I create the match I get the first move.
 
-The user can log out and then log back in to take their turn.
+SD As a user user I can only make moves on my turn.
 
-The user knows if the game is over and who won/lost.
+CD The user can log out and then log back
+
+CD As a user, I can continue games after logging out and back in.
+
+SD As a user, I want to receive a notification with the result after a match ends

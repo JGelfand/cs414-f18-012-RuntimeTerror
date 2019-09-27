@@ -24,7 +24,13 @@ task compileTest (dependsOn: build, type:Exec){
     commandLine 'java','-classpath', 'build/classes/java/main', 'DoesItCompile'
 }
 
-
+sourceSets{
+    main {
+        resources{
+            srcDir "client/dist"
+        }
+    }
+}
 
 application {
     mainClassName = 'server.MicroServer'

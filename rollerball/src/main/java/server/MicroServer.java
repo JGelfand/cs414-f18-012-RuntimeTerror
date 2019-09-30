@@ -54,8 +54,7 @@ class MicroServer {
         response.type("application/json");
         Gson gson = new GsonBuilder().create();
         RegistrationRequest registrationRequest= gson.fromJson(request.body(), RegistrationRequest.class);
-        //do stuff here
-        return gson.toJson(new RegistrationResponse());
+        return gson.toJson(AccountManager.registerUser(registrationRequest));
     }
 
 

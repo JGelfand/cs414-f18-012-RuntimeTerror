@@ -17,7 +17,14 @@ export default class App extends Component {
     switch(this.state["current_page"]){
         case "register":
             return(
-            <p>Some Text</p>
+                <div>
+                  <p><h1>User Registration</h1></p>
+                  <p>Email: <input></input></p>
+                  <p>Username: <input></input></p>
+                  <p>Password: <input></input></p>
+                  <p>Confirm Password: <input></input></p>
+                  <button>Register</button>
+                </div>
             )
     }
   }

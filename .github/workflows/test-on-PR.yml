@@ -1,0 +1,10 @@
+Name: Test PR
+on: pull_request
+
+jobs:
+  test_gradle:
+    name: Test Gradle
+    runs-on: ubuntu-latest
+    steps:
+      cd rollerball
+      gradle test

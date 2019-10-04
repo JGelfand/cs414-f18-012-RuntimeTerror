@@ -6,5 +6,5 @@ jobs:
     name: Test Gradle
     runs-on: ubuntu-latest
     steps:
-      cd rollerball
-      gradle test
+      - name: run_gradle_test
+        run: cd rollerball && gradle test

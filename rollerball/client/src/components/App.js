@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Register from './Register/Register';
 import Login from './Login/Login';
+import {getOriginalServerPort, sendServerRequest} from '../api/restfulAPI';
 
 
 export default class App extends Component {
@@ -17,7 +18,10 @@ export default class App extends Component {
     this.state = {
       current_page: this.pages[0].page,
         username: '',
-        password: ''
+        password: '',
+        confirmedPassword: '',
+        email: '',
+        serverPort: getOriginalServerPort()
     };
 
     this.setAppPage = this.setAppPage.bind(this);
@@ -30,7 +34,12 @@ export default class App extends Component {
         case "register":
             return(
                 <Register
-                setPage={this.setAppPage}
+                setAppPage={this.setAppPage}
+                updateFieldChange={this.onChange}
+                password={this.state.password}
+                confirmedPassword={this.state.confirmedPassword}
+                serverPort={this.state.serverPort}
+                email={this.state.email}
                 />
             );
         case "login":

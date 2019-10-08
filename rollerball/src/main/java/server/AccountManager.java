@@ -2,6 +2,7 @@ package server;
 
 import java.util.regex.Pattern;
 
+import server.api.AuthenticationToken;
 import server.api.RegistrationRequest;
 import server.api.RegistrationResponse;
 
@@ -16,16 +17,19 @@ public class AccountManager {
 			response.errorMessage += "Password must be at least 8 characters.\n";
 		}
 		
-		if(!request.email.matches("[a-zA-Z1-9.]+@([a-zA-Z1-9.]+\\.[a-zA-Z0-9]+)+")){
+		if(request.email == null || !request.email.matches("[a-zA-Z1-9.]+@([a-zA-Z1-9.]+\\.[a-zA-Z0-9]+)+")){
 			response.success = false;
 			response.errorMessage+="Invalid email.\n";
 		}
 		
-		if(request.username.equals("admin")||!request.username.matches("[a-zA-Z0-9]+")){
+		if(request.username == null ||request.username.equals("admin")||!request.username.matches("[a-zA-Z0-9]+")){
 			response.success = false;
 			response.errorMessage+="Invalid username.\n";
 		}
-		
+
+		if(response.success){
+			response.token = AuthenticationToken.generateToken(request.username);
+		}
 		return response;
 	}
 }

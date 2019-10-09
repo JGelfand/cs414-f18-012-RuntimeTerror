@@ -23,6 +23,7 @@ public class AccountManager {
 		}
 		
 		if(request.username == null ||request.username.equals("admin")||!request.username.matches("[a-zA-Z0-9]+")){
+			System.out.println(request.username);
 			response.success = false;
 			response.errorMessage+="Invalid username.\n";
 		}

@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import Register from './Register/Register';
 import Login from './Login/Login';
+import HomePage from './HomePage/HomePage';
 import {getOriginalServerPort, sendServerRequest} from '../api/restfulAPI';
 
 
@@ -12,7 +13,8 @@ export default class App extends Component {
 
     this.pages = [
         {title: 'Rollerball Registration', page: 'register'},
-        {title: 'Rollerball Login', page: 'login'}
+        {title: 'Rollerball Login', page: 'login'},
+        {title: 'Rollerball Home Page', page: 'homepage'}
     ];
 
     this.state = {
@@ -21,7 +23,8 @@ export default class App extends Component {
         password: '',
         confirmedPassword: '',
         email: '',
-        serverPort: getOriginalServerPort()
+        serverPort: getOriginalServerPort(),
+        authToken: {}
     };
 
     this.setAppPage = this.setAppPage.bind(this);
@@ -40,6 +43,7 @@ export default class App extends Component {
                 confirmedPassword={this.state.confirmedPassword}
                 serverPort={this.state.serverPort}
                 email={this.state.email}
+                username={this.state.username}
                 />
             );
         case "login":
@@ -49,6 +53,12 @@ export default class App extends Component {
                 username={this.state.username}
                 password={this.state.password}
                 setAppPage={this.setAppPage}
+                />
+            );
+        case "homepage":
+            return(
+                <HomePage
+
                 />
             );
     }

@@ -39,7 +39,7 @@ class MicroServer {
 
     private void processRestfulAPIrequests() {
         Spark.get("/api/echo", this::echoHTTPrequest);
-        Spark.get("/api/register", this::handleRegisterRequest);
+        Spark.post("/api/register", this::handleRegisterRequest);
     }
 
     private String echoHTTPrequest(Request request, Response response) {

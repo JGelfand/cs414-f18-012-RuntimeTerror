@@ -74,9 +74,11 @@ export default class Register extends Component {
             return;
         }
         sendServerRequestWithBody('register', registerRequest, this.props.serverPort).then((response) => {
-
-            });
-
+            if (response.body.success === true) {
+                this.props.updateFieldChange('authToken', response.body['token']);
+                this.props.setAppPage('homepage');
+            }
+        });
     }
 
     createForm(statevar){
@@ -104,7 +106,6 @@ export default class Register extends Component {
                        type={"password"}/>
             );
         }
-
 
         return (
             <Input name={statevar + ""} placeholder={""}

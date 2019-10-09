@@ -17,7 +17,6 @@ export default class Login extends Component {
         return(
 
                 <Container>
-                    <br></br>
                     <Row>
                         <p><h1>Rollerball Login</h1></p>
                     </Row>
@@ -37,6 +36,8 @@ export default class Login extends Component {
 
 
     register(){
+        this.props.updateFieldChange('username', '');
+        this.props.updateFieldChange('password', '');
         this.props.setAppPage('register');
     }
 
@@ -54,6 +55,17 @@ export default class Login extends Component {
     createInputField(statevar) {
         let updateStateVarOnChange = (event) => {
             this.props.updateFieldChange(statevar, event.target.value)};
+
+        if(statevar === 'password'){
+            return (
+                <Input name={statevar + ""} placeholder={""}
+                       id={`${statevar}`}
+                       value={this.props[statevar]}
+                       onChange={updateStateVarOnChange}
+                       style={{width: "100%"}}
+                       type={"password"}/>
+            );
+        }
 
         return (
             <Input name={statevar + ""} placeholder={""}

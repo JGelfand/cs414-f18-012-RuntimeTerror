@@ -23,7 +23,6 @@ class MicroServer {
 
     private void configureServer(int serverPort) {
         Spark.port(serverPort);
-        log.trace("got here");
         String keystoreFile = System.getenv("KEYSTORE_FILE");
         String keystorePassword = System.getenv("KEYSTORE_PASSWORD");
         if (keystoreFile != null && keystorePassword != null) {
@@ -39,9 +38,8 @@ class MicroServer {
     }
 
     private void processRestfulAPIrequests() {
-        //Spark.get("/api/config", this::processTIPconfigRequest);
         Spark.get("/api/echo", this::echoHTTPrequest);
-        Spark.get("/api/register", this::handleRegisterRequest);
+        Spark.post("/api/register", this::handleRegisterRequest);
     }
 
     private String echoHTTPrequest(Request request, Response response) {

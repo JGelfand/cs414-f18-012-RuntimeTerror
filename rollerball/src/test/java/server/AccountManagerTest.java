@@ -28,8 +28,7 @@ public class AccountManagerTest {
 		Assert.assertFalse("Invalid email should fail", AccountManager.registerUser(request).success);
 		
 		request.email = "valid.Email@mail.something.com";
-		System.out.println(AccountManager.registerUser(request).errorMessage);
-		Assert.assertTrue("Everything valid should pass", AccountManager.registerUser(request).success);
+		Assert.assertTrue("Everything valid should pass", AccountManager.registerUser(request, true).success);
 
 	}
 }

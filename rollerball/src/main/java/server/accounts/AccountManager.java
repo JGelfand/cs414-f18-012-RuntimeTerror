@@ -1,24 +1,24 @@
-package server;
+package server.accounts;
 
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
-import java.util.regex.Pattern;
 
 import org.bouncycastle.util.encoders.Base64;
 import server.api.AuthenticationToken;
+import server.api.LoginRequest;
 import server.api.RegistrationRequest;
-import server.api.RegistrationResponse;
+import server.api.RegistrationOrLoginResponse;
 import server.utils.DatabaseHelper;
 import server.utils.SecureHashing;
 
 public class AccountManager {
 	private static final SecureRandom random = new SecureRandom();
-	public static RegistrationResponse registerUser(RegistrationRequest request){
+	public static RegistrationOrLoginResponse registerUser(RegistrationRequest request){
 		return registerUser(request, false);
 	}
-	public static RegistrationResponse registerUser(RegistrationRequest request, boolean testing){
-		RegistrationResponse response = new RegistrationResponse();
+	public static RegistrationOrLoginResponse registerUser(RegistrationRequest request, boolean testing){
+		RegistrationOrLoginResponse response = new RegistrationOrLoginResponse();
 		response.errorMessage = "";
 		response.success = true;
 		
@@ -89,5 +89,39 @@ public class AccountManager {
 		byte[] hash = SecureHashing.hash(request.password+salt);
 		String hashString = Base64.toBase64String(hash);
 		helper.executePreparedStatement("INSERT INTO users (username, email, salt, hash) VALUES (?, ?, ?, ?) ;",request.username, request.email, salt, hashString);
+	}
+
+	public static RegistrationOrLoginResponse loginUser(LoginRequest request){
+		RegistrationOrLoginResponse response = new RegistrationOrLoginResponse();
+		response.success = true;
+		response.errorMessage = "";
+		try(DatabaseHelper helper = DatabaseHelper.create()) {
+			Account account = helper.executePreparedStatement("SELECT * FROM users WHERE username = ? ;", (results) -> {
+				if (results.next()) {
+					return new Account(results);
+				}
+				return null;
+			}, request.username);
+			if(account == null){
+				response.errorMessage = "Wrong username";
+				return response;
+			}
+			String newHash = Base64.toBase64String(SecureHashing.hash(request.password + account.getSalt()));
+			if (newHash.equals(account.getHash()))
+				response.token = AuthenticationToken.generateToken(request.username);
+
+			else {
+				response.errorMessage += "Wrong password.";
+				response.success = false;
+			}
+			return response;
+		} catch (IOException e) {
+			e.printStackTrace();
+			response.success = false;
+		}catch (SQLException e){
+			e.printStackTrace();
+			response.success = false;
+		}
+		return response;
 	}
 }

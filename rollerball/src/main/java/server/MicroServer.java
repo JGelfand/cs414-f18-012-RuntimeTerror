@@ -1,8 +1,9 @@
 package server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import server.accounts.AccountManager;
+import server.api.LoginRequest;
 import server.api.RegistrationRequest;
-import server.api.RegistrationResponse;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -40,6 +41,7 @@ class MicroServer {
     private void processRestfulAPIrequests() {
         Spark.get("/api/echo", this::echoHTTPrequest);
         Spark.post("/api/register", this::handleRegisterRequest);
+        Spark.post("/api/login", this::handleLoginRequest);
     }
 
     private String echoHTTPrequest(Request request, Response response) {
@@ -55,7 +57,12 @@ class MicroServer {
         return gson.toJson(AccountManager.registerUser(registrationRequest));
     }
 
-
+    private String handleLoginRequest(Request request, Response response){
+        response.type("application/json");
+        Gson gson = new GsonBuilder().create();
+        LoginRequest loginRequest = gson.fromJson(request.body(), LoginRequest.class);
+        return gson.toJson(AccountManager.loginUser(loginRequest));
+    }
 
     private String HTTPrequestToJson(Request request) {
         return "{\n"

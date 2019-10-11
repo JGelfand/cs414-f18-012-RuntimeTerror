@@ -3,6 +3,7 @@ package server;
 import org.junit.Assert;
 import org.junit.Test;
 
+import server.accounts.AccountManager;
 import server.api.RegistrationRequest;
 
 public class AccountManagerTest {

@@ -30,6 +30,5 @@ public class AccountManagerTest {
 		
 		request.email = "valid.Email@mail.something.com";
 		Assert.assertTrue("Everything valid should pass", AccountManager.registerUser(request, true).success);
-
 	}
 }

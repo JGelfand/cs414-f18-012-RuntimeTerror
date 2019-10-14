@@ -103,6 +103,7 @@ public class AccountManager {
 				return null;
 			}, request.username);
 			if(account == null){
+				response.success = false;
 				response.errorMessage = "Wrong username";
 				return response;
 			}

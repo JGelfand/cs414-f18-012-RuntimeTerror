@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Container, Row, Col, Button, Form, Input } from 'reactstrap'
+import {sendServerRequestWithBody} from "../../api/restfulAPI";
 
 
 
@@ -9,8 +10,11 @@ export default class Login extends Component {
 
         this.createInputField = this.createInputField.bind(this);
         this.register = this.register.bind(this);
-
-        this.state = {};
+        this.sendLoginRequest = this.sendLoginRequest.bind(this);
+        this.state = {
+            username: "",
+            password: ""
+        };
     }
 
     render(){
@@ -28,7 +32,7 @@ export default class Login extends Component {
                     </Row>
                     <Row>
                         <Button onClick={this.register}>Register Here</Button>
-                        <Button>Login</Button>
+                        <Button onClick={this.sendLoginRequest}>Login</Button>
                     </Row>
                 </Container>
             );
@@ -36,8 +40,6 @@ export default class Login extends Component {
 
 
     register(){
-        this.props.updateFieldChange('username', '');
-        this.props.updateFieldChange('password', '');
         this.props.setAppPage('register');
     }
 
@@ -49,31 +51,34 @@ export default class Login extends Component {
         );
     }
 
-
-
-
     createInputField(statevar) {
         let updateStateVarOnChange = (event) => {
-            this.props.updateFieldChange(statevar, event.target.value)};
-
-        if(statevar === 'password'){
-            return (
-                <Input name={statevar + ""} placeholder={""}
-                       id={`${statevar}`}
-                       value={this.props[statevar]}
-                       onChange={updateStateVarOnChange}
-                       style={{width: "100%"}}
-                       type={"password"}/>
-            );
-        }
-
+            this.state[statevar] = event.target.value;
+            this.setState(this.state);
+        };
         return (
             <Input name={statevar + ""} placeholder={""}
                    id={`${statevar}`}
-                   value={this.props[statevar]}
+                   value={this.state[statevar]}
                    onChange={updateStateVarOnChange}
-                   style={{width: "100%"}} />
+                   style={{width: "100%"}}
+                   type={statevar.includes("password") ? "password" : "text"}/>
         );
+    }
 
+    sendLoginRequest(){
+        const body = {
+            username: this.state['username'],
+            password: this.state['password']
+        };
+
+        sendServerRequestWithBody("login", body, this.props.serverPort).then(
+            (response) => {
+                if (response.body.success === true) {
+                    this.props.updateFieldChange('authToken', response.body['token']);
+                    this.props.setAppPage('homepage');
+                }
+            }
+        );
     }
 }

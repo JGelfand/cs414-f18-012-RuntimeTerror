@@ -48,11 +48,9 @@ export default class App extends Component {
             );
         case "login":
             return(
-                <Login
-                updateFieldChange={this.onChange}
-                username={this.state.username}
-                password={this.state.password}
-                setAppPage={this.setAppPage}
+                <Login setAppPage={this.setAppPage}
+                       serverPort={this.state.serverPort}
+                       updateFieldChange={this.onChange}
                 />
             );
         case "homepage":

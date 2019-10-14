@@ -3,6 +3,7 @@ package server;
 import org.junit.Assert;
 import org.junit.Test;
 
+import server.accounts.AccountManager;
 import server.api.RegistrationRequest;
 
 public class AccountManagerTest {
@@ -29,6 +30,5 @@ public class AccountManagerTest {
 		
 		request.email = "valid.Email@mail.something.com";
 		Assert.assertTrue("Everything valid should pass", AccountManager.registerUser(request, true).success);
-
 	}
 }

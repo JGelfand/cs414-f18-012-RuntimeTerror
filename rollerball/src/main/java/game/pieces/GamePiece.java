@@ -13,6 +13,8 @@ public abstract class GamePiece{
                 return new King(x,y,Character.isUpperCase(type));
             case 'R': case 'r':
                 return new Rook(x,y,Character.isUpperCase(type));
+						case 'B': case 'b':
+								return new Bishop(x,y,Character.isUpperCase(type));
             default:
                 throw new UnsupportedOperationException(String.format("Can't create a game piece at point (%d, %d)", x,y ));
         }

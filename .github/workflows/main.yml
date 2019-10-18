@@ -9,11 +9,12 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: Connect to mysql server
+      run: |
+        mysql --user=root --password=root -e 'CREATE DATABASE runtimeterror;'
+        mysql --user=root --password=root -D runtimeterror < sql_test_dumps/users_dump.sql
+        mysql --user=root --password=root -D runtimeterror < sql_test_dumps/notifications_dump.sql
     - name: Run gradle tests
       run: |
         cd rollerball
         gradle test
-    - name: Connect to mysql server
-      run: |
-        mysql --user=root --password=root -e 'CREATE DATABASE runtimeterror;'
-        mysql --user=root --password=root -D runtimeterror -e 'SHOW TABLES;'

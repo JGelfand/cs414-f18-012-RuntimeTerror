@@ -14,4 +14,4 @@ jobs:
         cd rollerball
         gradle test
     - name: Connect to mysql server
-      run: mysql --user=root --password=root -e 'SHOW TABLES ;'
+      run: mysql --user=root --password=root -e 'CREATE DATABBASE runtimeterror;'

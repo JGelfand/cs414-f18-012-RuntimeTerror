@@ -9,7 +9,9 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: Run a multi-line script
+    - name: Run gradle tests
       run: |
         cd rollerball
         gradle test
+    - name: Connect to mysql server
+      run: mysql --user=root --password root -e 'SHOW TABLES ;'

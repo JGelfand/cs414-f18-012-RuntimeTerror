@@ -3,7 +3,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import server.accounts.AccountManager;
 import server.api.LoginRequest;
+import server.api.NotificationsRequest;
 import server.api.RegistrationRequest;
+import server.notifications.NotificationManager;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -42,6 +44,18 @@ class MicroServer {
         Spark.get("/api/echo", this::echoHTTPrequest);
         Spark.post("/api/register", this::handleRegisterRequest);
         Spark.post("/api/login", this::handleLoginRequest);
+        Spark.post("/api/notifications", this::handleNotificationsRequest);
+    }
+
+    private String handleNotificationsRequest(Request request, Response response) {
+        response.type("application/json");
+        Gson gson = new GsonBuilder().create();
+        NotificationsRequest notificationsRequest = gson.fromJson(request.body(), NotificationsRequest.class);
+        if(!notificationsRequest.verify()){
+            response.status(401);
+            return "{\"message\": \"Verification Error\"}";
+        }
+        return gson.toJson(NotificationManager.getRecentOrUnreadNotifications(notificationsRequest.getAccountId()));
     }
 
     private String echoHTTPrequest(Request request, Response response) {

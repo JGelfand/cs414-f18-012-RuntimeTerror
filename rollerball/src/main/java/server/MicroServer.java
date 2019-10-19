@@ -1,8 +1,12 @@
 package server;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import game.*;
+import game.pieces.*;
+import java.util.Arrays;
 import server.accounts.AccountManager;
 import server.api.LoginRequest;
+import server.api.MoveRequest;
 import server.api.NotificationsRequest;
 import server.api.RegistrationRequest;
 import server.notifications.NotificationManager;
@@ -16,6 +20,8 @@ import org.slf4j.LoggerFactory;
 class MicroServer {
 
     private final Logger log = LoggerFactory.getLogger(MicroServer.class);
+
+		private Game game = new Game();
 
     MicroServer(int serverPort) {
         configureServer(serverPort);
@@ -45,7 +51,27 @@ class MicroServer {
         Spark.post("/api/register", this::handleRegisterRequest);
         Spark.post("/api/login", this::handleLoginRequest);
         Spark.post("/api/notifications", this::handleNotificationsRequest);
+				Spark.post("/api/move", this::move);
     }
+
+		private String move(Request request, Response response){
+			response.type("application/json");
+			Gson gson = new GsonBuilder().create();
+			MoveRequest moveRequest = gson.fromJson(request.body(), MoveRequest.class);
+			try{
+				GamePiece piece = GamePiece.create(moveRequest.start[0], moveRequest.start[1], game.board);
+				if(piece != null && piece.move(moveRequest.dest[0], moveRequest.dest[1], game.board)){
+						System.out.println(game.board.toString());
+						return "{\"message\": \"move successful\"}";
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+
+			return "{\"message\": \"invalid move\"}";
+		}
+
 
     private String handleNotificationsRequest(Request request, Response response) {
         response.type("application/json");

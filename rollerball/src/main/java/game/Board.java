@@ -1,6 +1,7 @@
 package game;
 
-public interface Board {
+public class Board {
+		private char[][] board;
     public static char[][] blankBoard= new char[][]{
             new char[]{'-', '-', '-', '-', '-', '-', '-', '-', '-'},
             new char[]{'-', '_', '_', '_', '_', '_', '_', '_', '-'},
@@ -23,7 +24,29 @@ public interface Board {
             new char[]{'-', '_', '_', '2', 'b', 'r', '_', '_', '-'},
             new char[]{'-', '-', '-', '-', '-', '-', '-', '-', '-'}
     };
-    char[][] getBoard();
-    void setBoard(char[][] board);
-    void saveBoard();
+
+
+		public Board(){
+			board = startBoard;
+		}
+
+    public char[][] getBoard(){
+				return board;
+		}
+    public void setBoard(char[][] board){
+			this.board = board;
+		}
+    public void saveBoard(){}
+
+		public String toString(){
+			String output = "";
+			for(char[] arr : board){
+				for(char c : arr){
+					output += c + ", ";
+				}
+				output = output.substring(0, output.lastIndexOf(", ")) + "\n";
+			}
+
+			return output;
+		}
 }

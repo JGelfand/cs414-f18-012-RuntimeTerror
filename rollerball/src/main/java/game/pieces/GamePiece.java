@@ -4,8 +4,9 @@ import game.Board;
 import game.Game;
 
 public abstract class GamePiece{
-    static GamePiece create(int x, int y, Board board){
-        char type = board.getBoard()[y][x];
+    public static GamePiece create(int x, int y, Board board){
+        char type = board.getBoard()[x][y];
+				System.out.println("TYPE: " + type);
         switch(type){
             case '_':
                 return null;
@@ -44,9 +45,25 @@ public abstract class GamePiece{
         this.team = team;
     }
 
+		public Boolean move(int toX, int toY, Board board){
+			System.out.println("X: " + x + " Y: " + y);
+			System.out.println("toX: " + toX + " toY: " + toY);
+			if(moveIsLegal(toX, toY, board)){
+				char[][] boardArr = board.getBoard();
+				char tempChar = boardArr[x][y];
+				System.out.println("tempCHAR: " + tempChar);
+				boardArr[x][y] = '_';
+				boardArr[toX][toY] = tempChar;
+				board.setBoard(boardArr);
+				System.out.println(board.toString());
+				return true;
+			}
+			return false;
+		}
+
     protected boolean team;
 
-    protected boolean locationIsOnBoard(int toX, int toY){
+    public boolean locationIsOnBoard(int toX, int toY){
         return (!(toX <1 || toX > 7 || toY <1 || toY > 7)) &&
                 (!(toX > 2 && toX < 6 && toY > 2 && toY < 6));
     }

@@ -5,10 +5,12 @@ import game.Board;
 public class Bishop extends GamePiece {
     public Bishop(int x, int y, boolean team) {
         super(x, y, team);
+				System.out.println("new bishop");
     }
 
     @Override
     public boolean moveIsLegal(int toX, int toY, Board board) {
+				System.out.println("bishop moveislegal function");
         if(!locationIsOnBoard(toX, toY))
             return false;
 

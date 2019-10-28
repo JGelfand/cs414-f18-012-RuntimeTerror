@@ -5,6 +5,7 @@ import Register from './Register/Register';
 import Login from './Login/Login';
 import HomePage from './HomePage/HomePage';
 import {getOriginalServerPort, sendServerRequest} from '../api/restfulAPI';
+import Notification from "./Notification/Notification";
 
 
 export default class App extends Component {
@@ -14,11 +15,12 @@ export default class App extends Component {
     this.pages = [
         {title: 'Rollerball Registration', page: 'register'},
         {title: 'Rollerball Login', page: 'login'},
-        {title: 'Rollerball Home Page', page: 'homepage'}
+        {title: 'Rollerball Home Page', page: 'homepage'},
+        {title: 'Notification Page', page: 'notification'}
     ];
 
     this.state = {
-      current_page: this.pages[0].page,
+      current_page: this.pages[2].page,
         username: '',
         password: '',
         confirmedPassword: '',
@@ -55,7 +57,15 @@ export default class App extends Component {
             );
         case "homepage":
             return(
-                <HomePage
+                <HomePage setAppPage={this.setAppPage}
+
+                />
+            );
+        case "notification":
+            return (
+                <Notification serverPort={this.state.serverPort}
+                              token={this.state.authToken}
+
 
                 />
             );

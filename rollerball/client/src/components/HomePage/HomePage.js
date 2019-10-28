@@ -7,14 +7,27 @@ export default class HomePage extends Component {
     constructor(props) {
         super(props);
 
+        this.setPage = this.setPage.bind(this);
+
     }
 
     render(){
 
         return(
-            <h1><p>YOU HAVE LOGGED IN. NICE!</p></h1>
+            <Container>
+                <Row>
+                    <h1>RollerBall HomePage</h1>
+                </Row>
+                <Row>
+                    <Button onClick={this.setPage}>View Notifications</Button>
+                </Row>
+            </Container>
         );
 
+    }
+
+    setPage(){
+        this.props.setAppPage('notification');
     }
 
 }

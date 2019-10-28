@@ -63,6 +63,7 @@ public class AccountManager {
 				//if successful, add to table
 				if(response.success){
 					addUserToDatabase(helper, request);
+					createWelcomeMessage(helper, request);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -89,6 +90,16 @@ public class AccountManager {
 		byte[] hash = SecureHashing.hash(request.password+salt);
 		String hashString = Base64.toBase64String(hash);
 		helper.executePreparedStatement("INSERT INTO users (username, email, salt, hash) VALUES (?, ?, ?, ?) ;",request.username, request.email, salt, hashString);
+	}
+
+	private static void createWelcomeMessage(DatabaseHelper helper, RegistrationRequest request) throws SQLException{
+		Account account = helper.executePreparedStatement("SELECT * FROM users WHERE username = ?;", (results)-> {
+			if(results.next())
+				return new Account(results);
+			return null;
+		}, request.username);
+		int accountId = account.getAccountId();
+		helper.executeStatement(String.format("INSERT INTO notifications(message, recipient, type) VALUES (\"%s\", %d, \"%s\");", "Welcome to rollerball", accountId, "alert"));
 	}
 
 	public static RegistrationOrLoginResponse loginUser(LoginRequest request){

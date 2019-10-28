@@ -3,6 +3,7 @@ package server.accounts;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
+import java.util.Random;
 
 import org.bouncycastle.util.encoders.Base64;
 import server.api.AuthenticationToken;
@@ -13,7 +14,7 @@ import server.utils.DatabaseHelper;
 import server.utils.SecureHashing;
 
 public class AccountManager {
-	private static final SecureRandom random = new SecureRandom();
+	private static final Random random = new Random(new SecureRandom().nextLong());
 	public static RegistrationOrLoginResponse registerUser(RegistrationRequest request){
 		return registerUser(request, false);
 	}
@@ -64,6 +65,7 @@ public class AccountManager {
 				if(response.success){
 					addUserToDatabase(helper, request);
 					createWelcomeMessage(helper, request);
+					response.token = AuthenticationToken.generateToken(getAccountByUsername(helper, request.username));
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -76,8 +78,8 @@ public class AccountManager {
 
 		}
 
-		if(response.success){
-			response.token = AuthenticationToken.generateToken(request.username);
+		if(response.success && testing){
+			response.token = AuthenticationToken.createFakeToken(request.username, System.currentTimeMillis());
 		}
 		return response;
 	}
@@ -107,12 +109,7 @@ public class AccountManager {
 		response.success = true;
 		response.errorMessage = "";
 		try(DatabaseHelper helper = DatabaseHelper.create()) {
-			Account account = helper.executePreparedStatement("SELECT * FROM users WHERE username = ? ;", (results) -> {
-				if (results.next()) {
-					return new Account(results);
-				}
-				return null;
-			}, request.username);
+			Account account = getAccountByUsername(helper, request.username);
 			if(account == null){
 				response.success = false;
 				response.errorMessage = "Wrong username";
@@ -120,7 +117,7 @@ public class AccountManager {
 			}
 			String newHash = Base64.toBase64String(SecureHashing.hash(request.password + account.getSalt()));
 			if (newHash.equals(account.getHash()))
-				response.token = AuthenticationToken.generateToken(request.username);
+				response.token = AuthenticationToken.generateToken(account);
 
 			else {
 				response.errorMessage += "Wrong password.";
@@ -135,5 +132,24 @@ public class AccountManager {
 			response.success = false;
 		}
 		return response;
+	}
+
+	private static Account getAccountByUsername(DatabaseHelper helper, String username) throws SQLException {
+		return helper.executePreparedStatement("SELECT * FROM users WHERE username = ? ;", (results) -> {
+			if (results.next()) {
+				return new Account(results);
+			}
+			return null;
+		}, username);
+	}
+
+	public static Account getAccountByUsername(String username){
+		try(DatabaseHelper helper = DatabaseHelper.create()){
+			return  getAccountByUsername(helper, username);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

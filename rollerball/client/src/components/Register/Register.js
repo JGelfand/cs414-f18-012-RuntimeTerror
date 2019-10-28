@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Container, Form, Input, Row } from "reactstrap";
 import {sendServerRequestWithBody} from "../../api/restfulAPI";
+import ErrorBanner from "../ErrorBanner";
+
 
 
 
@@ -44,6 +46,9 @@ export default class Register extends Component {
                     <Button onClick={this.sendRegisterRequest}>Register!</Button>
                     <Button onClick={this.goToLogin} id="Popover1" type="button">Login</Button>
                 </Row>
+                <Row>
+                    {this.state.errorMessage}
+                </Row>
             </Container>
         );
     }
@@ -77,6 +82,10 @@ export default class Register extends Component {
             if (response.body.success === true) {
                 this.props.updateFieldChange('authToken', response.body['token']);
                 this.props.setAppPage('homepage');
+            } else {
+                this.setState({errorMessage:
+                        <ErrorBanner message={response.body.errorMessage}/>
+                })
             }
         });
     }

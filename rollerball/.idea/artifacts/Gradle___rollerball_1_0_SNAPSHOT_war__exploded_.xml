@@ -1,0 +1,45 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Gradle : rollerball-1.0-SNAPSHOT.war (exploded)">
+    <output-path>$PROJECT_DIR$/build/libs/exploded/rollerball-1.0-SNAPSHOT.war</output-path>
+    <properties id="gradle-properties">
+      <options external-project-path="$PROJECT_DIR$">
+        <manifest>TWFuaWZlc3QtVmVyc2lvbjogMS4wDQoNCg==</manifest>
+      </options>
+    </properties>
+    <root id="root">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/build/libs/exploded/rollerball-1.0-SNAPSHOT.war/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="rollerball.main/web/Web Gradle : rollerball-1.0-SNAPSHOT.war" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="rollerball.main" />
+          <element id="dir-copy" path="$PROJECT_DIR$/build/resources/main" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: com.sparkjava:spark-core:2.8.0" />
+          <element id="library" level="project" name="Gradle: org.bouncycastle:bcpkix-jdk15on:1.56" />
+          <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.8.5" />
+          <element id="library" level="project" name="Gradle: org.slf4j:slf4j-api:1.7.25" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty:jetty-webapp:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty.websocket:websocket-server:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty:jetty-servlet:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty:jetty-security:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty:jetty-server:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty.websocket:websocket-servlet:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.bouncycastle:bcprov-jdk15on:1.56" />
+          <element id="library" level="project" name="Gradle: javax.servlet:javax.servlet-api:3.1.0" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty.websocket:websocket-client:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty:jetty-client:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty:jetty-http:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty.websocket:websocket-common:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty:jetty-io:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty:jetty-xml:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty.websocket:websocket-api:9.4.12.v20180830" />
+          <element id="library" level="project" name="Gradle: org.eclipse.jetty:jetty-util:9.4.12.v20180830" />
+          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/mysql/mysql-connector-java/5.1.6/380ef5226de2c85ff3b38cbfefeea881c5fce09d/mysql-connector-java-5.1.6.jar" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

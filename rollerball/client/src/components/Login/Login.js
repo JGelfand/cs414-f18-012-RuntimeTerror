@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Container, Row, Col, Button, Form, Input } from 'reactstrap'
 import {sendServerRequestWithBody} from "../../api/restfulAPI";
+import ErrorBanner from "../ErrorBanner";
 
 
 
@@ -13,7 +14,8 @@ export default class Login extends Component {
         this.sendLoginRequest = this.sendLoginRequest.bind(this);
         this.state = {
             username: "",
-            password: ""
+            password: "",
+            errorMessage: null
         };
     }
 
@@ -33,6 +35,9 @@ export default class Login extends Component {
                     <Row>
                         <Button onClick={this.register}>Register Here</Button>
                         <Button onClick={this.sendLoginRequest}>Login</Button>
+                    </Row>
+                    <Row>
+                        {this.state.errorMessage}
                     </Row>
                 </Container>
             );
@@ -77,6 +82,10 @@ export default class Login extends Component {
                 if (response.body.success === true) {
                     this.props.updateFieldChange('authToken', response.body['token']);
                     this.props.setAppPage('homepage');
+                } else {
+                    this.setState({errorMessage:
+                            <ErrorBanner message={response.body.errorMessage}/>
+                    })
                 }
             }
         );

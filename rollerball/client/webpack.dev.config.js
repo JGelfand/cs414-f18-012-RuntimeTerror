@@ -14,7 +14,7 @@ const webpack = require('webpack')
 // What ports the website is served from, and where it first looks for
 // the REST server (on localhost), respectively.
 const dev_port = 31401;
-const server_port = 31400;
+const server_port = 8085;
 
 /*
  * Think of module.exports as the "what's in this file" of JavaScript.

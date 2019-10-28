@@ -17,17 +17,20 @@ export default class ListNotifications extends Component {
 
     render() {
 
-
         return(
             <div>
-                <Row>
-                    <Col xs="6" sm="3">{this.props.ListNotifications.message}</Col>
-                    <Col xs="6" sm="3">{this.props.ListNotifications.date}</Col>
-                    <Col xs="6" sm="3">{this.props.ListNotifications.unread}</Col>
-                    <Col xs="6" sm="3"><Button>Do Something</Button></Col>
-
-                </Row>
+                {this.displayEachNotification()}
             </div>
         );
+    }
+
+    displayEachNotification(){
+        let rows = [];
+        for(let i = 0; i < this.props.ListNotifications.length; i++){
+            rows.push(<Row>{this.props.ListNotifications[i].message}</Row>);
+        }
+        console.log("Trying to display "+rows.length+" rows.");
+        return rows;
+
     }
 }

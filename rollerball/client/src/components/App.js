@@ -5,7 +5,6 @@ import Register from './Register/Register';
 import Login from './Login/Login';
 import HomePage from './HomePage/HomePage';
 import {getOriginalServerPort, sendServerRequest} from '../api/restfulAPI';
-import Notification from "./Notification/Notification";
 
 
 export default class App extends Component {
@@ -20,7 +19,7 @@ export default class App extends Component {
     ];
 
     this.state = {
-      current_page: this.pages[2].page,
+      current_page: this.pages[0].page,
         username: '',
         password: '',
         confirmedPassword: '',
@@ -58,15 +57,7 @@ export default class App extends Component {
         case "homepage":
             return(
                 <HomePage setAppPage={this.setAppPage}
-
-                />
-            );
-        case "notification":
-            return (
-                <Notification serverPort={this.state.serverPort}
-                              token={this.state.authToken}
-
-
+                          token={this.state.authToken}
                 />
             );
     }

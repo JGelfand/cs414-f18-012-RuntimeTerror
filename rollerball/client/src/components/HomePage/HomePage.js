@@ -14,6 +14,7 @@ export default class HomePage extends Component {
 
         this.state={
             allNotifications: {},
+            allInvites: {},
             showingNotifications: false
         }
 
@@ -52,6 +53,18 @@ export default class HomePage extends Component {
                     }
                 }
             );
+
+            sendServerRequestWithBody("invite", body, this.props.serverPort).then(
+                (response) => {
+                    if (!response.body.message) {
+                        this.state.allInvites = response.body;
+                        this.state.showingNotifications = true;
+                        this.setState(this.state);
+                    } else {
+                        console.log("Did not work");
+                    }
+                }
+            );
         }
         else
             this.setState({showingNotifications:false});
@@ -59,7 +72,9 @@ export default class HomePage extends Component {
 
     renderNotifications(){
         if(this.state.showingNotifications)
-            return <ListNotifications ListNotifications={this.state.allNotifications}/>;
+            return <ListNotifications ListNotifications={this.state.allNotifications}
+                                      ListInvites={this.state.allInvites}
+            />;
         return null;
     }
 

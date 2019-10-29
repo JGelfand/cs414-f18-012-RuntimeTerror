@@ -60,8 +60,6 @@ export default class ListNotifications extends Component {
     getTypeButton(currType){
         if(currType === "alert"){
             return (<Col><Button>Alert Button</Button></Col>);
-        }if(currType === "invite"){
-            return (<Col><Button>Accept</Button><Button>Decline</Button></Col>);
         }
     }
 }

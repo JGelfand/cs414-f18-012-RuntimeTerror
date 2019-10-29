@@ -31,6 +31,7 @@ export default class HomePage extends Component {
                     <Button onClick={this.getNotifications}>View Notifications</Button>
                 </Row>
                 {this.renderNotifications()}
+                {this.renderInvites()}
             </Container>
         );
 
@@ -76,6 +77,14 @@ export default class HomePage extends Component {
                                       ListInvites={this.state.allInvites}
             />;
         return null;
+    }
+
+    renderInvites(){
+        if(this.state.showingNotifications)
+            return <ListNotifications ListInvites={this.state.allInvites}
+            />;
+        return null;
+
     }
 
 }

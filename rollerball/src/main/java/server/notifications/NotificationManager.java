@@ -20,10 +20,11 @@ public class NotificationManager {
             boolean success = helper.executePreparedStatement(query,(ResultSet results) -> {
                 while (results.next()){
                     String message = results.getString("message");
+                    String type = results.getString("type");
                     Timestamp timestamp = results.getTimestamp("time");
                     LocalDateTime date = timestamp.toLocalDateTime();
                     boolean unread = results.getBoolean("unread");
-                    notifications.add(new Notification(message, date, unread));
+                    notifications.add(new Notification(message, date, unread, type));
                 }
                 return true;
             },accountId);

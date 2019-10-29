@@ -27,16 +27,16 @@ class KingTest {
 
         assertThrows(IllegalPositionException.class, () -> king.setPosition("a0"), "Moving off board should be illegal");
         assertThrows(IllegalPositionException.class, () -> king.setPosition((char)('a'-1)+"1"), "Moving off board should be illegal");
-        assertThrows(IllegalPositionException.class, () -> king.setPosition("i1"), "Moving off board should be illegal");
-        assertThrows(IllegalPositionException.class, () -> king.setPosition("h9"), "Moving off board should be illegal");
-        assertThrows(IllegalPositionException.class, () -> king.setPosition("i9"), "Moving off board should be illegal");
+        assertThrows(IllegalPositionException.class, () -> king.setPosition("h8"), "Moving off board should be illegal");
+        assertThrows(IllegalPositionException.class, () -> king.setPosition("g8"), "Moving off board should be illegal");
+        assertThrows(IllegalPositionException.class, () -> king.setPosition("h7"), "Moving off board should be illegal");
     }
 
     @Test
     void otherPieces(){
         King king = new King(board, ChessPiece.Color.WHITE);
         board.placePiece(king, "b2");
-        HashSet<String> validMoves = new HashSet<>(Arrays.asList("a1", "a2", "a3","b1", "b3","c1","c2","c3"));
+        HashSet<String> validMoves = new HashSet<>(Arrays.asList("a1", "a2", "a3","b1", "b3","c1","c2"));
         HashSet<String> actualMoves = new HashSet<>(king.legalMoves());
         assertEquals(validMoves, actualMoves, "King should be able to move around self");
 

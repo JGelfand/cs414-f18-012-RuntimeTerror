@@ -22,54 +22,42 @@ class PawnTest {
         board.placePiece(pawnOne, "a2");
         board.placePiece(new Pawn(board, ChessPiece.Color.WHITE), "b3");
 
-        HashSet<String> validMoves = new HashSet<>(Arrays.asList("a3", "a4"));
+        HashSet<String> validMoves = new HashSet<>(Arrays.asList("a3"));
         HashSet<String> actualMoves = new HashSet<String>(pawnOne.legalMoves());
-        assertEquals(validMoves, actualMoves, "Pawn should be able to move forward one or two, but not capture own queen or go off board.");
+        assertEquals(validMoves, actualMoves, "Pawn should be able to move forward one, but not capture own pawn or go off board.");
 
-        assertDoesNotThrow(()->board.move("a2", "a4"));
-        board.placePiece(new Pawn(board, ChessPiece.Color.BLACK), "b5");
+        assertDoesNotThrow(()->board.move("a2", "a3"));
+        board.placePiece(new Pawn(board, ChessPiece.Color.BLACK), "b4");
 
         validMoves.clear();
-        validMoves.addAll(Arrays.asList("a5", "b5"));
+        validMoves.addAll(Arrays.asList("a4", "b4"));
         actualMoves.clear();
         actualMoves.addAll(pawnOne.legalMoves());
         assertEquals(validMoves, actualMoves, "Pawn should be able to move forward one or capture opposing pawn.");
 
-        for(int i=5; i<=8; i++){
-            int finalI = i;
-            assertDoesNotThrow(()->board.move("a"+(finalI -1), "a"+ finalI));
-        }
+        assertDoesNotThrow(()->board.move("a3", "b4"));
         validMoves.clear();
+        validMoves.add("a5");
+        validMoves.add("b5");
         actualMoves.clear();
         actualMoves.addAll(pawnOne.legalMoves());
-        assertEquals(validMoves, actualMoves, "Pawn shouldn't be able to move while on last row");
+        assertEquals(validMoves, actualMoves, "Pawn should be able to move diagonally without capturing.");
     }
 
     @Test
-    public void testBlockJump(){
+    public void testMaximalMove(){
         Pawn pawnTwo = new Pawn(board, ChessPiece.Color.BLACK);
-        board.placePiece(pawnTwo, "f7");
+        board.placePiece(pawnTwo, "e6");
 
-        HashSet<String> validMoves= new HashSet<>(Arrays.asList("f6", "f5"));
+        HashSet<String> validMoves= new HashSet<>(Arrays.asList("f7", "f6", "f5"));
         HashSet<String> actualMoves= new HashSet<String>(pawnTwo.legalMoves());
-        assertEquals(validMoves, actualMoves, "Pawn should be able to move forward one or two but no diagonals since no available captures");
+        assertEquals(validMoves, actualMoves, "Pawn should be able to move forward or to either diagonal.");
 
         board.placePiece(new Pawn(board, ChessPiece.Color.WHITE), "f6");
 
-        validMoves.clear();
         actualMoves.clear();
         actualMoves.addAll(pawnTwo.legalMoves());
-        assertEquals(validMoves, actualMoves, "Pawn shouldn't be able to jump piece or capture straight ahead");
-    }
-
-    @Test
-    public void testInitialPosition(){
-        Pawn pawn = new Pawn(board, ChessPiece.Color.WHITE);
-        board.placePiece(pawn, "c3");
-        HashSet<String> validMoves = new HashSet<>(Arrays.asList("c4"));
-        HashSet<String> actualMoves = new HashSet<>(pawn.legalMoves());
-        assertEquals(validMoves, actualMoves, "Pawn shouldn't be able to move two even though current position was initial placement");
-
+        assertEquals(validMoves, actualMoves, "Pawn should be able to capture forward.");
     }
 
     @Test

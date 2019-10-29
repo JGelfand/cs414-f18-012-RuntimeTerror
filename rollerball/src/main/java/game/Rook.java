@@ -20,11 +20,7 @@ public class Rook extends ChessPiece {
         ArrayList<String> moves = new ArrayList<>();
         addOneMoveByDirection(moves, backwards);
         for(int[] direction:otherDirections){
-            int[] orientedDirection = getOrientedDirection(getPosition(), direction);
-            String newPosition = changePosition(getPosition(), orientedDirection);
-            if(newPosition == null)
-                continue;
-            addMovesByDirection(moves, orientedDirection, getPosition(), true);
+            addMovesByDirection(moves, direction);
         }
         return moves;
     }

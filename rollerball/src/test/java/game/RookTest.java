@@ -100,6 +100,23 @@ class RookTest {
     }
 
     @Test
+    public void backwardsStop(){
+        Rook rook = new Rook(board, ChessPiece.Color.BLACK);
+        board.placePiece(rook, "a2");
+        HashSet<String> validMoves = new HashSet<>();
+        for(int i=1;i<=5;i++){
+            validMoves.add("a"+(i+2));
+            validMoves.add(((char)('a'+i)+""+7));
+        }
+        validMoves.add("g7");
+        validMoves.add("a1");
+        validMoves.add("b2");
+        //should c2 be a valid move here?
+        HashSet<String> actualMoves = new HashSet<>(rook.legalMoves());
+        assertEquals(validMoves, actualMoves, "sideways->backwards stop is incorrect");
+    }
+
+    @Test
     public void testToString(){
         assertEquals(new Rook(board, ChessPiece.Color.WHITE).toString(), "\u2656", "Rook::toString() is bad");
         assertEquals(new Rook(board, ChessPiece.Color.BLACK).toString(), "\u265C", "Rook::toString() is bad");

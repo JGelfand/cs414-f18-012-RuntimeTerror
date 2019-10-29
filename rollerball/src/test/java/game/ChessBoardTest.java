@@ -18,8 +18,8 @@ class ChessBoardTest {
     void initialize() throws IllegalPositionException {
         board.initialize();
 
-        for(int row=0;row<=7;row++){
-            for (int col=0;col<=7;col++){
+        for(int row=0;row<=6;row++){
+            for (int col=0;col<=6;col++){
                 ChessPiece piece = board.getPiece((char)('a'+col)+""+(char)('1'+row));
                 if(row>=2 && row <=4 ){
                     assertEquals(null, piece, "There should be no pieces outside of starting rows");
@@ -83,16 +83,16 @@ class ChessBoardTest {
     @Test
     void move() throws IllegalPositionException {
         ChessPiece piece =  new Pawn(board, ChessPiece.Color.WHITE);
-        board.placePiece(piece, "h2");
-        assertThrows(IllegalMoveException.class, ()->board.move("h2", "h1"));
-        assertThrows(IllegalMoveException.class, ()->board.move("h2", "i3"));
-        assertThrows(IllegalMoveException.class, ()->board.move("h2", null));
-        assertThrows(IllegalMoveException.class, ()->board.move(null, "h3"));
+        assertTrue(board.placePiece(piece, "g2"));
+        assertThrows(IllegalMoveException.class, ()->board.move("g2", "h1"));
+        assertThrows(IllegalMoveException.class, ()->board.move("g2", "i3"));
+        assertThrows(IllegalMoveException.class, ()->board.move("g2", null));
+        assertThrows(IllegalMoveException.class, ()->board.move(null, "g1"));
         assertThrows(IllegalMoveException.class, ()->board.move(null, null));
-        assertThrows(IllegalMoveException.class, ()->board.move("a2", "h4"));
-        assertDoesNotThrow(()-> board.move("h2", "h4"));
-        assertEquals(piece.getPosition(), "h4");
-        assertEquals(piece, board.getPiece("h4"));
+        assertThrows(IllegalMoveException.class, ()->board.move("f2", "g1"));
+        assertDoesNotThrow(()-> board.move("g2", "g1"));
+        assertEquals(piece.getPosition(), "g1");
+        assertEquals(piece, board.getPiece("g1"));
 
     }
 

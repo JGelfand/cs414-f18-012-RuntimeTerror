@@ -34,7 +34,7 @@ public class ChessBoard {
     private int[] positionToIndexes(String position) throws IllegalPositionException{
         if(position == null)
             throw new IllegalPositionException("Position cannot be null");
-        if(!position.matches("\\A[a-h][1-8]\\z"))
+        if(!position.matches("\\A[a-g][1-7]\\z"))
             throw new IllegalPositionException("Invalid position: "+position+".");
         int[] indexes = new int[]{0,0};
         indexes[1] = position.charAt(0)-'a';

@@ -62,27 +62,27 @@ public abstract class ChessPiece {
                 }
                 validMoves.add(position);
                 String newPosition = changePosition(position, direction);
+                int[] newDirection;
                 if(newPosition == null){
                     //check for bounces
                     boolean corner = corners.contains(position);
                     //if corner:  rotate by -90 degrees
                     if(corner){
-                        direction = getOrientedDirection("a7", direction);//position is in the top, which orients from up to right, ie -90 degrees
+                        newDirection = getOrientedDirection("a7", direction);//position is in the top, which orients from up to right, ie -90 degrees
                     }
                     //if edge: reflect direction vector vertically or horizontally
                     else {
                         //try deflecting vertically. if that fails, try reflecting horizontally
-                        int[] newDirection = new int[]{direction[0], direction[1]};
-                        newDirection[1]*=1;
+                        newDirection =  new int[]{direction[0], direction[1]};
+                        newDirection[1]*=-1;
                         if(!positionIsValid(changePosition(position, newDirection))){
                             newDirection[0]*=-1;
                             newDirection[1]*=-1;
-                            direction = newDirection;
                         }
                     }
-                    newPosition = changePosition(position, direction);
-                    if(canBounce &&newPosition != null && !newPosition.equals(position))
-                        addMovesByDirection(validMoves, direction, position, false);
+                    newPosition = changePosition(position, newDirection);
+                    if(canBounce &&newPosition != null && !newPosition.equals(position) && dotProduct(direction, newDirection) == 0)
+                        addMovesByDirection(validMoves, newDirection, position, false);
                     break;
                 }
                 position = newPosition;
@@ -148,5 +148,9 @@ public abstract class ChessPiece {
             return newPosition;
         else
             return null;
+    }
+
+    private int dotProduct(int[] direction1, int[] direction2){
+        return direction1[0]*direction2[0]+direction1[1]*direction2[1];
     }
 }

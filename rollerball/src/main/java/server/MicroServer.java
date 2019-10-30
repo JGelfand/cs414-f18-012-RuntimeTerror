@@ -6,7 +6,6 @@ import server.api.LoginRequest;
 import server.api.NotificationsRequest;
 import server.api.RegistrationRequest;
 import server.notifications.NotificationManager;
-import server.invites.Invite;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
@@ -46,20 +45,7 @@ class MicroServer {
         Spark.post("/api/register", this::handleRegisterRequest);
         Spark.post("/api/login", this::handleLoginRequest);
         Spark.post("/api/notifications", this::handleNotificationsRequest);
-        Spark.post("/api/invite", this::handleInviteRequest);
     }
-
-    private String handleInviteRequest(Request request, Response response) {
-        response.type("application/json");
-        Gson gson = new GsonBuilder().create();
-        NotificationsRequest notificationsRequest = gson.fromJson(request.body(), NotificationsRequest.class);
-        if(!notificationsRequest.verify()){
-            response.status(401);
-            return "{\"message\": \"Verification Error\"}";
-        }
-        return gson.toJson(Invite.getPendingInvites(notificationsRequest.getAccountId()));
-    }
-
 
 
     private String handleNotificationsRequest(Request request, Response response) {

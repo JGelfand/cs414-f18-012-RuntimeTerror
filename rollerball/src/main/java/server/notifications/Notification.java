@@ -9,6 +9,7 @@ public class Notification {
     private boolean unread;
     private String type;
     private Integer sender;
+    private String senderUsername;
 
     public Notification(String message, LocalDateTime date, boolean unread, String type){
         this.message = message;
@@ -17,8 +18,9 @@ public class Notification {
         this.type = type;
     }
 
-    public Notification(String message, LocalDateTime date, boolean unread, String type, int sender){
+    public Notification(String message, LocalDateTime date, boolean unread, String type, int sender, String senderUsername){
         this(message, date, unread, type);
         this.sender = sender;
+        this.senderUsername = senderUsername;
     }
 }

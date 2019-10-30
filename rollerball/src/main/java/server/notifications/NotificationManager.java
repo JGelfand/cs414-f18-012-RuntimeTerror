@@ -1,6 +1,7 @@
 package server.notifications;
 
 import server.accounts.Account;
+import server.accounts.AccountManager;
 import server.utils.DatabaseHelper;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -36,7 +37,8 @@ public class NotificationManager {
                     LocalDateTime date = timestamp.toLocalDateTime();
                     boolean unread = results.getBoolean("unread");
                     int sender = results.getInt("sender");
-                    notifications.add(new Notification(message, date, unread, type, sender));
+                    String senderUsername = AccountManager.getAccountById(helper, sender);
+                    notifications.add(new Notification(message, date, unread, type, sender, senderUsername));
                 }return null;
             }, accountId);
         } catch (SQLException e) {

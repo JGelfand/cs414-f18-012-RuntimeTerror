@@ -49,6 +49,7 @@ export default class ListNotifications extends Component {
                         {':'}
                         {this.props.ListNotifications[i].date.time['nano']}
                     </Col>
+                    {this.getSenderUsername(this.props.ListNotifications[i])}
                     {this.getTypeButton(currType)}
                 </Row>);
 
@@ -64,6 +65,14 @@ export default class ListNotifications extends Component {
             return (<Col><Button>Accept</Button><Button>Decline</Button></Col>);
         }if(currType === "message"){
             return (<Col><Button>Mark As Read</Button></Col>);
+        }
+    }
+
+    getSenderUsername(currNotification) {
+        if(currNotification.type === "invite" || currNotification.type === "message"){
+            return (<Col>{currNotification['senderUsername']}</Col>);
+        }else{
+            return(<Col>{"admin"}</Col>);
         }
     }
 }

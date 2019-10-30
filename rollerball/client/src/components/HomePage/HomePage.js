@@ -21,7 +21,6 @@ export default class HomePage extends Component {
     }
 
     render(){
-
         return(
             <Container>
                 <Row>
@@ -33,7 +32,6 @@ export default class HomePage extends Component {
                 {this.renderNotifications()}
             </Container>
         );
-
     }
 
     getNotifications(){

@@ -14,7 +14,8 @@ export default class App extends Component {
     this.pages = [
         {title: 'Rollerball Registration', page: 'register'},
         {title: 'Rollerball Login', page: 'login'},
-        {title: 'Rollerball Home Page', page: 'homepage'}
+        {title: 'Rollerball Home Page', page: 'homepage'},
+        {title: 'Notification Page', page: 'notification'}
     ];
 
     this.state = {
@@ -55,8 +56,8 @@ export default class App extends Component {
             );
         case "homepage":
             return(
-                <HomePage
-
+                <HomePage setAppPage={this.setAppPage}
+                          token={this.state.authToken}
                 />
             );
     }

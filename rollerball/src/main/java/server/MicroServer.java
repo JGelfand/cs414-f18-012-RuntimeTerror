@@ -47,8 +47,10 @@ class MicroServer {
         Spark.post("/api/notifications", this::handleNotificationsRequest);
     }
 
+
     private String handleNotificationsRequest(Request request, Response response) {
         response.type("application/json");
+        response.header("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().create();
         NotificationsRequest notificationsRequest = gson.fromJson(request.body(), NotificationsRequest.class);
         if(!notificationsRequest.verify()){
@@ -73,6 +75,7 @@ class MicroServer {
 
     private String handleLoginRequest(Request request, Response response){
         response.type("application/json");
+        response.header("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().create();
         LoginRequest loginRequest = gson.fromJson(request.body(), LoginRequest.class);
         return gson.toJson(AccountManager.loginUser(loginRequest));

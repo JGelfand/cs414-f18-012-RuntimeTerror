@@ -6,6 +6,6 @@ public class AuthenticatedRequest {
         return token.getAccountId();
     }
     public boolean verify(){
-        return token.verify();
+        return token != null? token.verify(): false;
     }
 }

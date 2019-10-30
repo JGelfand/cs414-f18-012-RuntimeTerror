@@ -43,8 +43,10 @@ export default class Register extends Component {
                     {'Confirm Password:'}{this.createForm('confirmedPassword')}
                 </Row>
                 <Row>
-                    <Button onClick={this.sendRegisterRequest}>Register!</Button>
-                    <Button onClick={this.goToLogin} id="Popover1" type="button">Login</Button>
+                    <Button color="primary" size="lg" onClick={this.sendRegisterRequest}>Register!</Button>
+                </Row>
+                <Row>
+                    <Button color="link" size="sm" onClick={this.goToLogin} id="Popover1" type="button">Already have an account? Login</Button>
                 </Row>
                 <Row>
                     {this.state.errorMessage}

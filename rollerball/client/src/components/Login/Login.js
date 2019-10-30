@@ -33,8 +33,10 @@ export default class Login extends Component {
                     {'Password:'}{this.createForm('password')}
                 </Row>
                 <Row>
-                    <Button onClick={this.register}>Register Here</Button>
-                    <Button onClick={this.sendLoginRequest}>Login</Button>
+                    <Button color="primary" size="lg" onClick={this.sendLoginRequest}>Login</Button>
+                </Row>
+                <Row>
+                    <Button color="link" size="sm" onClick={this.register}>Don't have an account? Register Here</Button>
                 </Row>
                 <Row>
                     {this.state.errorMessage}

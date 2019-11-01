@@ -98,13 +98,24 @@ class ChessBoardTest {
 
     @Test
     void moveCheck() throws IllegalMoveException {
-	board.initialize();
-	assertDoesNotThrow(()-> board.move("c2", "b3")); //b3
-	assertDoesNotThrow(()-> board.move("e6", "f5")); //f5
-	assertDoesNotThrow(()-> board.move("d2", "c2")); //Kc2
-	assertDoesNotThrow(()-> board.move("c6", "b6")); //Rb6
-	assertDoesNotThrow(()-> board.move("c2", "b2")); //Kb2 the pawn on b3 is now 'pinned' by the rook on b5
-	assertThrows(IllegalMoveException.class, ()->board.move("b3", "a4")); //moving the pawn should fail the test
+	board.placePiece(new King(board, ChessPiece.Color.WHITE), "b4");
+	board.placePiece(new Bishop(board, ChessPiece.Color.WHITE), "f3");
+	board.placePiece(new King(board, ChessPiece.Color.BLACK), "b6");
+	board.placePiece(new Rook(board, ChessPiece.Color.BLACK), "b2");
+
+	assertThrows(IllegalMoveException.class, ()->board.move("f3", "d1"));
+	assertDoesNotThrow(()-> board.move("b4", "a3"));
+    }
+
+    @Test
+    void moveCheckPin() throws IllegalMoveException {
+	board.placePiece(new King(board, ChessPiece.Color.WHITE), "a1");
+	board.placePiece(new Pawn(board, ChessPiece.Color.WHITE), "b1");
+	board.placePiece(new King(board, ChessPiece.Color.BLACK), "a5");
+	board.placePiece(new Rook(board, ChessPiece.Color.BLACK), "f4");
+	
+	assertDoesNotThrow(()-> board.move("f4", "f1")); //move should allow this, as black is not in check
+	assertThrows(IllegalMoveException.class, ()->board.move("b1", "a2")); //should not allow this, as it would put white in check
     }
 
 

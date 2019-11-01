@@ -96,5 +96,16 @@ class ChessBoardTest {
 
     }
 
+    @Test
+    void moveCheck() throws IllegalMoveException {
+	board.initialize();
+	assertDoesNotThrow(()-> board.move("c2", "b3")); //b3
+	assertDoesNotThrow(()-> board.move("e6", "f5")); //f5
+	assertDoesNotThrow(()-> board.move("d2", "c2")); //Kc2
+	assertDoesNotThrow(()-> board.move("c6", "b6")); //Rb6
+	assertDoesNotThrow(()-> board.move("c2", "b2")); //Kb2 the pawn on b3 is now 'pinned' by the rook on b5
+	assertThrows(IllegalMoveException.class, ()->board.move("b3", "a4")); //moving the pawn should fail the test
+    }
+
 
 }

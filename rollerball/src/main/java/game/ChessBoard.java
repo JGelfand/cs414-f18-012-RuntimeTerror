@@ -70,16 +70,22 @@ public class ChessBoard {
 	}
 	else
 	{
-	    for (int k = 0; k < board.length; k++)
+	    kpos = getKingLocation(piece.getColor()); //position of the king doesnt change based on the move, so can use a simpler searcher
+	}
+	return kpos; 
+    }
+
+    private String getKingLocation(ChessPiece.Color color)
+    {
+	for (int k = 0; k < board.length; k++)
+	{
+	    for (int j = 0; j < board.length; j++)
 	    {
-	        for (int j = 0; j < board[k].lenght; j++)
-	        {
-		    if (board[k][j] != null && board[k][j].getColor() == piece.getColor() && board[k][j] instanceof King)
-		    {
-			kpos = board[k][j].getPosition();
-		    }
-	       }
-	   }
+		if (board[k][j] != null && board[k][j] instanceof King && board[k][j].getColor() == color)
+		{
+		    return board[k][j].getPosition();
+		}
+	    }
 	}
     }
 
@@ -89,24 +95,33 @@ public class ChessBoard {
     {
 	String kpos = getKingLocation(piece, position); //location of the king
 	String oldPos = piece.getPosition();
-        if(!place_piece(piece, position)) //need to update the board first
+        if(!placePiece(piece, position)) //need to update the board first
 	{
 	    return false; //move wasnt legal for other reasons...
 	}
-        for (int k = 0; k < board.length; k++)
+	boolean ret = false;
+        if (king_in_check(piece.getColor(), kpos))
 	{
-	    for (int j = 0; j < board[k].lenght; j++) //going over the whole board to find all of the enemies pieces
+	    ret = true;
+	}
+	placePiece(piece, oldPos); //undo the update to not change the state of the board
+	return ret;
+    }
+
+    private boolean king_in_check(ChessPiece.Color color, String kpos)
+    {
+	for (int k = 0; k < board.length; k++)
+	{
+	    for (int j = 0; j < board[k].length; j++) //going over the whole board to find all of the enemies pieces
 	    {
 		ChessPiece checker = board[k][j]; //possible enemy piece
-		if (checker != null && checker.getColor() != piece.getColor()) //checker is an enemy piece
+		if (checker != null && checker.getColor() != color) //checker is an enemy piece
 		{
 		    ArrayList<String> checkerMoves = checker.legalMoves(); 
 		    for (String move : checkerMoves) //go through their legal moves to see if they can capture the king
 		    {
 			if (move == kpos) //if they can, the king is in check and the move is illegal. 
 			{
-			    place_piece(piece, oldPos); //need to undo the checking of that move.
-			    //If there is some way to create a new board with the move, and check that board, that would be best
 			    return true;
 			}
 		    }
@@ -134,6 +149,25 @@ public class ChessBoard {
     //returns true if the player opposite piece is in checkmate, false otherwise
     private boolean game_is_won(ChessPiece piece)
     {
+	if(game_is_stalemate(piece)) //opposing team cant move
+	{
+	    ChessPiece.Color losing_color = piece.getColor() == ChessPiece.Color.WHITE ? ChessPiece.Color.BLACK : ChessPiece.Color.WHITE;
+	    if (king_in_check(losing_color, getKingLocation(losing_color)))
+	    {
+		return true; //no legal moves, and king is in check, therefore checkmate
+	    }
+	}
+	return false;
+    }
+
+    private boolean game_is_draw(ChessPiece piece)
+    {
+	return game_is_stalemate(piece); //for now, lets only support stalemate
+	//if we want we could check for three fold repitition, but that sounds difficult
+    }
+
+    private boolean game_is_stalemate(ChessPiece piece)
+    {
 	for (int k = 0; k < board.length; k++)
 	{
 	    for (int j = 0; j < board[k].lenght; j++)
@@ -152,14 +186,10 @@ public class ChessBoard {
 		}
 	    }
 	}
-	return true; //no moves were found that gets the losing team out of check, therefore it is checkmate
+	return true; //no moves were found for the next turn, therefore it is stalemate. 
     }
 
-    private boolean game_is_draw(ChessPiece piece)
-    {
-	return false; //for now, lets not support checking for draws
-	//if we want we have to check for at least stalemate and three-fold repitition.
-    }
+
 
     public void move(String from, String to) throws IllegalMoveException{
         try {

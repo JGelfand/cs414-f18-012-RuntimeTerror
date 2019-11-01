@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 public class ChessBoard {
     private ChessPiece[][] board;
 
@@ -47,6 +49,7 @@ public class ChessBoard {
             return false;
         try{
             ChessPiece destinationPiece = getPiece(position);
+	    //System.out.println("hi");
             if(destinationPiece == null || destinationPiece.getColor() != piece.getColor()) { //if destination is empty or an opponents piece
                 piece.setPosition(position);
                 int[] indexes = positionToIndexes(position);
@@ -87,25 +90,43 @@ public class ChessBoard {
 		}
 	    }
 	}
+	return "";
     }
 
     //returns the validity of the move if the moving king is in check, or the move puts them in check
     //this is assuming that piece is moving to position
     private boolean king_in_check(ChessPiece piece, String position)
     {
-	String kpos = getKingLocation(piece, position); //location of the king
-	String oldPos = piece.getPosition();
-        if(!placePiece(piece, position)) //need to update the board first
+	try
 	{
-	    return false; //move wasnt legal for other reasons...
+	    String kpos = getKingLocation(piece, position); //location of the king
+	    String oldPos = piece.getPosition();
+	    System.out.println(kpos);
+            if(!placePiece(piece, position)) //need to update the board first
+	    {
+		System.out.println("huh?");
+	        return false; //move wasnt legal for other reasons...
+ 	    }
+	    int[] fromIndexes = positionToIndexes(oldPos);
+            board[fromIndexes[0]][fromIndexes[1]] = null;
+	    
+	    boolean ret = false;
+            if (king_in_check(piece.getColor(), kpos))
+	    {
+		System.out.println("this move is invalid");
+	        ret = true;
+	    }
+	    placePiece(piece, oldPos); //undo the update to not change the state of the board
+	    fromIndexes = positionToIndexes(position);
+            board[fromIndexes[0]][fromIndexes[1]] = null; 
+
+	    return ret;
 	}
-	boolean ret = false;
-        if (king_in_check(piece.getColor(), kpos))
+	catch (IllegalPositionException e)
 	{
-	    ret = true;
+	     //System.out.println("hi");
+	     return false;
 	}
-	placePiece(piece, oldPos); //undo the update to not change the state of the board
-	return ret;
     }
 
     private boolean king_in_check(ChessPiece.Color color, String kpos)
@@ -120,7 +141,7 @@ public class ChessBoard {
 		    ArrayList<String> checkerMoves = checker.legalMoves(); 
 		    for (String move : checkerMoves) //go through their legal moves to see if they can capture the king
 		    {
-			if (move == kpos) //if they can, the king is in check and the move is illegal. 
+			if (move.equals(kpos)) //if they can, the king is in check and the move is illegal. 
 			{
 			    return true;
 			}
@@ -170,7 +191,7 @@ public class ChessBoard {
     {
 	for (int k = 0; k < board.length; k++)
 	{
-	    for (int j = 0; j < board[k].lenght; j++)
+	    for (int j = 0; j < board[k].length; j++)
 	    {
 		ChessPiece mover = board[k][j];
 		if (mover != null && mover.getColor() != piece.getColor()) //mover is on the possibly losing team
@@ -200,14 +221,14 @@ public class ChessBoard {
             if(!fromPiece.legalMoves().contains(to)){
                 throw new IllegalMoveException("Second argument must be a valid move.");
             }
-	    if (king_in_check(piece, position))
+	    if (king_in_check(fromPiece, to))
 	    {
 		throw new IllegalMoveException("Your king is in check!");
 	    }
             if(placePiece(fromPiece, to)){
                 int[] fromIndexes = positionToIndexes(from);
                 board[fromIndexes[0]][fromIndexes[1]] = null; //move has been made
-		if(game_is_over(piece))
+		//if(game_is_over(fromPiece)) //commented out because it does nothing
 		{
 		    //how do we want to handle this?
 		    //personally I want to change the return type and handle it above

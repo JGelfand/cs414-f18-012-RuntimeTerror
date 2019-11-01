@@ -2,6 +2,8 @@ package server.notifications;
 
 import server.accounts.Account;
 import server.accounts.AccountManager;
+import server.api.MessageRequest;
+import server.api.MessageResponse;
 import server.utils.DatabaseHelper;
 import java.io.IOException;
 import java.sql.ResultSet;
@@ -9,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class NotificationManager {
@@ -47,5 +48,32 @@ public class NotificationManager {
             e.printStackTrace();
         }
         return notifications;
+    }
+
+    public static MessageResponse sendMessage(MessageRequest request){
+        MessageResponse response = new MessageResponse();
+        response.success= false;
+        response.errorMessage = "";
+        try(DatabaseHelper helper = DatabaseHelper.create()){
+            Account account = AccountManager.getAccountByUsername(helper, request.recipient);
+            if (account == null){
+                response.errorMessage +="Invalid username";
+            }
+            if(request.message.length()>5000)
+                response.errorMessage +="Message too long";
+            if(!(request.type.equals("message") || request.type.equals("invite")))
+                response.errorMessage +="Invalid message type";
+
+            if(response.errorMessage.isEmpty()){
+                helper.executePreparedStatement("INSERT INTO invites(sender, recipient, type, message) VALUES (?, ?, ?, ?);",
+                        request.getAccountId(), account.getAccountId(), request.type, request.message);
+                response.success = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 }

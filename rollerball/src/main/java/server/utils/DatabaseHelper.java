@@ -49,7 +49,8 @@ public class DatabaseHelper implements Closeable {
     public void executePreparedStatement(String statementString, Object ... args) throws SQLException{
         try(PreparedStatement statement = connection.prepareStatement(statementString)){
             for(int i=0; i< args.length; i++){
-                setData(statement, args[i], i+1);
+                //setData(statement, args[i], i+1);
+                statement.setObject(i+1, args[i]);
             }
             statement.executeUpdate();
         }
@@ -58,7 +59,8 @@ public class DatabaseHelper implements Closeable {
     public <T> T executePreparedStatement(String statementString, ResultProcessor<T> processor, Object ... args) throws SQLException {
         try(PreparedStatement statement = connection.prepareStatement(statementString)){
             for(int i=0; i< args.length; i++){
-                setData(statement, args[i], i+1);
+                //setData(statement, args[i], i+1);
+                statement.setObject(i+1, args[i]);
             }
             ResultSet results = statement.executeQuery();
             return processor.processResults(results);

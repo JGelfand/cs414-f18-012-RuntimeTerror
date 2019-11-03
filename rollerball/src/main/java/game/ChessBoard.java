@@ -101,10 +101,11 @@ public class ChessBoard {
 	{
 	    String kpos = getKingLocation(piece, position); //location of the king
 	    String oldPos = piece.getPosition();
-	    System.out.println(kpos);
+	    ChessPiece capPiece = getPiece(position);
+	    //System.out.println(kpos);
             if(!placePiece(piece, position)) //need to update the board first
 	    {
-		System.out.println("huh?");
+		//System.out.println("huh?");
 	        return false; //move wasnt legal for other reasons...
  	    }
 	    int[] fromIndexes = positionToIndexes(oldPos);
@@ -118,7 +119,7 @@ public class ChessBoard {
 	    }
 	    placePiece(piece, oldPos); //undo the update to not change the state of the board
 	    fromIndexes = positionToIndexes(position);
-            board[fromIndexes[0]][fromIndexes[1]] = null; 
+            board[fromIndexes[0]][fromIndexes[1]] = capPiece; //put the possibly captured piece back 
 
 	    return ret;
 	}

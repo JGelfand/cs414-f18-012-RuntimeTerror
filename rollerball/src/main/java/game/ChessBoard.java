@@ -302,7 +302,7 @@ public class ChessBoard {
 		if(moves.length != 2)
 			continue;
 		try{
-			board.makeMove(moves[0], moves[1]);
+			board.move(moves[0], moves[1]);
 		}catch(IllegalMoveException e){
 			continue;
 		}

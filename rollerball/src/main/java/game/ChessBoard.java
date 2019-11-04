@@ -1,6 +1,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class ChessBoard {
     private ChessPiece[][] board;
@@ -293,6 +294,18 @@ public class ChessBoard {
     public static void main(String[] args) throws IllegalMoveException {
         ChessBoard board = new ChessBoard();
         board.initialize();
-        System.out.println(board);
+	boolean turn  = true;
+    	Scanner input = new Scanner(System.in);
+	while(true){
+		System.out.println(board.toString());
+		String[] moves = input.nextLine().split("\\s+");
+		if(moves.length != 2)
+			continue;
+		try{
+			board.makeMove(moves[0], moves[1]);
+		}catch(IllegalMoveException e){
+			continue;
+		}
+	}
     }
 }

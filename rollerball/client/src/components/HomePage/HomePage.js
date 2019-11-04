@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import MessageSender from "./MessageSender";
 import {Button, Container, Form, Input, ListGroup, ListGroupItem, Row} from "reactstrap";
 import {sendServerRequestWithBody} from "../../api/restfulAPI";
 import ListNotifications from "./ListNotifications";
@@ -25,6 +26,9 @@ export default class HomePage extends Component {
             <Container>
                 <Row>
                     <h1>RollerBall HomePage</h1>
+                </Row>
+                <Row>
+                    <MessageSender token={this.props.token} serverPort={this.props.serverPort}/>
                 </Row>
                 <Row>
                     <Button onClick={this.getNotifications}>View Notifications</Button>

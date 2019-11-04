@@ -134,7 +134,7 @@ public class AccountManager {
 		return response;
 	}
 
-	private static Account getAccountByUsername(DatabaseHelper helper, String username) throws SQLException {
+	public static Account getAccountByUsername(DatabaseHelper helper, String username) throws SQLException {
 		return helper.executePreparedStatement("SELECT * FROM users WHERE username = ? ;", (results) -> {
 			if (results.next()) {
 				return new Account(results);

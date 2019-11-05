@@ -25,23 +25,16 @@ public class NotificationManager {
                     Timestamp timestamp = results.getTimestamp("time");
                     LocalDateTime date = timestamp.toLocalDateTime();
                     boolean unread = results.getBoolean("unread");
-                    notifications.add(new Notification(message, date, unread, type));
+                    if(type != "alert") {
+                        int sender = results.getInt("sender");
+                        String senderUsername = AccountManager.getAccountById(helper, sender);
+                        notifications.add(new Notification(message, date, unread, type, sender, senderUsername));
+                    }else{
+                        notifications.add(new Notification(message, date, unread, type));
+                    }
                 }
                 return true;
             },accountId);
-            query = "SELECT * FROM invites WHERE recipient = ? AND (unread IS TRUE OR TIMESTAMPDIFF(DAY, time, NOW()) < 30) ;";
-            helper.executePreparedStatement(query, (ResultSet results) -> {
-                while (results.next()) {
-                    String message = results.getString("message");
-                    String type = results.getString("type");
-                    Timestamp timestamp = results.getTimestamp("time");
-                    LocalDateTime date = timestamp.toLocalDateTime();
-                    boolean unread = results.getBoolean("unread");
-                    int sender = results.getInt("sender");
-                    String senderUsername = AccountManager.getAccountById(helper, sender);
-                    notifications.add(new Notification(message, date, unread, type, sender, senderUsername));
-                }return null;
-            }, accountId);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -63,9 +56,8 @@ public class NotificationManager {
                 response.errorMessage +="Message too long";
             if(!(request.type.equals("message") || request.type.equals("invite")))
                 response.errorMessage +="Invalid message type";
-
             if(response.errorMessage.isEmpty()){
-                helper.executePreparedStatement("INSERT INTO invites(sender, recipient, type, message) VALUES (?, ?, ?, ?);",
+                helper.executePreparedStatement("INSERT INTO notifications(sender, recipient, type, message) VALUES (?, ?, ?, ?);",
                         request.getAccountId(), account.getAccountId(), request.type, request.message);
                 response.success = true;
             }

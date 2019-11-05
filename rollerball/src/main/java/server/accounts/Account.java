@@ -33,7 +33,7 @@ public class Account {
     private  static DatabaseHelper.ResultProcessor<String> getStringFieldFromDatabase(String fieldName){
         return (ResultSet results) -> {
             results.next();
-            return results.getString("fieldName");
+            return results.getString(fieldName);
         };
     }
 

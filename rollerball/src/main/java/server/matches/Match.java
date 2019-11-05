@@ -6,6 +6,7 @@ import server.utils.DatabaseHelper;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Match {
@@ -28,23 +29,40 @@ public class Match {
     private boolean whiteForfeit, blackForfeit;
     private int id;
     private int whiteId, blackId;
-    public Match createMatch(int id, int whiteId, int blackId){
+    public static Match createNewMatch(int id, int whiteId, int blackId){
         Match match = new Match();
         match.board = new ChessBoard();
         match.board.initialize();
         match.id = id;
         match.whiteId = whiteId;
         match.blackId = blackId;
-
-        try(DatabaseHelper helper = DatabaseHelper.create()){
-            helper.executePreparedStatement("INSERT INTO games(id, board, white_player, black_player) VALUES (?,?,?,?);", id, match.board.serializeToBytes(), whiteId, blackId);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        match.turn = true;
         return match;
     }
     private Match(){}
+
+    public Match(ResultSet results) throws SQLException {
+        this.board = new ChessBoard(results.getBytes("board"));
+        this.id = results.getInt("id");
+        this.whiteId = results.getInt("white_player");
+        this.blackId = results.getInt("black_player");
+        this.turn = results.getBoolean("turn");
+        this.whiteForfeit = results.getBoolean("white_forfeit");
+        this.blackForfeit = results.getBoolean("black_forfeit");
+    }
+    public ChessBoard getBoard(){
+        return board;
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public int getWhiteId(){
+        return whiteId;
+    }
+
+    public int getBlackId(){
+        return blackId;
+    }
 }

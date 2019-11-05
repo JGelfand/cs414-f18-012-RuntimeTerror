@@ -12,7 +12,9 @@ export default class HomePage extends Component {
 
         this.getNotifications = this.getNotifications.bind(this);
 
-
+        for(let key in props){
+            console.log("Prop key: "+key+". Value: "+props[key]);
+        }
         this.state={
             allNotifications: {},
             allInvites: {},
@@ -62,7 +64,8 @@ export default class HomePage extends Component {
 
     renderNotifications(){
         if(this.state.showingNotifications)
-            return <ListNotifications ListNotifications={this.state.allNotifications}
+            return <ListNotifications ListNotifications={this.state.allNotifications} setAppPage={this.props.setAppPage}
+                                      serverPort={this.props.serverPort} token={this.props.token} setAppState={this.props.setAppState}
             />;
         return null;
     }

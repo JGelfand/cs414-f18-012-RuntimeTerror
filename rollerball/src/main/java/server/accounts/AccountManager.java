@@ -143,16 +143,6 @@ public class AccountManager {
 		}, username);
 	}
 
-	public static String getAccountById(DatabaseHelper helper, int id) throws SQLException{
-		return helper.executePreparedStatement("SELECT username FROM users WHERE id = ? ;", (results) -> {
-			if (results.next()) {
-				return results.getString("username");
-			}
-			return null;
-		}, id);
-	}
-
-
 	public static Account getAccountByUsername(String username){
 		try(DatabaseHelper helper = DatabaseHelper.create()){
 			return  getAccountByUsername(helper, username);

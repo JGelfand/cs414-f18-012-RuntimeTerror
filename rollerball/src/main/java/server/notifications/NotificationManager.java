@@ -25,7 +25,8 @@ public class NotificationManager {
                     Timestamp timestamp = results.getTimestamp("time");
                     LocalDateTime date = timestamp.toLocalDateTime();
                     boolean unread = results.getBoolean("unread");
-                    notifications.add(new Notification(message, date, unread, type));
+                    int id = results.getInt("id");
+                    notifications.add(new Notification(message, date, unread, type, id));
                 }
                 return true;
             },accountId);
@@ -38,8 +39,9 @@ public class NotificationManager {
                     LocalDateTime date = timestamp.toLocalDateTime();
                     boolean unread = results.getBoolean("unread");
                     int sender = results.getInt("sender");
-                    String senderUsername = AccountManager.getAccountById(helper, sender);
-                    notifications.add(new Notification(message, date, unread, type, sender, senderUsername));
+                    String senderUsername = new Account(sender).getUsername();
+                    int id = results.getInt("id");
+                    notifications.add(new Notification(message, date, unread, type, sender, senderUsername, id));
                 }return null;
             }, accountId);
         } catch (SQLException e) {

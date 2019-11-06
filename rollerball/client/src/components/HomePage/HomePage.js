@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import MessageSender from "./MessageSender";
-import {Button, Container, Form, Input, ListGroup, ListGroupItem, Row} from "reactstrap";
+import {Button, Container, Form, Input, ListGroup, ListGroupItem, Row, Col} from "reactstrap";
 import {sendServerRequestWithBody} from "../../api/restfulAPI";
 import ListNotifications from "./ListNotifications";
 
@@ -11,6 +11,7 @@ export default class HomePage extends Component {
         super(props);
 
         this.getNotifications = this.getNotifications.bind(this);
+
 
         for(let key in props){
             console.log("Prop key: "+key+". Value: "+props[key]);
@@ -30,7 +31,12 @@ export default class HomePage extends Component {
                     <h1>RollerBall HomePage</h1>
                 </Row>
                 <Row>
+                    <Col>
                     <MessageSender token={this.props.token} serverPort={this.props.serverPort}/>
+                    </Col>
+                    <Col>
+                        <Button onClick={() => this.props.setAppPage('login')}>Logout</Button>
+                    </Col>
                 </Row>
                 <Row>
                     <Button onClick={this.getNotifications}>View Notifications</Button>
@@ -39,6 +45,7 @@ export default class HomePage extends Component {
             </Container>
         );
     }
+
 
     getNotifications(){
         if(!this.state.showingNotifications) {

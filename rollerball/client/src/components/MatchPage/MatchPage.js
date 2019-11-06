@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Container, Form, Input, ListGroup, ListGroupItem, Row} from "reactstrap";
+import {Button, Container, Form, Input, ListGroup, ListGroupItem, Row, Col} from "reactstrap";
 import {sendServerRequestWithBody} from "../../api/restfulAPI";
 
 export default class MatchPage extends Component{
@@ -13,7 +13,12 @@ export default class MatchPage extends Component{
             {JSON.stringify(this.props.matchInfo)}
         </Row>,
         <Row>
+            <Col>
             <Button onClick={()=>this.props.setAppPage("homepage")}>Go to home</Button>
+            </Col>
+            <Col>
+                <Button onClick={() => this.props.setAppPage("login")}>Logout</Button>
+            </Col>
         </Row>];
     }
 }

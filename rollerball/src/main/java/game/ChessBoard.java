@@ -308,4 +308,88 @@ public class ChessBoard {
 		}
 	}
     }
+
+    public byte[] serializeToBytes(){
+        byte[] piecePositions = new byte[16];
+        //a1 is 1, b1 is 2, a2 is 8, etc (0 is unset/dead)
+        //for pawns: 0 is no promotion, 1 is bishop, 2 is rook
+        //create int array indexed by piece and color.
+        //0: king, 1: bishop, 2,3: rook 4: pawn1 promote, 5:pawn1, 6:pawn2 promote, 7:pawn2
+        //black is white+8
+        try {
+            for (int i = 0; i < board.length; i++)
+                for (int j = 0; j < board[i].length; j++) {
+                    ChessPiece piece = getPiece(((char) ('a' + j)) + "" + ((char) ('1' + i)));
+                    if(piece == null)
+                        continue;
+                    int color = piece.getColor() == ChessPiece.Color.WHITE?0:8;
+                    byte position = (byte)(i*7+j+1);
+                    if(piece instanceof King){
+                        piecePositions[color] = position;
+                    }else if(piece instanceof Bishop){
+                        //if no bishop seen yet, use dedicated bishop space. if seen, assume promotion and overflow into pawns
+                        if(piecePositions[1+color] == 0)
+                            piecePositions[1+color] = position;
+                        else if(piecePositions[5+color] == 0){
+                            piecePositions[4+color] = 1;
+                            piecePositions[5+color] = position;
+                        }
+                        else{
+                            piecePositions[6+color] = 1;
+                            piecePositions[7+color] = position;
+                        }
+                    }
+                    else if(piece instanceof Rook){
+                        //if no rook seen yet, use dedicated rook spaces. if seen, assume promotion and overflow into pawns
+                        if(piecePositions[2+color] == 0)
+                            piecePositions[2+color] = position;
+                        else if(piecePositions[3+color] == 0)
+                            piecePositions[3+color] = position;
+                        else if(piecePositions[5+color] == 0){
+                            piecePositions[4+color] = 2;
+                            piecePositions[5+color] = position;
+                        }
+                        else{
+                            piecePositions[6+color] = 2;
+                            piecePositions[7+color] = position;
+                        }
+                    }
+                    else if(piece instanceof Pawn){
+                        if(piecePositions[5+color] == 0)
+                            piecePositions[5+color] = position;
+                        else
+                            piecePositions[7+color] = position;
+                    }
+                }
+        }catch (IllegalPositionException e){
+            //should never happen if I do this right
+            e.printStackTrace();
+        }
+        return piecePositions;
+    }
+
+    public ChessBoard(byte[] bytes){
+        this();
+        for(int team=0;team <=8;team+=8) {
+            ChessPiece.Color color = team==0? ChessPiece.Color.WHITE: ChessPiece.Color.BLACK;
+            for (int column = 0; column < 8; column++) {
+                ChessPiece piece = null;
+                byte value=bytes[team+column];
+                switch (column){
+                    case 0: if(value != 0) piece = new King(this, color); break;
+                    case 1: if(value != 0) piece = new Bishop(this, color); break;
+                    case 2: case 3: if(value != 0) piece = new Rook(this, color); break;
+                    case 4: case 6: continue;
+                    case 5: case 7: if(value !=0) switch(bytes[team+column -1]){
+                        case 0:piece = new Pawn(this, color); break;
+                        case 1:piece = new Bishop(this, color); break;
+                        case 2:piece = new Rook(this, color); break;
+                    } break;
+                }
+                if(piece != null){
+                    this.placePiece(piece, ((char)('a'+(value-1)%7)+""+((char)('1'+(value-1)/7))));
+                }
+            }
+        }
+    }
 }

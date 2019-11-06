@@ -97,7 +97,44 @@ class ChessBoardTest {
     }
 
     @Test
-    void moveCheck() throws IllegalMoveException {
+    void byteSerializationSimple() throws IllegalPositionException {
+        board.initialize();
+        byte[] serialized = board.serializeToBytes();
+        ChessBoard deserialized = new ChessBoard(serialized);
+        compareBoards(board, deserialized);
+    }
+
+    @Test
+    void byteSerializationComplex() throws IllegalPositionException {
+        assertTrue(board.placePiece(new King(board, ChessPiece.Color.BLACK), "g7"));
+        assertTrue(board.placePiece(new King(board, ChessPiece.Color.WHITE), "a1"));
+        assertTrue(board.placePiece(new Rook(board, ChessPiece.Color.WHITE), "b4"));
+        assertTrue(board.placePiece(new Rook(board, ChessPiece.Color.WHITE), "a7"));
+        assertTrue(board.placePiece(new Rook(board, ChessPiece.Color.WHITE), "c2"));
+        assertTrue(board.placePiece(new Bishop(board, ChessPiece.Color.WHITE), "f5"));
+        assertTrue(board.placePiece(new Bishop(board, ChessPiece.Color.WHITE), "g6"));
+        byte[] serialized = board.serializeToBytes();
+        ChessBoard deserialized = new ChessBoard(serialized);
+        compareBoards(board, deserialized);
+    }
+
+    public void compareBoards(ChessBoard board, ChessBoard deserialized) throws IllegalPositionException {
+        for(char row = '1'; row <= '7'; row += 1){
+            for(char col = 'a'; col <= 'g'; col+=1){
+                String position = col+""+row;
+                ChessPiece originalPiece = board.getPiece(position);
+                ChessPiece deserializedPiece = deserialized.getPiece(position);
+                if(originalPiece == null)
+                    assertNull(deserializedPiece, "Null/Not null mismatch at "+position);
+                else{
+                    assertEquals(originalPiece.toString(), deserializedPiece.toString(), "Piece mismatch at "+position);
+                }
+            }
+        }
+    }
+
+  @Test
+  void moveCheck() throws IllegalMoveException {
 	board.placePiece(new King(board, ChessPiece.Color.WHITE), "b4");
 	board.placePiece(new Bishop(board, ChessPiece.Color.WHITE), "f3");
 	board.placePiece(new King(board, ChessPiece.Color.BLACK), "b6");
@@ -117,6 +154,4 @@ class ChessBoardTest {
 	assertDoesNotThrow(()-> board.move("f4", "f1")); //move should allow this, as black is not in check
 	assertThrows(IllegalMoveException.class, ()->board.move("b1", "a2")); //should not allow this, as it would put white in check
     }
-
-
 }

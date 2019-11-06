@@ -133,8 +133,10 @@ class ChessBoardTest {
         }
     }
 
-    @Test
-    void moveCheck() throws IllegalMoveException {
+
+  @Test
+  void moveCheck() throws IllegalMoveException {
+
 	board.placePiece(new King(board, ChessPiece.Color.WHITE), "b4");
 	board.placePiece(new Bishop(board, ChessPiece.Color.WHITE), "f3");
 	board.placePiece(new King(board, ChessPiece.Color.BLACK), "b6");

@@ -133,8 +133,10 @@ class ChessBoardTest {
         }
     }
 
+
   @Test
   void moveCheck() throws IllegalMoveException {
+
 	board.placePiece(new King(board, ChessPiece.Color.WHITE), "b4");
 	board.placePiece(new Bishop(board, ChessPiece.Color.WHITE), "f3");
 	board.placePiece(new King(board, ChessPiece.Color.BLACK), "b6");
@@ -154,4 +156,5 @@ class ChessBoardTest {
 	assertDoesNotThrow(()-> board.move("f4", "f1")); //move should allow this, as black is not in check
 	assertThrows(IllegalMoveException.class, ()->board.move("b1", "a2")); //should not allow this, as it would put white in check
     }
+
 }

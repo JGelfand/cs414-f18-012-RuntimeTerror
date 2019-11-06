@@ -3,6 +3,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import server.accounts.AccountManager;
 import server.api.*;
+import server.matches.Match;
+import server.matches.MatchManager;
 import server.notifications.NotificationManager;
 import spark.Request;
 import spark.Response;
@@ -44,6 +46,22 @@ class MicroServer {
         Spark.post("/api/login", this::handleLoginRequest);
         Spark.post("/api/notifications", this::handleNotificationsRequest);
         Spark.post("/api/message", this::handleMessageRequest);
+        Spark.post("/api/inviteAnswer", this::handleInviteResponses);
+    }
+
+    private Object handleInviteResponses(Request request, Response response) {
+        response.type("application/json");
+        Gson gson = new GsonBuilder().registerTypeAdapter(Match.class, new Match.MatchSerializer()).create();
+
+        InviteAnswer answer = gson.fromJson(request.body(), InviteAnswer.class);
+        if(!answer.verify()){
+            response.status(401);
+            MessageResponse messageResponse = new MessageResponse();
+            messageResponse.success = false;
+            messageResponse.errorMessage = "Authentication Error";
+            return gson.toJson(messageResponse);
+        }
+        return gson.toJson(MatchManager.createMatchFromInvite(answer));
     }
 
     private String handleMessageRequest(Request request, Response response) {

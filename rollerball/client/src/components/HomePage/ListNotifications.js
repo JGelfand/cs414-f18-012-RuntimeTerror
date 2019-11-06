@@ -62,7 +62,7 @@ export default class ListNotifications extends Component {
         if(currType === "alert"){
             return (<Col><Button>Alert Button</Button></Col>);
         }if(currType === "invite"){
-            return (<Col><Button onClick={()=>this.sendInviteResponse(notification.id, true)}>Accept</Button><Button onClick={()=>this.sendInviteResponse(notification.id, true)}>Decline</Button></Col>);
+            return (<Col><Button onClick={()=>this.sendInviteResponse(notification.id, true)}>Accept</Button><Button onClick={()=>this.sendInviteResponse(notification.id, false)}>Decline</Button></Col>);
         }if(currType === "message"){
             return (<Col><Button>Mark As Read</Button></Col>);
         }

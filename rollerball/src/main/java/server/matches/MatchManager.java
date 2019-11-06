@@ -14,7 +14,7 @@ public class MatchManager {
     public static Match createMatchFromInvite(InviteAnswer answer){
         Match match = null;
         try(DatabaseHelper helper = DatabaseHelper.create()){
-            Notification invite = helper.executeStatement("SELECT * FROM invites WHERE id = "+answer.inviteId+";", (results)->{
+            Notification invite = helper.executeStatement("SELECT * FROM notifications WHERE id = "+answer.inviteId+";", (results)->{
                 if (results.next()) {
                     String message = results.getString("message");
                     String type = results.getString("type");
@@ -34,14 +34,14 @@ public class MatchManager {
                 match= Match.createNewMatch(answer.inviteId, invite.sender, answer.getAccountId());
                 insertMatchIntoDatabase(match, helper);
                 helper.executePreparedStatement("INSERT INTO notifications(recipient, type, message) VALUES (?,\"alert\",?);",
-                        invite.sender, new Account(answer.getAccountId()).getUsername()+" has accepted your invitation. Match id is"+match.getId()+".");
+                        invite.sender, new Account(answer.getAccountId()).getUsername()+" has accepted your invitation. Match id is "+match.getId()+".");
             }
             else{
                 helper.executePreparedStatement("INSERT INTO notifications(recipient, type, message) VALUES (?,\"alert\",?);",
                         invite.sender, new Account(answer.getAccountId()).getUsername()+" has declined your invitation.");
             }
             //delete invite either way
-            helper.executePreparedStatement("DELETE FROM invites WHERE id = ?;", answer.inviteId);
+            helper.executePreparedStatement("DELETE FROM notifications WHERE id = ?;", answer.inviteId);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -70,17 +70,5 @@ public class MatchManager {
     private static void insertMatchIntoDatabase(Match match, DatabaseHelper helper) throws SQLException {
         helper.executePreparedStatement("INSERT INTO games(id, board, white_player, black_player) VALUES (?,?,?,?);",
                 match.getId(), match.getBoard().serializeToBytes(), match.getWhiteId(), match.getBlackId());
-    }
-
-    public Match makeMove(MoveRequest move){
-        //get match by id
-        //...
-        if(move.forfeit){
-
-        }
-        //check for turn
-        //check for legality
-        //return null if anything failed
-        return null;
     }
 }

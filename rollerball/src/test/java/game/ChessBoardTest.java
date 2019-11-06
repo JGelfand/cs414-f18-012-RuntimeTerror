@@ -133,4 +133,26 @@ class ChessBoardTest {
         }
     }
 
+    @Test
+    void moveCheck() throws IllegalMoveException {
+	board.placePiece(new King(board, ChessPiece.Color.WHITE), "b4");
+	board.placePiece(new Bishop(board, ChessPiece.Color.WHITE), "f3");
+	board.placePiece(new King(board, ChessPiece.Color.BLACK), "b6");
+	board.placePiece(new Rook(board, ChessPiece.Color.BLACK), "b2");
+
+	assertThrows(IllegalMoveException.class, ()->board.move("f3", "d1"));
+	assertDoesNotThrow(()-> board.move("b4", "a3"));
+    }
+
+    @Test
+    void moveCheckPin() throws IllegalMoveException {
+	board.placePiece(new King(board, ChessPiece.Color.WHITE), "a1");
+	board.placePiece(new Pawn(board, ChessPiece.Color.WHITE), "b1");
+	board.placePiece(new King(board, ChessPiece.Color.BLACK), "a5");
+	board.placePiece(new Rook(board, ChessPiece.Color.BLACK), "f4");
+	
+	assertDoesNotThrow(()-> board.move("f4", "f1")); //move should allow this, as black is not in check
+	assertThrows(IllegalMoveException.class, ()->board.move("b1", "a2")); //should not allow this, as it would put white in check
+    }
+
 }

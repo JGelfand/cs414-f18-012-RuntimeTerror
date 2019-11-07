@@ -74,7 +74,7 @@ class MicroServer {
             response.status(401);
             return "{\"message\": \"Authentication Error\"}";
         }
-        return gson.toJson(MatchManager.getMatchByUserId(matchesRequest.getAccountId()));
+        return gson.toJson(MatchManager.getMatchesByUserId(matchesRequest.getAccountId()));
     }
 
     private String handleMessageRequest(Request request, Response response) {

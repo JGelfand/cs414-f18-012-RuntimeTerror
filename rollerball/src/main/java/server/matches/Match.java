@@ -29,7 +29,6 @@ public class Match {
     private boolean whiteForfeit, blackForfeit;
     private int id;
     private int whiteId, blackId;
-    private String opponentUsername;
 
     public static Match createNewMatch(int id, int whiteId, int blackId){
         Match match = new Match();
@@ -53,11 +52,6 @@ public class Match {
         this.blackForfeit = results.getBoolean("black_forfeit");
     }
 
-    public Match(ResultSet results, String opponentUsername) throws SQLException{
-        this(results);
-        this.opponentUsername = opponentUsername;
-    }
-
     public ChessBoard getBoard(){
         return board;
     }
@@ -73,6 +67,4 @@ public class Match {
     public int getBlackId(){
         return blackId;
     }
-
-    public String getOpponentUsername(){return opponentUsername;}
 }

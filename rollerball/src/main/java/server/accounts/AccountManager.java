@@ -153,21 +153,4 @@ public class AccountManager {
 		}
 	}
 
-	public static String getAccountByID(int id){
-		String username = "";
-		try(DatabaseHelper helper = DatabaseHelper.create()){
-			username = helper.executePreparedStatement("SELECT * FROM users WHERE id = ? ;", (results) -> {
-				if(results.next()){
-					return results.getString("username");
-				}
-				return null;
-			}, id);
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		return username;
-	}
-
 }

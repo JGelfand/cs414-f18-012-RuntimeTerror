@@ -10,7 +10,7 @@ export default class MatchPage extends Component{
     render(){
         return [
         <Row>
-            {JSON.stringify(this.props.matchInfo)}
+            {JSON.stringify(this.props.matchInfo)['board']}
         </Row>,
         <Row>
             <Col>

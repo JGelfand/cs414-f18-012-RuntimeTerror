@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class MatchManager {
     public static Match createMatchFromInvite(InviteAnswer answer){
@@ -71,4 +72,24 @@ public class MatchManager {
         helper.executePreparedStatement("INSERT INTO games(id, board, white_player, black_player) VALUES (?,?,?,?);",
                 match.getId(), match.getBoard().serializeToBytes(), match.getWhiteId(), match.getBlackId());
     }
+
+    public static ArrayList<Match> getMatchByUserId(int userId){
+        try(DatabaseHelper helper = DatabaseHelper.create()){
+                helper.executePreparedStatement("SELECT * FROM games WHERE white_player, black_player = ?;", (results ->{
+                ArrayList<Match> games = new ArrayList<>();
+                while(results.next()) {
+                   Match currMatch = new Match(results);
+                   games.add(currMatch);
+                }
+                return games;
+            }), userId);
+           return null;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

@@ -47,6 +47,7 @@ export default class HomePage extends Component {
     }
 
 
+
     getNotifications(){
         if(!this.state.showingNotifications) {
             const body = {

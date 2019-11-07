@@ -5,6 +5,7 @@ import server.accounts.AccountManager;
 import server.api.*;
 import server.matches.Match;
 import server.matches.MatchManager;
+import server.matches.ViewCurrentMatches;
 import server.notifications.NotificationManager;
 import spark.Request;
 import spark.Response;
@@ -47,6 +48,7 @@ class MicroServer {
         Spark.post("/api/notifications", this::handleNotificationsRequest);
         Spark.post("/api/message", this::handleMessageRequest);
         Spark.post("/api/inviteAnswer", this::handleInviteResponses);
+        Spark.post("/api/ViewCurrentGames", this::handleViewCurrentGamesResponse);
     }
 
     private Object handleInviteResponses(Request request, Response response) {
@@ -62,6 +64,18 @@ class MicroServer {
             return gson.toJson(messageResponse);
         }
         return gson.toJson(MatchManager.createMatchFromInvite(answer));
+    }
+
+    private String handleViewCurrentGamesResponse(Request request, Response response){
+        response.type("application/json");
+        response.header("Access-Control-Allow-Origin", "*");
+        Gson gson = new GsonBuilder().create();
+        AuthenticatedRequest matchesRequest = gson.fromJson(request.body(), AuthenticatedRequest.class);
+        if(!matchesRequest.verify()){
+            response.status(401);
+            return "{\"message\": \"Authentication Error\"}";
+        }
+        return gson.toJson(MatchManager.getMatchByUserId(matchesRequest.getAccountId()));
     }
 
     private String handleMessageRequest(Request request, Response response) {

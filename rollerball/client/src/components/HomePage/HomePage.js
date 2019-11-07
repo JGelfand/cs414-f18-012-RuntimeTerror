@@ -55,7 +55,16 @@ export default class HomePage extends Component {
 
 
     getTableList(table){
-        if(!this.state.showingNotifications) {
+        if(table === 'notifications' || table === 'ViewCurrentGames') {
+            if(table === 'notifications' && this.state.showingNotifications === true) {
+                this.setState({showingNotifications: false});
+                return;
+            }
+            if(table === 'ViewCurrentGames' && this.state.showingMatches === true) {
+                this.setState({showingMatches: false});
+                return;
+            }
+
             const body = {
                 token: this.props.token
             };
@@ -77,10 +86,6 @@ export default class HomePage extends Component {
                     }
                 }
             );
-        }
-        else {
-            this.setState({showingNotifications: false});
-            this.setState({showingMatches: false});
         }
     }
 

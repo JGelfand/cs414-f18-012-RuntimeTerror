@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Container, Form, Input, Row, Col } from "reactstrap";
+import {Button, Container, Form, Input, Row, Col, Table} from "reactstrap";
 import {sendServerRequestWithBody} from "../../api/restfulAPI";
 
 
@@ -17,7 +17,6 @@ export default class ListNotifications extends Component {
     }
 
 
-
     render() {
 
         return(
@@ -28,32 +27,44 @@ export default class ListNotifications extends Component {
     }
 
     displayEachNotification(){
-        let rows = [];
-        for(let i = 0; i < this.props.ListNotifications.length; i++){
-            rows.push(
-                <Row>
-                    <Col>{this.props.ListNotifications[i].message}</Col>
-                    <Col>
-                        {this.props.ListNotifications[i].date['date'].month}
-                        {'-'}
-                        {this.props.ListNotifications[i].date['date'].day}
-                        {'-'}
-                        {this.props.ListNotifications[i].date['date'].year}
-                        {'  at  '}
-                        {this.props.ListNotifications[i].date.time['hour']}
-                        {':'}
-                        {this.props.ListNotifications[i].date.time['minute']}
-                        {':'}
-                        {this.props.ListNotifications[i].date.time['second']}
-                        {':'}
-                        {this.props.ListNotifications[i].date.time['nano']}
-                    </Col>
-                    {this.getSenderUsername(this.props.ListNotifications[i])}
-                    {this.getTypeButton(this.props.ListNotifications[i])}
-                </Row>);
-        }
-        return rows;
+        return(
+            <Table>
+                <thead>
+                <tr>
+                    <th>Message</th>
+                    <th>Date Sent</th>
+                    <th>Sender</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {this.props.ListNotifications.map(currNotification =>
+                    <tr>
+                        <th scope="row">{currNotification.message}</th>
+                        <td>
+                            {currNotification.date['date'].month}
+                            {'-'}
+                            {currNotification.date['date'].day}
+                            {'-'}
+                            {currNotification.date['date'].year}
+                            {'  at  '}
+                            {currNotification.date.time['hour']}
+                            {':'}
+                            {currNotification.date.time['minute']}
+                            {':'}
+                            {currNotification.date.time['second']}
+                            {':'}
+                            {currNotification.date.time['nano']}
+                        </td>
+                        <td>{this.getSenderUsername(currNotification)}</td>
+                        <td>{this.getTypeButton(currNotification)}</td>
+                    </tr>
+                )}
+                </tbody>
+            </Table>
+        );
     }
+
 
     getTypeButton(notification){
         let currType=notification.type;

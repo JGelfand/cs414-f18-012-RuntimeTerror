@@ -1,6 +1,7 @@
 package server.matches;
 
 import server.accounts.Account;
+import server.accounts.AccountManager;
 import server.api.InviteAnswer;
 import server.notifications.Notification;
 import server.utils.DatabaseHelper;
@@ -74,22 +75,29 @@ public class MatchManager {
     }
 
     public static ArrayList<Match> getMatchByUserId(int userId){
+        ArrayList<Match> games = new ArrayList<>();
         try(DatabaseHelper helper = DatabaseHelper.create()){
-                helper.executePreparedStatement("SELECT * FROM games WHERE white_player, black_player = ?;", (results ->{
-                ArrayList<Match> games = new ArrayList<>();
+                helper.executePreparedStatement("SELECT * FROM games WHERE white_player = ? OR black_player = ?;", (results ->{
                 while(results.next()) {
-                   Match currMatch = new Match(results);
+                    int getOpponentId;
+                   if(!results.getString("white_player").equals(Integer.toString(userId))){
+                       getOpponentId = results.getInt("white_player");
+                   }else{
+                       getOpponentId = results.getInt("black_player");
+                   }
+                   String username = AccountManager.getAccountByID(getOpponentId);
+                   Match currMatch = new Match(results, username);
                    games.add(currMatch);
                 }
                 return games;
-            }), userId);
-           return null;
+            }), userId, userId);
+           return games;
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return games;
     }
 
 }

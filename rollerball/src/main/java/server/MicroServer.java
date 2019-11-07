@@ -5,7 +5,6 @@ import server.accounts.AccountManager;
 import server.api.*;
 import server.matches.Match;
 import server.matches.MatchManager;
-import server.matches.ViewCurrentMatches;
 import server.notifications.NotificationManager;
 import spark.Request;
 import spark.Response;

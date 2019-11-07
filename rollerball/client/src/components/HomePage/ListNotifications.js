@@ -51,10 +51,8 @@ export default class ListNotifications extends Component {
                     {this.getSenderUsername(this.props.ListNotifications[i])}
                     {this.getTypeButton(this.props.ListNotifications[i])}
                 </Row>);
-
         }
         return rows;
-
     }
 
     getTypeButton(notification){

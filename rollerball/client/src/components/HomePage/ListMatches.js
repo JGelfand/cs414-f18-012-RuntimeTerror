@@ -32,27 +32,28 @@ export default class ListMatches extends Component {
                     {"Match ID"}
                 </Col>
                 <Col>
-                    {"Current Turn"}
+                    {"Opponent"}
                 </Col>
                 {"Action"}
             </Row>
         );
+
         for(let i = 0; i < this.props.ListMatches.length; i++){
+            console.log(this.props.ListMatches[i].id);
             rows.push(
                 <Row>
                     <Col>
-                        {this.props.ListMatches.id}
+                        {this.props.ListMatches[i].id}
                     </Col>
                     <Col>
-
+                        {this.props.ListMatches[i]['opponentUsername']}
+                    </Col>
+                    <Col>
+                        <Button>Play!</Button>
                     </Col>
                 </Row>
-
             );
-
         }
         return rows;
-
-
     }
 }

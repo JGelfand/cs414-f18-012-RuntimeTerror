@@ -59,7 +59,6 @@ export default class HomePage extends Component {
             const body = {
                 token: this.props.token
             };
-
             sendServerRequestWithBody(table, body, this.props.serverPort).then(
                 (response) => {
                     if (!response.body.message) {
@@ -68,6 +67,7 @@ export default class HomePage extends Component {
                             this.state.showingNotifications = true;
                             this.setState(this.state);
                         }if(table === "ViewCurrentGames"){
+                            console.log(response.body);
                             this.state.allMatches = response.body;
                             this.state.showingMatches = true;
                             this.setState(this.state);
@@ -78,8 +78,10 @@ export default class HomePage extends Component {
                 }
             );
         }
-        else
-            this.setState({showingNotifications:false});
+        else {
+            this.setState({showingNotifications: false});
+            this.setState({showingMatches: false});
+        }
     }
 
     renderNotifications(){

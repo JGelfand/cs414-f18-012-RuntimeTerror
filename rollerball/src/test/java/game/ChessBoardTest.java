@@ -208,7 +208,7 @@ class ChessBoardTest {
 	//the white king just got there
 	assertFalse(board.game_is_won(wKing, "d6")); //should not be won because the king went the wrong way
 	assertDoesNotThrow(()-> board.move("c2", "d2"));
-	assertFalse(board.game_is_wone(bKing, "d2"));
+	assertFalse(board.game_is_won(bKing, "d2"));
     }
 
     @Test

@@ -162,7 +162,7 @@ class ChessBoardTest {
     {
 	ChessPiece wKing = new King(board, ChessPiece.Color.WHITE);
 	ChessPiece bKing = new King(board, ChessPiece.Color.BLACK);
-	ChessPiece wPawn = new Pawn(board, ChessPiece.Color.White); //dummy pawn to avoid problems when insufficiant mating material is implimented
+	ChessPiece wPawn = new Pawn(board, ChessPiece.Color.WHITE); //dummy pawn to avoid problems when insufficiant mating material is implimented
 	board.placePiece(wKing, "d2");
 	board.placePiece(bKing, "d6");
 	board.placePiece(wPawn, "a1");
@@ -189,7 +189,7 @@ class ChessBoardTest {
     void KingCircleBad() throws IllegalMoveException {
 	ChessPiece wKing = new King(board, ChessPiece.Color.WHITE);
 	ChessPiece bKing = new King(board, ChessPiece.Color.BLACK);
-	ChessPiece wPawn = new Pawn(board, ChessPiece.Color.White); //dummy pawn to avoid problems when insufficiant mating material is implimented
+	ChessPiece wPawn = new Pawn(board, ChessPiece.Color.WHITE); //dummy pawn to avoid problems when insufficiant mating material is implimented
 	board.placePiece(wKing, "d2");
 	board.placePiece(bKing, "d6");
 	board.placePiece(wPawn, "a1");

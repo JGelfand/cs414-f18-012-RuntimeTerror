@@ -6,11 +6,17 @@ import java.util.Scanner;
 public class ChessBoard {
     private ChessPiece[][] board;
 
+    private boolean whiteKCValid; //flag for if white can preform the king's circle
+    private boolean blackKCValid; //flag for if black "      "     "    "      "
+
     public ChessBoard(){
         board = new ChessPiece[7][];
         for(int i=0;i<7;i++){
             board[i] = new ChessPiece[7];
         }
+
+	whiteKCValid = false;
+	blackKCValid = false;
     }
 
     public void initialize(){
@@ -115,7 +121,7 @@ public class ChessBoard {
 	    boolean ret = false;
             if (king_in_check(piece.getColor(), kpos))
 	    {
-		System.out.println("this move is invalid");
+		//System.out.println("this move is invalid");
 	        ret = true;
 	    }
 	    placePiece(piece, oldPos); //undo the update to not change the state of the board
@@ -155,10 +161,10 @@ public class ChessBoard {
     }
 
     //returns true if the game is over (win or draw), false otherwise
-    //piece is the moving piece (so the winning piece)
-    private boolean game_is_over(ChessPiece piece)
+    //piece is the moving piece (so the winning piece), pos is where it moved to, notable useful in the King's Circle
+    public boolean game_is_over(ChessPiece piece, String pos)
     {
-	if (game_is_won(piece))
+	if (game_is_won(piece, pos))
 	{
 	    return true;
 	}
@@ -169,8 +175,7 @@ public class ChessBoard {
 	return false; //the game can never end Chell...
     }
 
-    //returns true if the player opposite piece is in checkmate, false otherwise
-    private boolean game_is_won(ChessPiece piece)
+    private boolean game_is_mate(ChessPiece piece)
     {
 	if(game_is_stalemate(piece)) //opposing team cant move
 	{
@@ -183,7 +188,35 @@ public class ChessBoard {
 	return false;
     }
 
-    private boolean game_is_draw(ChessPiece piece)
+    private boolean game_is_circle(ChessPiece piece, String pos)
+    {
+	if (piece instanceof King)
+	{
+	    if (piece.getColor() == ChessPiece.Color.WHITE)
+	    {
+		if (pos.equals("d6") && whiteKCValid)
+		{
+		    return true;
+		}
+	    }
+	    else
+	    {
+		if (pos.equals("d2") && blackKCValid)
+		{
+		    return true;
+		}
+	    }
+	}
+	return false;
+    }
+
+    //returns true if the player opposite piece is in checkmate, false otherwise
+    public boolean game_is_won(ChessPiece piece, String pos)
+    {
+	return game_is_mate(piece) || game_is_circle(piece, pos);
+    }
+
+    public boolean game_is_draw(ChessPiece piece)
     {
 	return game_is_stalemate(piece); //for now, lets only support stalemate
 	//if we want we could check for three fold repitition, but that sounds difficult
@@ -212,6 +245,35 @@ public class ChessBoard {
 	return true; //no moves were found for the next turn, therefore it is stalemate. 
     }
 
+    private void updateFlag(ChessPiece movingPiece, String pos)
+    {
+	if (movingPiece instanceof King)
+	{
+	    if (movingPiece.getColor() == ChessPiece.Color.WHITE)
+	    {
+		if (pos.equals("a3") || pos.equals("b3"))
+		{
+		    whiteKCValid = true;
+		}
+		else if (pos.equals("f3") || pos.equals("g3"))
+		{
+		    whiteKCValid = false;
+		}
+	    }
+	    else
+	    {
+		if (pos.equals("f5") || pos.equals("g5"))
+		{
+		    blackKCValid = true;
+		}
+		else if (pos.equals("a5") || pos.equals("b5"))
+		{
+		    blackKCValid = false;
+		}
+	    }
+	}
+	return;
+    }
 
 
     public void move(String from, String to) throws IllegalMoveException{
@@ -230,7 +292,8 @@ public class ChessBoard {
             if(placePiece(fromPiece, to)){
                 int[] fromIndexes = positionToIndexes(from);
                 board[fromIndexes[0]][fromIndexes[1]] = null; //move has been made
-		//if(game_is_over(fromPiece)) //commented out because it does nothing
+		updateFlag(fromPiece, to);
+		//if(game_is_over(fromPiece, to)) //commented out because it does nothing
 		{
 		    //how do we want to handle this?
 		    //personally I want to change the return type and handle it above

@@ -157,4 +157,92 @@ class ChessBoardTest {
 	assertThrows(IllegalMoveException.class, ()->board.move("b1", "a2")); //should not allow this, as it would put white in check
     }
 
+    @Test
+    void KingCircleGood() throws IllegalMoveException
+    {
+	ChessPiece wKing = new King(board, ChessPiece.Color.WHITE);
+	ChessPiece bKing = new King(board, ChessPiece.Color.BLACK);
+	ChessPiece wPawn = new Pawn(board, ChessPiece.Color.White); //dummy pawn to avoid problems when insufficiant mating material is implimented
+	board.placePiece(wKing, "d2");
+	board.placePiece(bKing, "d6");
+	board.placePiece(wPawn, "a1");
+
+	assertDoesNotThrow(()-> board.move("d2", "c2"));
+	assertDoesNotThrow(()-> board.move("d6", "e6"));
+	assertDoesNotThrow(()-> board.move("c2", "b3"));
+	assertDoesNotThrow(()-> board.move("e6", "f5"));
+	assertFalse(board.game_is_won(bKing, "f5")); //check that it isn't randomly true
+	assertDoesNotThrow(()-> board.move("b3", "b4"));
+	assertDoesNotThrow(()-> board.move("f5", "f4"));
+	assertDoesNotThrow(()-> board.move("b4", "b5"));
+	assertDoesNotThrow(()-> board.move("f4", "f3"));
+	assertDoesNotThrow(()-> board.move("b5", "c6"));
+	assertDoesNotThrow(()-> board.move("f3", "e2"));
+	assertDoesNotThrow(()-> board.move("c6", "d6")); //both kings are rotating clockwise to the other kings starting spot
+	//the white king just got there
+	assertTrue(board.game_is_won(wKing, "d6"));
+	assertDoesNotThrow(()-> board.move("e2", "d2"));
+	assertTrue(board.game_is_won(bKing, "d2"));
+    }
+
+    @Test
+    void KingCircleBad() throws IllegalMoveException {
+	ChessPiece wKing = new King(board, ChessPiece.Color.WHITE);
+	ChessPiece bKing = new King(board, ChessPiece.Color.BLACK);
+	ChessPiece wPawn = new Pawn(board, ChessPiece.Color.White); //dummy pawn to avoid problems when insufficiant mating material is implimented
+	board.placePiece(wKing, "d2");
+	board.placePiece(bKing, "d6");
+	board.placePiece(wPawn, "a1");
+
+	assertDoesNotThrow(()-> board.move("d2", "e2")); //w
+	assertDoesNotThrow(()-> board.move("d6", "c6"));
+	assertDoesNotThrow(()-> board.move("e2", "f3")); //w
+	assertDoesNotThrow(()-> board.move("c6", "b5"));
+	assertDoesNotThrow(()-> board.move("f3", "f4")); //w
+	assertDoesNotThrow(()-> board.move("b5", "b4"));
+	assertDoesNotThrow(()-> board.move("f4", "f5")); //w
+	assertDoesNotThrow(()-> board.move("b4", "b3"));
+	assertDoesNotThrow(()-> board.move("f5", "e6")); //w
+	assertDoesNotThrow(()-> board.move("b3", "c2"));
+	assertDoesNotThrow(()-> board.move("e6", "d6")); //both kings are rotating counter clockwise to the other kings starting spot
+	//the white king just got there
+	assertFalse(board.game_is_won(wKing, "d6")); //should not be won because the king went the wrong way
+	assertDoesNotThrow(()-> board.move("c2", "d2"));
+	assertFalse(board.game_is_wone(bKing, "d2"));
+    }
+
+    @Test
+    void checkmate() throws IllegalMoveException {
+	ChessPiece wKing = new King(board, ChessPiece.Color.WHITE);
+	ChessPiece wRook = new Rook(board, ChessPiece.Color.WHITE);
+	ChessPiece bKing = new King(board, ChessPiece.Color.BLACK);
+	board.placePiece(wKing, "d2");
+	board.placePiece(wRook, "g4");
+	board.placePiece(bKing, "b4");
+	
+	assertFalse(board.game_is_won(wKing, wKing.getPosition())); //position is not mate, return false
+
+	assertDoesNotThrow(()-> board.move("g4", "b1"));
+	
+	assertTrue(board.game_is_won(wRook, wRook.getPosition())); //this position is mate, so this should return true
+    }
+
+    @Test 
+    void stalemate() throws IllegalMoveException {
+	ChessPiece bKing = new King(board, ChessPiece.Color.BLACK);
+	ChessPiece wKing = new King(board, ChessPiece.Color.WHITE);
+	ChessPiece wBish = new Bishop(board, ChessPiece.Color.WHITE);
+	ChessPiece wPawn = new Pawn(board, ChessPiece.Color.WHITE); //dummy pawn to avoid insufficient mating material 
+	board.placePiece(wKing, "f5");
+	board.placePiece(bKing, "f7");
+	board.placePiece(wBish, "a4");
+	board.placePiece(wPawn, "a1");
+
+	assertDoesNotThrow(()-> board.move("f7", "g7"));
+	assertFalse(board.game_is_draw(bKing));
+	
+	assertDoesNotThrow(()-> board.move("a4", "e6"));
+	assertTrue(board.game_is_draw(wBish)); // in this position, the black king cannot move, and he has no other pieces to move, so the game is stalemate
+    }
+
 }

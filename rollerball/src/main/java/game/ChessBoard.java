@@ -80,7 +80,7 @@ public class ChessBoard {
 	return kpos; 
     }
 
-    private String getKingLocation(ChessPiece.Color color)
+    public String getKingLocation(ChessPiece.Color color)
     {
 	for (int k = 0; k < board.length; k++)
 	{
@@ -97,7 +97,7 @@ public class ChessBoard {
 
     //returns the validity of the move if the moving king is in check, or the move puts them in check
     //this is assuming that piece is moving to position
-    private boolean king_in_check(ChessPiece piece, String position)
+    public boolean king_in_check(ChessPiece piece, String position)
     {
 	try
 	{
@@ -108,11 +108,10 @@ public class ChessBoard {
             if(!placePiece(piece, position)) //need to update the board first
 	    {
 		//System.out.println("huh?");
-		board[fromIndexes[0]][fromIndexes[1]] = capPiece; //put the possibly captured piece back 
-	        return false; //move wasnt legal for other reasons...
+		return false; //move wasnt legal for other reasons...
  	    }
-	    int[] fromIndexes = positionToIndexes(oldPos);
-            board[fromIndexes[0]][fromIndexes[1]] = null;
+	    int[] toIndexes = positionToIndexes(position);
+            board[toIndexes[0]][toIndexes[1]] = null;
 	    
 	    boolean ret = false;
             if (king_in_check(piece.getColor(), kpos))
@@ -122,7 +121,7 @@ public class ChessBoard {
 	    }
 	    placePiece(piece, oldPos); //undo the update to not change the state of the board
 	    fromIndexes = positionToIndexes(position);
-            board[fromIndexes[0]][fromIndexes[1]] = capPiece; //put the possibly captured piece back 
+            board[toIndexes[0]][toIndexes[1]] = capPiece; //put the possibly captured piece back 
 
 	    return ret;
 	}
@@ -161,7 +160,7 @@ public class ChessBoard {
 	if (mover instanceof Pawn)
 	{
        	    int[] indexes = positionToIndexes(to);
-	    if (moveRequest.to.equals("e6") || moveRequest.to.equals("e7"))
+	    if (to.equals("e6") || to.equals("e7"))
 	    {
 		 if (mover.getColor() == ChessPiece.Color.WHITE)
 		 {
@@ -180,7 +179,7 @@ public class ChessBoard {
 		    }
                 }
 	    }
-	    else if (moveRequest.to.equals("c1") || moveRequest.to.equals("c2"))
+	    else if (to.equals("c1") || to.equals("c2"))
 	    {
 	 	if (mover.getColor() == ChessPiece.Color.BLACK)
 		{
@@ -202,7 +201,7 @@ public class ChessBoard {
 	}
     }
 
-    public ChessPiece move(String from, String to) throws IllegalMoveException 
+    public ChessPiece move(String from, String to) throws IllegalMoveException //supporting this for testing reasons
     {
 	return move(from, to, "");
     }
@@ -223,7 +222,7 @@ public class ChessBoard {
             if(placePiece(fromPiece, to)){
                 int[] fromIndexes = positionToIndexes(from);
                 board[fromIndexes[0]][fromIndexes[1]] = null; //move has been made
-		handlePromotion(mover, to, promteTo);
+		handlePromotion(fromPiece, to, promteTo);
 		return fromPiece;
             }
             else {

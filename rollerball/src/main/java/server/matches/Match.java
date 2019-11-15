@@ -3,12 +3,15 @@ package server.matches;
 import com.google.gson.*;
 import game.ChessBoard;
 import game.ChessPiece;
+import game.King;
+import game.IllegalMoveException;
 import server.utils.DatabaseHelper;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Match {
     public static class MatchSerializer implements JsonSerializer<Match> {
@@ -23,7 +26,7 @@ public class Match {
             base.add("blackId", new JsonPrimitive(src.blackId));
             base.add("board", new JsonPrimitive(src.board.toString()));
 	    base.add("whiteKCValid", new JsonPrimitive(src.whiteKCValid));
-	    base.add("blackKCValid", new JSonPrimitive(src.whiteKCValid));
+	    base.add("blackKCValid", new JsonPrimitive(src.whiteKCValid));
             return base;
         }
     }
@@ -105,7 +108,7 @@ public class Match {
 	}
 	catch (IllegalMoveException e) {
 	    response.success = false;
-	    response.errorMesage = e.getMessage();
+	    response.errorMessage = e.getMessage();
 	}
 	return response;
     }
@@ -159,7 +162,7 @@ public class Match {
 	if(game_is_stalemate(piece)) //opposing team cant move
 	{
 	    ChessPiece.Color losing_color = piece.getColor() == ChessPiece.Color.WHITE ? ChessPiece.Color.BLACK : ChessPiece.Color.WHITE;
-	    if (king_in_check(losing_color, getKingLocation(losing_color)))
+	    if (king_in_check(losing_color, board.getKingLocation(losing_color)))
 	    {
 		return true; //no legal moves, and king is in check, therefore checkmate
 	    }
@@ -214,7 +217,7 @@ public class Match {
 		    ArrayList<String> moves = mover.legalMoves();
 		    for (String move : moves)
 		    {
-			if (!king_in_check(mover, move))
+			if (!board.king_in_check(mover, move))
 			{
 			    return false; //the losing team has at least this move
 			}

@@ -119,26 +119,26 @@ class MicroServer {
 	Gson gson = new GsonBuilder().create();
 	MoveRequest moveRequest = gson.fromJson(request.body(), MoveRequest.class);
 	Match match = MatchManager.getMatchById(moveRequest.matchId, moveRequest.getAccountId());
-	MoveResponse response = null;
+	MoveResponse r = null;
 	if (moveRequest.forfeit)
 	{
-	    response = new MoveResponse();
-	    response.success = true;
-	    response.errorMessage = null;
-	    response.gameOver = "RESIGN";
+	    r = new MoveResponse();
+	    r.success = true;
+	    r.errorMessage = null;
+	    r.gameOver = "RESIGN";
 	}
 	else if (match == null)
 	{
-	    response = new MoveResponse();
-	    response.success = false;
-	    response.errorMessage = "Failed to find your match";
-	    response.gameOver = null;
+	    r = new MoveResponse();
+	    r.success = false;
+	    r.errorMessage = "Failed to find your match";
+	    r.gameOver = null;
 	}
 	else
 	{
-	    response = match.makeMove(moveRequest);
+	    r = match.makeMove(moveRequest);
 	}
-	if (response.gameOver == null || response.gameOver.equals(""))
+	if (r.gameOver == null || r.gameOver.equals(""))
 	{
 	    //there was a winner, we need to update history and the sql server accordingly
 	    //possibly add a notification to both users.

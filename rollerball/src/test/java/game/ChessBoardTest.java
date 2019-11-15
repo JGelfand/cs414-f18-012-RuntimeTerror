@@ -158,7 +158,7 @@ class ChessBoardTest {
     }
 
     @Test
-    void movePromotion() throws IllegalMoveException {
+    void movePromotion() throws IllegalMoveException, IllegalPositionException {
 	board.placePiece(new Pawn(board, ChessPiece.Color.WHITE), "d6");
 	board.placePiece(new Pawn(board, ChessPiece.Color.WHITE), "d7");
 	board.placePiece(new Pawn(board, ChessPiece.Color.BLACK), "d1");

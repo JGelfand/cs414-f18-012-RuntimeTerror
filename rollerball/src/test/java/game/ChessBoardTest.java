@@ -164,16 +164,16 @@ class ChessBoardTest {
 	board.placePiece(new Pawn(board, ChessPiece.Color.BLACK), "d1");
 	board.placePiece(new Pawn(board, ChessPiece.Color.BLACK), "d2");
 
-	assertDoesNotThrow(()-> board.move("d6", "e6", "R");
+	assertDoesNotThrow(()-> board.move("d6", "e6", "R"));
 	assertTrue(board.getPiece("e6") instanceof Rook && board.getPiece("e6").getColor() == ChessPiece.Color.WHITE);
 	
-	assertDoesNotThrow(() -> board.move("d1", "c1", "R");
+	assertDoesNotThrow(() -> board.move("d1", "c1", "R"));
 	assertTrue(board.getPiece("c1") instanceof Rook && board.getPiece("c1").getColor() == ChessPiece.Color.BLACK);
 
-	assertDoesNotThrow(() -> board.move("d7", "e7", "B");
+	assertDoesNotThrow(() -> board.move("d7", "e7", "B"));
 	assertTrue(board.getPiece("e7") instanceof Bishop && board.getPiece("e7").getColor() == ChessPiece.Color.WHITE);
 	
-	assertDoesNotThrow(() -> board.move("d2", "c2", "B");
+	assertDoesNotThrow(() -> board.move("d2", "c2", "B"));
 	assertTrue(board.getPiece("c2") instanceof Bishop && board.getPiece("c2").getColor() == ChessPiece.Color.BLACK);
     }
 

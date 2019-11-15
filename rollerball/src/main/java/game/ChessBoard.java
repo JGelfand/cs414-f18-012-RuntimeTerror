@@ -110,7 +110,7 @@ public class ChessBoard {
 		//System.out.println("huh?");
 		return false; //move wasnt legal for other reasons...
  	    }
-	    int[] toIndexes = positionToIndexes(position);
+	    int[] toIndexes = positionToIndexes(oldPos);
             board[toIndexes[0]][toIndexes[1]] = null;
 	    
 	    boolean ret = false;
@@ -120,7 +120,7 @@ public class ChessBoard {
 	        ret = true;
 	    }
 	    placePiece(piece, oldPos); //undo the update to not change the state of the board
-	    fromIndexes = positionToIndexes(position);
+	    toIndexes = positionToIndexes(position);
             board[toIndexes[0]][toIndexes[1]] = capPiece; //put the possibly captured piece back 
 
 	    return ret;
@@ -222,7 +222,7 @@ public class ChessBoard {
             if(placePiece(fromPiece, to)){
                 int[] fromIndexes = positionToIndexes(from);
                 board[fromIndexes[0]][fromIndexes[1]] = null; //move has been made
-		handlePromotion(fromPiece, to, promteTo);
+		handlePromotion(fromPiece, to, promoteTo);
 		return fromPiece;
             }
             else {

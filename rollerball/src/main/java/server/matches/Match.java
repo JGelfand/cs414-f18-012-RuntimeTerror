@@ -162,7 +162,7 @@ public class Match {
 	if(game_is_stalemate(piece)) //opposing team cant move
 	{
 	    ChessPiece.Color losing_color = piece.getColor() == ChessPiece.Color.WHITE ? ChessPiece.Color.BLACK : ChessPiece.Color.WHITE;
-	    if (king_in_check(losing_color, board.getKingLocation(losing_color)))
+	    if (board.king_in_check(losing_color, board.getKingLocation(losing_color)))
 	    {
 		return true; //no legal moves, and king is in check, therefore checkmate
 	    }

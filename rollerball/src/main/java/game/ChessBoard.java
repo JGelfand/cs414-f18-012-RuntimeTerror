@@ -161,7 +161,7 @@ public class ChessBoard {
 	if (mover instanceof Pawn)
 	{
        	    int[] indexes = positionToIndexes(to);
-	    if (moveRequest.to.equals("e6") || moveRequest.to.equals("e7"));
+	    if (moveRequest.to.equals("e6") || moveRequest.to.equals("e7"))
 	    {
 		 if (mover.getColor() == ChessPiece.Color.WHITE)
 		 {

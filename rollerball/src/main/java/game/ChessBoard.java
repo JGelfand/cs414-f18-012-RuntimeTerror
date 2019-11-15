@@ -110,7 +110,7 @@ public class ChessBoard {
 		//System.out.println("huh?");
 		return false; //move wasnt legal for other reasons...
  	    }
-	    int[] toIndexes = positionToIndexes(oldPos);
+	    int[] toIndexes = positionToIndexes(oldPos); //empty the space (cuz the piece is moving)
             board[toIndexes[0]][toIndexes[1]] = null;
 	    
 	    boolean ret = false;
@@ -155,7 +155,7 @@ public class ChessBoard {
 	return false;
     }
 
-    public void handlePromotion(ChessPiece mover, String to, String promoteTo)
+    public void handlePromotion(ChessPiece mover, String to, String promoteTo) throws IllegalPositionException
     {
 	if (mover instanceof Pawn)
 	{
@@ -231,7 +231,7 @@ public class ChessBoard {
         }catch (IllegalPositionException e){
             throw new IllegalMoveException(e);
         }
-	return null;
+	//return null;
     }
 
     public ChessPiece[][] getBoard()

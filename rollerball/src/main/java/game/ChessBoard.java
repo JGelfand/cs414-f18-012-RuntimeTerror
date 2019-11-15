@@ -12,8 +12,6 @@ public class ChessBoard {
             board[i] = new ChessPiece[7];
         }
 
-	whiteKCValid = false;
-	blackKCValid = false;
     }
 
     public void initialize(){
@@ -110,6 +108,7 @@ public class ChessBoard {
             if(!placePiece(piece, position)) //need to update the board first
 	    {
 		//System.out.println("huh?");
+		board[fromIndexes[0]][fromIndexes[1]] = capPiece; //put the possibly captured piece back 
 	        return false; //move wasnt legal for other reasons...
  	    }
 	    int[] fromIndexes = positionToIndexes(oldPos);
@@ -157,8 +156,58 @@ public class ChessBoard {
 	return false;
     }
 
+    public void handlePromotion(ChessPiece mover, String to, String promoteTo)
+    {
+	if (mover instanceof Pawn)
+	{
+       	    int[] indexes = positionToIndexes(to);
+	    if (moveRequest.to.equals("e6") || moveRequest.to.equals("e7"));
+	    {
+		 if (mover.getColor() == ChessPiece.Color.WHITE)
+		 {
+		    //promotion occurs
+		    if (promoteTo.equals("R") || promoteTo.equals("r")) //promote to rook
+		    {
+			ChessPiece piece = new Rook(this, ChessPiece.Color.WHITE);
+			piece.setPosition(to);
+ 	              	board[indexes[0]][indexes[1]] = piece;
+		    }
+		    else
+		    {
+			ChessPiece piece = new Bishop(this, ChessPiece.Color.WHITE);
+			piece.setPosition(to);
+			board[indexes[0]][indexes[1]] = piece;
+		    }
+                }
+	    }
+	    else if (moveRequest.to.equals("c1") || moveRequest.to.equals("c2"))
+	    {
+	 	if (mover.getColor() == ChessPiece.Color.BLACK)
+		{
+		    //promotion occurs
+		    if (promoteTo.equals("R") || promoteTo.equals("r"))
+		    {
+			ChessPiece piece = new Rook(this, ChessPiece.Color.BLACK);
+			piece.setPosition(to);
+			board[indexes[0]][indexes[1]] = piece;
+		    }
+		    else
+		    {
+			ChessPiece piece = new Bishop(this, ChessPiece.Color.BLACK);
+			piece.setPosition(to);
+			board[indexes[0]][indexes[1]] = piece;
+		    }
+		}
+	    }
+	}
+    }
 
-    public void move(String from, String to) throws IllegalMoveException{
+    public ChessPiece move(String from, String to)
+    {
+	return move(from, to, "");
+    }
+
+    public ChessPiece move(String from, String to, String promoteTo) throws IllegalMoveException{
         try {
             ChessPiece fromPiece = getPiece(from);
             if(fromPiece == null){
@@ -174,7 +223,8 @@ public class ChessBoard {
             if(placePiece(fromPiece, to)){
                 int[] fromIndexes = positionToIndexes(from);
                 board[fromIndexes[0]][fromIndexes[1]] = null; //move has been made
-		updateFlag(fromPiece, to);
+		handlePromotion(mover, to, promteTo);
+		return fromPiece;
             }
             else {
                 throw new IllegalMoveException("Invalid move.");
@@ -182,6 +232,7 @@ public class ChessBoard {
         }catch (IllegalPositionException e){
             throw new IllegalMoveException(e);
         }
+	return null;
     }
 
     public ChessPiece[][] getBoard()

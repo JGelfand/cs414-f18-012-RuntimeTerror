@@ -78,6 +78,11 @@ public class Match {
         return blackId;
     }
 
+    public boolean makeMove(MoveRequest moveRequest)
+    {
+	
+    }
+
  
     private void updateFlag(ChessPiece movingPiece, String pos)
     {

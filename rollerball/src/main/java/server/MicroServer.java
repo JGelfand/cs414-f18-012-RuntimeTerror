@@ -115,6 +115,12 @@ class MicroServer {
         return gson.toJson(AccountManager.loginUser(loginRequest));
     }
 
+    private String handleMoveRequest(Request request, Response response){
+	response.type("application/json");
+	Gson gson = new GsonBuilder().create();
+	MoveRequest moveRequest = gson.fromJson(request.body(), MoveRequest.class);
+    }
+
     private String HTTPrequestToJson(Request request) {
         return "{\n"
                 + "\"attributes\":\"" + request.attributes() + "\",\n"

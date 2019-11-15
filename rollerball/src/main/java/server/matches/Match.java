@@ -34,8 +34,8 @@ public class Match {
     private int id;
     private int whiteId, blackId;
 
-    public boolean whiteKCValid; //flag for if white can preform the king's circle
-    public boolean blackKCValid; //flag for if black "      "     "    "      "
+    private boolean whiteKCValid; //flag for if white can preform the king's circle
+    private boolean blackKCValid; //flag for if black "      "     "    "      "
 
     public static Match createNewMatch(int id, int whiteId, int blackId){
         Match match = new Match();
@@ -78,9 +78,36 @@ public class Match {
         return blackId;
     }
 
-    public boolean makeMove(MoveRequest moveRequest)
+    public MoveResponse makeMove(MoveRequest moveRequest)
     {
-	
+	MoveResponse response = new MoveResponse();
+	try {
+	    ChessPiece mover = this.board.move(moveRequest.from, moveRequest.to, moveRequest.promoteTo); //make the move
+	    response.success = true; //didnt error, so made the move
+	    response.errorMessage = null;
+	    updateFlag(mover, moveRequest.to); //update the flag
+
+	    if (game_is_over(mover, moveRequest.to))
+	    {
+		if (game_is_won(mover, moveRequest.to))
+		{
+		    response.gameOver = mover.getColor() == ChessPiece.Color.WHITE ? "WHITE" : "BLACK"; //winner moved 
+		}
+		else //game_is_drawn()
+		{
+		    response.gameOver = "DRAW";
+		}
+	    }
+	    else
+	    {
+		response.gameOver = null;
+	    }
+	}
+	catch (IllegalMoveException e) {
+	    response.success = false;
+	    response.errorMesage = e.getMessage();
+	}
+	return response;
     }
 
  

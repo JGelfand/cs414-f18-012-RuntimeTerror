@@ -202,7 +202,7 @@ public class ChessBoard {
 	}
     }
 
-    public ChessPiece move(String from, String to)
+    public ChessPiece move(String from, String to) throws IllegalMoveException 
     {
 	return move(from, to, "");
     }

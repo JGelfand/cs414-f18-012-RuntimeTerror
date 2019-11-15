@@ -6,9 +6,6 @@ import java.util.Scanner;
 public class ChessBoard {
     private ChessPiece[][] board;
 
-    private boolean whiteKCValid; //flag for if white can preform the king's circle
-    private boolean blackKCValid; //flag for if black "      "     "    "      "
-
     public ChessBoard(){
         board = new ChessPiece[7][];
         for(int i=0;i<7;i++){
@@ -137,7 +134,7 @@ public class ChessBoard {
 	}
     }
 
-    private boolean king_in_check(ChessPiece.Color color, String kpos)
+    public boolean king_in_check(ChessPiece.Color color, String kpos)
     {
 	for (int k = 0; k < board.length; k++)
 	{
@@ -160,121 +157,6 @@ public class ChessBoard {
 	return false;
     }
 
-    //returns true if the game is over (win or draw), false otherwise
-    //piece is the moving piece (so the winning piece), pos is where it moved to, notable useful in the King's Circle
-    public boolean game_is_over(ChessPiece piece, String pos)
-    {
-	if (game_is_won(piece, pos))
-	{
-	    return true;
-	}
-	else if (game_is_draw(piece))
-	{
-	    return true;
-	}
-	return false; //the game can never end Chell...
-    }
-
-    private boolean game_is_mate(ChessPiece piece)
-    {
-	if(game_is_stalemate(piece)) //opposing team cant move
-	{
-	    ChessPiece.Color losing_color = piece.getColor() == ChessPiece.Color.WHITE ? ChessPiece.Color.BLACK : ChessPiece.Color.WHITE;
-	    if (king_in_check(losing_color, getKingLocation(losing_color)))
-	    {
-		return true; //no legal moves, and king is in check, therefore checkmate
-	    }
-	}
-	return false;
-    }
-
-    private boolean game_is_circle(ChessPiece piece, String pos)
-    {
-	if (piece instanceof King)
-	{
-	    if (piece.getColor() == ChessPiece.Color.WHITE)
-	    {
-		if (pos.equals("d6") && whiteKCValid)
-		{
-		    return true;
-		}
-	    }
-	    else
-	    {
-		if (pos.equals("d2") && blackKCValid)
-		{
-		    return true;
-		}
-	    }
-	}
-	return false;
-    }
-
-    //returns true if the player opposite piece is in checkmate, false otherwise
-    public boolean game_is_won(ChessPiece piece, String pos)
-    {
-	return game_is_mate(piece) || game_is_circle(piece, pos);
-    }
-
-    public boolean game_is_draw(ChessPiece piece)
-    {
-	return game_is_stalemate(piece); //for now, lets only support stalemate
-	//if we want we could check for three fold repitition, but that sounds difficult
-    }
-
-    private boolean game_is_stalemate(ChessPiece piece)
-    {
-	for (int k = 0; k < board.length; k++)
-	{
-	    for (int j = 0; j < board[k].length; j++)
-	    {
-		ChessPiece mover = board[k][j];
-		if (mover != null && mover.getColor() != piece.getColor()) //mover is on the possibly losing team
-		{
-		    ArrayList<String> moves = mover.legalMoves();
-		    for (String move : moves)
-		    {
-			if (!king_in_check(mover, move))
-			{
-			    return false; //the losing team has at least this move
-			}
-		    }
-		}
-	    }
-	}
-	return true; //no moves were found for the next turn, therefore it is stalemate. 
-    }
-
-    private void updateFlag(ChessPiece movingPiece, String pos)
-    {
-	if (movingPiece instanceof King)
-	{
-	    if (movingPiece.getColor() == ChessPiece.Color.WHITE)
-	    {
-		if (pos.equals("a3") || pos.equals("b3"))
-		{
-		    whiteKCValid = true;
-		}
-		else if (pos.equals("f3") || pos.equals("g3"))
-		{
-		    whiteKCValid = false;
-		}
-	    }
-	    else
-	    {
-		if (pos.equals("f5") || pos.equals("g5"))
-		{
-		    blackKCValid = true;
-		}
-		else if (pos.equals("a5") || pos.equals("b5"))
-		{
-		    blackKCValid = false;
-		}
-	    }
-	}
-	return;
-    }
-
 
     public void move(String from, String to) throws IllegalMoveException{
         try {
@@ -293,12 +175,6 @@ public class ChessBoard {
                 int[] fromIndexes = positionToIndexes(from);
                 board[fromIndexes[0]][fromIndexes[1]] = null; //move has been made
 		updateFlag(fromPiece, to);
-		//if(game_is_over(fromPiece, to)) //commented out because it does nothing
-		{
-		    //how do we want to handle this?
-		    //personally I want to change the return type and handle it above
-		    //perhaps to a boolean true if the game is over, false otherwise
-		}
             }
             else {
                 throw new IllegalMoveException("Invalid move.");
@@ -306,6 +182,11 @@ public class ChessBoard {
         }catch (IllegalPositionException e){
             throw new IllegalMoveException(e);
         }
+    }
+
+    public ChessPiece[][] getBoard()
+    {
+	return board;
     }
 
     public String toString(){

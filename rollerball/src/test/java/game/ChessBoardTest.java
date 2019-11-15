@@ -157,6 +157,7 @@ class ChessBoardTest {
 	assertThrows(IllegalMoveException.class, ()->board.move("b1", "a2")); //should not allow this, as it would put white in check
     }
 
+/*
     @Test
     void KingCircleGood() throws IllegalMoveException
     {
@@ -244,5 +245,5 @@ class ChessBoardTest {
 	assertDoesNotThrow(()-> board.move("a4", "e6"));
 	assertTrue(board.game_is_draw(wBish)); // in this position, the black king cannot move, and he has no other pieces to move, so the game is stalemate
     }
-
+    */
 }

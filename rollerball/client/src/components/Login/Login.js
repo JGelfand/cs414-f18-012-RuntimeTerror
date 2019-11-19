@@ -52,7 +52,10 @@ export default class Login extends Component {
 
     createForm(statevar){
         return(
-            <Form>
+            <Form onSubmit={(event)=>{
+                event.preventDefault();
+                this.sendLoginRequest();
+            }}>
                 {this.createInputField(statevar)}
             </Form>
         );

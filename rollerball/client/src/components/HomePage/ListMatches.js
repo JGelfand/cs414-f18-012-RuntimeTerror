@@ -39,11 +39,19 @@ export default class ListMatches extends Component {
                 <tr>
                 <th scope="row">{currMatch.id}</th>
                 <td> {currMatch['opponentUsername']}</td>
-                <td><Button>Play!</Button></td>
+                <td><Button onClick={() => this.displayMatch(currMatch.id)}>Play!</Button></td>
                 </tr>
             )}
             </tbody>
         </Table>
         );
     }
+
+    displayMatch(matchID){
+
+        this.props.setAppState("matchID", matchID);
+        this.props.setAppPage("matchPage");
+
+    }
+
 }

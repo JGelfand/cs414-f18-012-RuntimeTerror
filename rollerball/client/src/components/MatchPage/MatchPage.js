@@ -20,9 +20,11 @@ export default class MatchPage extends Component{
     render(){
         return(
         <Container>
-        <Row>
-            {JSON.stringify(this.state.matchInfo)}
-        </Row>,
+        <div>
+            {this.state.matchInfo? this.state.matchInfo["board"].split("\n").map((line, i) => {
+                return <Row font-family={"monospace"}>{line}</Row>; //from here:https://www.freecodecamp.org/forum/t/newline-in-react-string-solved/68484/4
+            }):null}
+        </div>
         <Row>
             <Col>
             <Button onClick={()=>this.props.setAppPage("homepage")}>Go to home</Button>
@@ -30,7 +32,7 @@ export default class MatchPage extends Component{
             <Col>
                 <Button onClick={() => this.props.setAppPage("login")}>Logout</Button>
             </Col>
-        </Row>,
+        </Row>
         <Row>
             {this.renderMoveForm()}
         </Row>
@@ -64,7 +66,7 @@ export default class MatchPage extends Component{
 
     sendMove(moveFormEvent){
         moveFormEvent.preventDefault();
-        let move = {token: this.props.token, matchId: this.props.matchId};
+        let move = {token: this.props.token, matchId: this.props.matchID};
         move.to = event.target.elements.to.value;
         move.from = event.target.elements.from.value;
         sendServerRequestWithBody("move", move, this.props.serverPort).then((response)=>

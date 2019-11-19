@@ -16,7 +16,7 @@ import java.util.List;
 public class NotificationManager {
     public static List<Notification> getRecentOrUnreadNotifications(int accountId){
         List<Notification> notifications= new ArrayList<>();
-        String query = "SELECT * FROM notifications WHERE recipient = ? AND (unread IS TRUE OR TIMESTAMPDIFF(DAY, time, NOW()) < 30) ;";
+        String query = "SELECT * FROM notifications WHERE recipient = ? AND (unread IS TRUE OR TIMESTAMPDIFF(DAY, time, NOW()) < 1) ORDER BY time DESC;";
         try(DatabaseHelper helper = DatabaseHelper.create()){
             boolean success = helper.executePreparedStatement(query,(ResultSet results) -> {
                 while (results.next()){

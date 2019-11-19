@@ -94,7 +94,10 @@ export default class Register extends Component {
 
     createForm(statevar){
         return(
-            <Form>
+            <Form onSubmit={(event)=>{
+                event.preventDefault();
+                this.sendRegisterRequest();
+            }}>
                 {this.createInputField(statevar)}
             </Form>
         );

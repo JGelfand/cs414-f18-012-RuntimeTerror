@@ -27,7 +27,8 @@ export default class App extends Component {
         email: '',
         serverPort: getOriginalServerPort(),
         authToken: {},
-        matchInfo: null
+        matchID: null
+
     };
 
     this.setAppPage = this.setAppPage.bind(this);
@@ -67,7 +68,8 @@ export default class App extends Component {
             return (
                 <MatchPage token={this.state.authToken}
                             setAppPage={this.setAppPage}
-                            matchInfo={this.state.matchInfo}/>
+                            matchID={this.state.matchID}
+                            />
             )
     }
   }

@@ -5,13 +5,23 @@ import {sendServerRequestWithBody} from "../../api/restfulAPI";
 export default class MatchPage extends Component{
     constructor(props){
         super(props);
+
+        this.getBoard = this.getBoard.bind(this);
+
+        this.getBoard();
+
+        this.state={
+            matchInfo: null
+
+        }
+
     }
 
     render(){
         return(
         <Container>
         <Row>
-            {JSON.stringify(this.props.matchInfo)}
+            {JSON.stringify(this.state.matchInfo)}
         </Row>,
         <Row>
             <Col>
@@ -67,5 +77,22 @@ export default class MatchPage extends Component{
                 this.setState({errorMessage:response.body.message})
             }
         })
+    }
+
+    getBoard(){
+
+        const body ={
+            matchID: this.props.matchID,
+            token: this.props.token
+        };
+
+        sendServerRequestWithBody("matches" , body, this.props.serverPort).then(response =>{
+                if(response.body === null)
+                    console.log("No match found");
+                else
+                    this.setState({matchInfo: response.body});
+
+        })
+
     }
 }

@@ -49,6 +49,19 @@ class MicroServer {
         Spark.post("/api/move", this::handleMoveRequest);
         Spark.post("/api/inviteAnswer", this::handleInviteResponses);
         Spark.post("/api/ViewCurrentGames", this::handleViewCurrentGamesResponse);
+        Spark.post("/api/matches" , this::handleMatchResponse);
+    }
+
+    private Object handleMatchResponse(Request request, Response response){
+        response.type("application/json");
+        Gson gson = new GsonBuilder().registerTypeAdapter(Match.class, new Match.MatchSerializer()).create();
+
+       MatchRequest matchRequest = gson.fromJson(request.body(), MatchRequest.class);
+        if(!matchRequest.verify()){
+            response.status(401);
+            return "{\"message\": \"Authentication Error\"}";
+        }
+        return gson.toJson(MatchManager.getMatchById(matchRequest.matchID, matchRequest.getAccountId()));
     }
 
     private Object handleMoveRequest(Request request, Response response) {

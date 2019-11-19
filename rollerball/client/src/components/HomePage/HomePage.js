@@ -100,6 +100,8 @@ export default class HomePage extends Component {
     renderMatches(){
         if(this.state.showingMatches)
             return <ListMatches ListMatches={this.state.allMatches}
+                                setAppState={this.props.setAppState}
+                                setAppPage={this.props.setAppPage}
             />;
         return null;
     }

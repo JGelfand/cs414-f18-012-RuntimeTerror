@@ -40,7 +40,6 @@ public class WebApplication {
         return serverPort;
     }
 
-
     private static boolean validTcpIpPortNumber(int portNumber) {
         return (portNumber >= 0 & portNumber <= 65535);
     }

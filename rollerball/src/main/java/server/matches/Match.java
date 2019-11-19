@@ -29,6 +29,7 @@ public class Match {
     private boolean whiteForfeit, blackForfeit;
     private int id;
     private int whiteId, blackId;
+
     public static Match createNewMatch(int id, int whiteId, int blackId){
         Match match = new Match();
         match.board = new ChessBoard();
@@ -50,6 +51,7 @@ public class Match {
         this.whiteForfeit = results.getBoolean("white_forfeit");
         this.blackForfeit = results.getBoolean("black_forfeit");
     }
+
     public ChessBoard getBoard(){
         return board;
     }

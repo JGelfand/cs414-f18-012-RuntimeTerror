@@ -1,4 +1,4 @@
-package server.matches;
+package server.api;
 
 import server.api.AuthenticatedRequest;
 

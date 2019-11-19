@@ -3,6 +3,8 @@ package server.matches;
 import server.accounts.Account;
 import server.accounts.AccountManager;
 import server.api.InviteAnswer;
+import server.api.MoveRequest;
+import server.api.MoveResponse;
 import server.notifications.Notification;
 import server.utils.DatabaseHelper;
 
@@ -105,4 +107,7 @@ public class MatchManager {
         return games;
     }
 
+    public static MoveResponse makeMove(MoveRequest moveRequest) {
+
+    }
 }

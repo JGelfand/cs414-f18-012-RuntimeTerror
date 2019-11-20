@@ -1,8 +1,11 @@
 package server.matches;
 
+import game.IllegalMoveException;
 import server.accounts.Account;
 import server.accounts.AccountManager;
 import server.api.InviteAnswer;
+import server.api.MoveRequest;
+import server.api.MoveResponse;
 import server.notifications.Notification;
 import server.utils.DatabaseHelper;
 
@@ -105,4 +108,17 @@ public class MatchManager {
         return games;
     }
 
+    public static MoveResponse makeMove(MoveRequest moveRequest) {
+        MoveResponse response = new MoveResponse();
+        response.success = true;
+        Match target = getMatchById(moveRequest.matchId, moveRequest.getAccountId());
+        try (DatabaseHelper helper = DatabaseHelper.create()){
+            target.getBoard().move(moveRequest.from, moveRequest.to);
+            helper.executePreparedStatement("UPDATE games SET board = ? WHERE id = ?;", target.getBoard().serializeToBytes(), target.getId());
+        } catch (IllegalMoveException | SQLException | IOException e) {
+            response.success = false;
+            response.message = e.getMessage();
+        }
+        return response;
+    }
 }

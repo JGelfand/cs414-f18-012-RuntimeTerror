@@ -81,7 +81,7 @@ export default class ListNotifications extends Component {
         sendServerRequestWithBody("inviteAnswer", {token:this.props.token, accept:accept, inviteId:id}, this.props.serverPort).then(
             (response =>{
                 if(response.statusCode == 200 && response.body) {
-                   // this.props.setAppState("matchInfo", response.body);
+                   this.props.setAppState("matchID", response.body.id);
                     this.props.setAppPage("matchPage");
                 }
             })

@@ -153,4 +153,16 @@ public class AccountManager {
 		}
 	}
 
+	public static boolean deleteAccount(int accountId){
+		try(DatabaseHelper helper = DatabaseHelper.create()) {
+			helper.executeStatement(String.format("DELETE FROM games WHERE white_player = %d OR black_player = %d ;", accountId, accountId));
+			helper.executeStatement(String.format("DELETE FROM notifications WHERE sender = %d OR recipient = %d ;", accountId, accountId));
+			helper.executeStatement("DELETE FROM users WHERE id = "+accountId+" ;");
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
 }

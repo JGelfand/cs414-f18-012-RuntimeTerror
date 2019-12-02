@@ -26,9 +26,13 @@ export default class MatchPage extends Component{
                     </Row>; //from here:https://www.freecodecamp.org/forum/t/newline-in-react-string-solved/68484/4
             }):null}
         </div>
+            <Row>
+                {"A B C D E F G"}
+            </Row>
         <Row>
             <Col>
-            <Button onClick={()=>this.props.setAppPage("homepage")}>Go to home</Button>
+                <Button onClick={()=>this.props.setAppPage("homepage")}>Go to home</Button>
+                <Button onClick={this.getBoard}>Refresh Board</Button>
             </Col>
             <Col>
                 <Button onClick={() => this.props.setAppPage("login")}>Logout</Button>
@@ -47,19 +51,19 @@ export default class MatchPage extends Component{
     getRowLetter(index){
         switch (index) {
             case 1:
-                return "A";
+                return "7";
             case 3:
-                return "B";
+                return "6";
             case 5:
-                return "C";
+                return "5";
             case 7:
-                return "D";
+                return "4";
             case 9:
-                return "E";
+                return "3";
             case 11:
-                return "F";
+                return "2";
             case 13:
-                return "G";
+                return "1";
             default:
                 return "";
         }

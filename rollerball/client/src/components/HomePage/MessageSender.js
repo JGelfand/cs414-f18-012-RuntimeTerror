@@ -20,16 +20,20 @@ export default class MessageSender extends Component{
         body.token = this.props.token;
         delete body['sendButtonDisabled'];
         delete body['dropDownOpen'];
+        delete body['errorMessage'];
         this.setState({sendButtonDisabled: true});
         sendServerRequestWithBody("message", body, this.props.serverPort).then((response)=>{
             if(response.body.success){
                 this.setState(this.emptyState());
             }
+            else {
+                this.setState({sendButtonDisabled: false, errorMessage:response.body.errorMessage});
+            }
         })
     }
 
     render() {
-        return(
+        return([
             <Form>
                 <FormGroup row>
                 <Label sm={3}>Send</Label>
@@ -56,7 +60,9 @@ export default class MessageSender extends Component{
                        value={this.state.message}/>
                 </FormGroup>
                 <Button disabled={this.state.sendButtonDisabled} onClick={this.sendMessage}>Send</Button>
-            </Form>
+            </Form>,
+            <p>{this.state.errorMessage? this.state.errorMessage:""}</p>
+            ]
         );
     }
 
@@ -66,7 +72,8 @@ export default class MessageSender extends Component{
             "type": "message",
             "message": "",
             dropDownOpen: false,
-            sendButtonDisabled: false
+            sendButtonDisabled: false,
+            errorMessage: null
         }
     }
 

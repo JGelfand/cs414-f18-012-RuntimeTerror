@@ -67,4 +67,6 @@ public class Match {
     public int getBlackId(){
         return blackId;
     }
+
+    public boolean getTurn(){return turn;}
 }

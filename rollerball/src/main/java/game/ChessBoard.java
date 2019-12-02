@@ -214,12 +214,16 @@ public class ChessBoard {
 
 
 
-    public void move(String from, String to) throws IllegalMoveException{
+    public void move(String from, String to, boolean whiteTurn) throws IllegalMoveException{
         try {
             ChessPiece fromPiece = getPiece(from);
             if(fromPiece == null){
                 throw new IllegalMoveException("The first argument must be the position of a piece.");
             }
+            if(fromPiece.color == ChessPiece.Color.WHITE && !whiteTurn)
+                throw new IllegalMoveException("It is your opponents turn!");
+            if(fromPiece.color == ChessPiece.Color.BLACK && whiteTurn)
+                throw new IllegalMoveException("It is your opponents turn!");
             if(!fromPiece.legalMoves().contains(to)){
                 throw new IllegalMoveException("Second argument must be a valid move.");
             }
@@ -302,7 +306,7 @@ public class ChessBoard {
 		if(moves.length != 2)
 			continue;
 		try{
-			board.move(moves[0], moves[1]);
+			board.move(moves[0], moves[1], true);
 		}catch(IllegalMoveException e){
 			continue;
 		}

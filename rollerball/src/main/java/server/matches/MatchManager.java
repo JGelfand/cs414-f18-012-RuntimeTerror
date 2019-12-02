@@ -80,10 +80,11 @@ public class MatchManager {
                 match.getId(), match.getBoard().serializeToBytes(), match.getWhiteId(), match.getBlackId());
     }
 
-    public static List<Map<String, Object>> getMatchesByUserId(int userId){
+    public static List<Map<String, Object>> getMatchesByUserId(int userId, boolean finishedGames){
+        System.out.println(finishedGames);
         ArrayList<Map<String, Object>> games = new ArrayList<>();
         try(DatabaseHelper helper = DatabaseHelper.create()){
-                helper.executePreparedStatement("SELECT * FROM games WHERE white_player = ? OR black_player = ?;", (results ->{
+            helper.executePreparedStatement("SELECT * FROM games WHERE finished = ? AND (white_player = ? OR black_player = ?);", (results ->{
                 while(results.next()) {
                     int opponentId;
                    if(!results.getString("white_player").equals(Integer.toString(userId))){
@@ -97,14 +98,16 @@ public class MatchManager {
                    matchData.put("opponentUsername", username);
                    games.add(matchData);
                 }
+
                 return games;
-            }), userId, userId);
+            }), finishedGames, userId, userId);
            return games;
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return games;
     }
 

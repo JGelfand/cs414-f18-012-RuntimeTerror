@@ -22,7 +22,8 @@ export default class MatchPage extends Component{
         <Container>
         <div>
             {this.state.matchInfo? this.state.matchInfo["board"].split("\n").map((line, i) => {
-                return <Row font-family={"monospace"}>{line}</Row>; //from here:https://www.freecodecamp.org/forum/t/newline-in-react-string-solved/68484/4
+                return <Row font-family={"monospace"}>{this.getRowLetter(i)} {line}
+                    </Row>; //from here:https://www.freecodecamp.org/forum/t/newline-in-react-string-solved/68484/4
             }):null}
         </div>
         <Row>
@@ -40,6 +41,28 @@ export default class MatchPage extends Component{
             {this.state.errorMessage}
         </Row>
         </Container>);
+    }
+
+
+    getRowLetter(index){
+        switch (index) {
+            case 1:
+                return "A";
+            case 3:
+                return "B";
+            case 5:
+                return "C";
+            case 7:
+                return "D";
+            case 9:
+                return "E";
+            case 11:
+                return "F";
+            case 13:
+                return "G";
+            default:
+                return "";
+        }
     }
 
     renderMoveForm(){

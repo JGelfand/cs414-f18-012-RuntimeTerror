@@ -50,6 +50,19 @@ class MicroServer {
         Spark.post("/api/inviteAnswer", this::handleInviteResponses);
         Spark.post("/api/ViewCurrentGames", this::handleViewCurrentGamesResponse);
         Spark.post("/api/matches" , this::handleMatchResponse);
+        Spark.post("/api/deregister", this::handleDeregisterRequest);
+    }
+
+    private Object handleDeregisterRequest(Request request, Response response) {
+        response.type("application/json");
+        Gson gson = new GsonBuilder().create();
+
+        DeregisterRequest deregisterRequest = gson.fromJson(request.body(), DeregisterRequest.class);
+        if(!deregisterRequest.verify()){
+            response.status(401);
+            return "false";
+        }
+        return gson.toJson(AccountManager.deleteAccount(deregisterRequest.getAccountId()));
     }
 
     private Object handleMatchResponse(Request request, Response response){

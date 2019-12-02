@@ -22,7 +22,8 @@ export default class HomePage extends Component {
             allInvites: {},
             showingNotifications: false,
             showingMatches: false,
-            allMatches: {}
+            allMatches: {},
+            deregisterClicks: 0
         }
 
     }
@@ -35,7 +36,8 @@ export default class HomePage extends Component {
                     <h1>RollerBall HomePage</h1>
                     </Col>
                     <Col>
-                        <Button onClick={() => this.props.setAppPage('login')}>Logout</Button>
+                        <Button onClick={() => this.logout()}>Logout</Button>
+                        <Button onClick={() => this.deregisterStep()}>{this.getDeregisterMessage()}</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -106,4 +108,26 @@ export default class HomePage extends Component {
         return null;
     }
 
+    logout(){
+        this.props.setAppPage('login');
+    }
+
+    deregisterStep(){
+        if(this.state.deregisterClicks < 5){
+            this.setState({deregisterClicks: this.state.deregisterClicks+1});
+        }
+        else{
+            sendServerRequestWithBody("deregister", {token:this.props.token}, this.props.serverPort).then(
+                ()=>this.logout()
+            );
+        }
+    }
+
+    getDeregisterMessage(){
+        let message = "Deregister";
+        for(let i=this.state.deregisterClicks;i>0;i--){
+            message = "Really "+message+"?";
+        }
+        return message;
+    }
 }

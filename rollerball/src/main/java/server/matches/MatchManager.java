@@ -81,7 +81,6 @@ public class MatchManager {
     }
 
     public static List<Map<String, Object>> getMatchesByUserId(int userId, boolean finishedGames){
-        System.out.println(finishedGames);
         ArrayList<Map<String, Object>> games = new ArrayList<>();
         try(DatabaseHelper helper = DatabaseHelper.create()){
             helper.executePreparedStatement("SELECT * FROM games WHERE finished = ? AND (white_player = ? OR black_player = ?);", (results ->{

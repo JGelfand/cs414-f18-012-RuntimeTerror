@@ -5,4 +5,5 @@ import server.matches.Match;
 public class MoveResponse {
     public boolean success;
     public String message;
+    public String gameOver;
 }

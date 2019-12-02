@@ -16,7 +16,6 @@ export default class ListMatches extends Component {
 
 
     render() {
-
         return (
             <div>
                 {this.displayEachMatch()}

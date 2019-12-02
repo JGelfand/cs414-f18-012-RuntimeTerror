@@ -97,12 +97,12 @@ class MicroServer {
         response.type("application/json");
         response.header("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().create();
-        AuthenticatedRequest matchesRequest = gson.fromJson(request.body(), AuthenticatedRequest.class);
+        MatchesRequest matchesRequest = gson.fromJson(request.body(), MatchesRequest.class);
         if(!matchesRequest.verify()){
             response.status(401);
             return "{\"message\": \"Authentication Error\"}";
         }
-        return gson.toJson(MatchManager.getMatchesByUserId(matchesRequest.getAccountId()));
+        return gson.toJson(MatchManager.getMatchesByUserId(matchesRequest.userID, matchesRequest.finishedGames));
     }
 
     private String handleMessageRequest(Request request, Response response) {

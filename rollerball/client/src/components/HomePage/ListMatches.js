@@ -38,7 +38,7 @@ export default class ListMatches extends Component {
                 <tr>
                 <th scope="row">{currMatch.id}</th>
                 <td> {currMatch['opponentUsername']}</td>
-                <td><Button onClick={() => this.displayMatch(currMatch.id)}>Play!</Button></td>
+                    <td>{this.buttonType(this.props.gameType, currMatch.id)}</td>
                 </tr>
             )}
             </tbody>
@@ -51,6 +51,13 @@ export default class ListMatches extends Component {
         this.props.setAppState("matchID", matchID);
         this.props.setAppPage("matchPage");
 
+    }
+
+    buttonType(type, matchID){
+        if(type === "CompletedGames")
+            return (<Button onClick={() => this.displayMatch(matchID)}>View Game</Button>);
+        if(type === "CurrentGames")
+            return (<Button onClick={() => this.displayMatch(matchID)}>Play!</Button>);
     }
 
 }

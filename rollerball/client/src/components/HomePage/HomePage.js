@@ -136,6 +136,7 @@ export default class HomePage extends Component {
             return <ListMatches ListMatches={this.state.allMatches}
                                 setAppState={this.props.setAppState}
                                 setAppPage={this.props.setAppPage}
+                                gameType={"CurrentGames"}
             />;
         return null;
     }
@@ -145,6 +146,7 @@ export default class HomePage extends Component {
             return <ListMatches ListMatches={this.state.completedMatches}
                                 setAppState={this.props.setAppState}
                                 setAppPage={this.props.setAppPage}
+                                gameType={"CompletedGames"}
             />;
         return null;
     }

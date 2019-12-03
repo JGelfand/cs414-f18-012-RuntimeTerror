@@ -13,6 +13,7 @@ export default class HomePage extends Component {
 
         this.getNotificationsList = this.getNotificationsList.bind(this);
         this.getGamesList = this.getGamesList.bind(this);
+        this.onChange = this.onChange.bind(this);
 
 
         for(let key in props){
@@ -129,6 +130,7 @@ export default class HomePage extends Component {
         if(this.state.showingNotifications)
             return <ListNotifications ListNotifications={this.state.allNotifications} setAppPage={this.props.setAppPage}
                                       serverPort={this.props.serverPort} token={this.props.token} setAppState={this.props.setAppState}
+                                      onChange={this.onChange}
             />;
         return null;
     }
@@ -174,5 +176,10 @@ export default class HomePage extends Component {
             message = "Really "+message+"?";
         }
         return message;
+    }
+
+    onChange(statevar, result){
+        this.setState({[statevar]: result});
+        console.log(this.state.allNotifications);
     }
 }

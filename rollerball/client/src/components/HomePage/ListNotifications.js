@@ -68,12 +68,10 @@ export default class ListNotifications extends Component {
 
     getTypeButton(notification){
         let currType=notification.type;
-        if(currType === "alert"){
-            return (<Col><Button>Alert Button</Button></Col>);
-        }if(currType === "invite"){
+        if(currType === "invite"){
             return (<Col><Button onClick={()=>this.sendInviteResponse(notification.id, true)}>Accept</Button><Button onClick={()=>this.sendInviteResponse(notification.id, false)}>Decline</Button></Col>);
-        }if(currType === "message"){
-            return (<Col><Button>Mark As Read</Button></Col>);
+        }if(currType === "message" || currType === "alert"){
+            return (<Col><Button onClick={() => this.markAsRead(notification.id)}>Mark As Read</Button></Col>);
         }
     }
 
@@ -95,4 +93,15 @@ export default class ListNotifications extends Component {
             return(<Col>{"admin"}</Col>);
         }
     }
+
+    markAsRead(id){
+        sendServerRequestWithBody("markRead", {token:this.props.token, id: id}, this.props.serverPort).then(
+            (response =>{
+                if(response.statusCode == 200 && response.body) {
+                    this.props.onChange("allNotifications", response.body);
+                }
+            })
+        );
+    }
+
 }

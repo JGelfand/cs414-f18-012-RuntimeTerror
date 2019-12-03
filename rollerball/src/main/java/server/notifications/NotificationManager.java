@@ -16,7 +16,7 @@ import java.util.List;
 public class NotificationManager {
     public static List<Notification> getRecentOrUnreadNotifications(int accountId){
         List<Notification> notifications= new ArrayList<>();
-        String query = "SELECT * FROM notifications WHERE recipient = ? AND (unread IS TRUE OR TIMESTAMPDIFF(DAY, time, NOW()) < 1) ORDER BY time DESC;";
+        String query = "SELECT * FROM notifications WHERE recipient = ? AND (unread IS TRUE AND TIMESTAMPDIFF(DAY, time, NOW()) < 1) ORDER BY time DESC;";
         try(DatabaseHelper helper = DatabaseHelper.create()){
             boolean success = helper.executePreparedStatement(query,(ResultSet results) -> {
                 while (results.next()){
@@ -68,5 +68,19 @@ public class NotificationManager {
             e.printStackTrace();
         }
         return response;
+    }
+
+    public static List<Notification> markRead(int accountID, int notificationID){
+        List<Notification> notifications= new ArrayList<>();
+        try(DatabaseHelper helper = DatabaseHelper.create()){
+            helper.executePreparedStatement("UPDATE notifications SET unread = ? WHERE id = ?;",0, notificationID);
+        }catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+         if(getRecentOrUnreadNotifications(accountID).size() > 0);
+            notifications = getRecentOrUnreadNotifications(accountID);
+        return notifications;
     }
 }

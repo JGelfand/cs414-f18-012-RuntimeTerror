@@ -51,7 +51,20 @@ class MicroServer {
         Spark.post("/api/ViewCurrentGames", this::handleViewCurrentGamesResponse);
         Spark.post("/api/matches" , this::handleMatchResponse);
         Spark.post("/api/deregister", this::handleDeregisterRequest);
+        Spark.post("/api/markRead" , this::handleMarkReadResponse);
     }
+
+    private Object handleMarkReadResponse(Request request, Response response){
+        response.type("application/json");
+        Gson gson = new GsonBuilder().create();
+        MarkReadRequest markReadRequest = gson.fromJson(request.body(), MarkReadRequest.class);
+        if(!markReadRequest.verify()){
+            response.status(401);
+            return "{\"message\": \"Authentication Error\"}";
+        }
+        return gson.toJson(NotificationManager.markRead(markReadRequest.getAccountId(), markReadRequest.id));
+    }
+
 
     private Object handleDeregisterRequest(Request request, Response response) {
         response.type("application/json");

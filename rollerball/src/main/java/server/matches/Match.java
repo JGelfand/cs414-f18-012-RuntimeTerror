@@ -106,7 +106,7 @@ public class Match {
 		response.gameOver = moveRequest.getAccountId() == blackId ? "BLACK" : "WHITE"; //mover lost as they resigned
 		return response;
 	}
-	else if ((moveRequest.getAccountId() == whiteId && !turn) || (moveRequest.getAccountId() == whiteId && turn)) //catch if moving on not your turn
+	else if ((moveRequest.getAccountId() == whiteId && !turn) || (moveRequest.getAccountId() == blackId && turn)) //catch if moving on not your turn
 	{
 	    response.success = false;
 	    response.message = "It is not your turn";

@@ -26,7 +26,6 @@ export default class HomePage extends Component {
             showingCompletedGames: false,
             allMatches: {},
             completedMatches: {},
-            allMatches: {},
             deregisterClicks: 0
         }
 

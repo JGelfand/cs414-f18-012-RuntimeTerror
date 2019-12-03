@@ -20,12 +20,16 @@ export default class MatchPage extends Component{
     render(){
         return(
         <Container>
+        {this.renderBasicInfo()}
         <div>
             {this.state.matchInfo? this.state.matchInfo["board"].split("\n").map((line, i) => {
                 return <Row font-family={"monospace"}>{line}</Row>; //from here:https://www.freecodecamp.org/forum/t/newline-in-react-string-solved/68484/4
             }):null}
         </div>
         <Row>
+            <Col>
+                <Button onClick={()=>this.getBoard()}>Refresh</Button>
+            </Col>
             <Col>
             <Button onClick={()=>this.props.setAppPage("homepage")}>Go to home</Button>
             </Col>
@@ -96,5 +100,16 @@ export default class MatchPage extends Component{
 
         })
 
+    }
+
+    renderBasicInfo(){
+        if(this.state.matchInfo)
+            return(
+                <Row>
+                    You are {this.props.token.id == this.state.matchInfo.whiteId? "White": "Black"}. It is {this.state.matchInfo.turn? "White":"Black"}'s turn.
+                </Row>
+            );
+        else
+            return null;
     }
 }

@@ -11,16 +11,12 @@ export default class HomePage extends Component {
     constructor(props) {
         super(props);
 
-        this.getNotificationsList = this.getNotificationsList.bind(this);
         this.getGamesList = this.getGamesList.bind(this);
-        this.onChange = this.onChange.bind(this);
-
 
         for(let key in props){
             console.log("Prop key: "+key+". Value: "+props[key]);
         }
         this.state={
-            allNotifications: {},
             allInvites: {},
             showingNotifications: false,
             showingMatches: false,
@@ -50,7 +46,7 @@ export default class HomePage extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Button onClick={() => this.getNotificationsList("notifications")}>View Notifications</Button>
+                    <Button onClick={() => this.toggleNotifications()}>View Notifications</Button>
                     <Button onClick={() => this.getGamesList("ViewCurrentGames")}>View Current Games</Button>
                     <Button onClick={() => this.getGamesList("CompletedGames")}>View Completed Games</Button>
                 </Row>
@@ -62,15 +58,8 @@ export default class HomePage extends Component {
     }
 
 
-    getNotificationsList(table) {
-        if (table === 'notifications' && this.state.showingNotifications === true) {
-            this.setState({showingNotifications: false});
-        } else {
-            const body = {
-                token: this.props.token,
-            };
-            this.sendRequest("notifications", body, "notifications");
-        }
+    toggleNotifications() {
+        this.setState({showingNotifications: !this.state.showingNotifications});
     }
 
 
@@ -113,10 +102,6 @@ export default class HomePage extends Component {
                         this.state.allMatches = response.body;
                         this.state.showingMatches = true;
                         this.setState(this.state);
-                    }if(updateTable === 'notifications'){
-                        this.state.allNotifications = response.body;
-                        this.state.showingNotifications = true;
-                        this.setState(this.state);
                     }
                 } else {
                     console.log("Did not work");
@@ -128,9 +113,8 @@ export default class HomePage extends Component {
 
     renderNotifications(){
         if(this.state.showingNotifications)
-            return <ListNotifications ListNotifications={this.state.allNotifications} setAppPage={this.props.setAppPage}
-                                      serverPort={this.props.serverPort} token={this.props.token} setAppState={this.props.setAppState}
-                                      onChange={this.onChange}
+            return <ListNotifications setAppPage={this.props.setAppPage} setAppState={this.props.setAppState}
+                                      serverPort={this.props.serverPort} token={this.props.token}
             />;
         return null;
     }
@@ -176,10 +160,5 @@ export default class HomePage extends Component {
             message = "Really "+message+"?";
         }
         return message;
-    }
-
-    onChange(statevar, result){
-        this.setState({[statevar]: result});
-        console.log(this.state.allNotifications);
     }
 }

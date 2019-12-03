@@ -11,8 +11,8 @@ export default class ListNotifications extends Component {
         this.displayEachNotification = this.displayEachNotification.bind(this);
         this.sendInviteResponse = this.sendInviteResponse.bind(this);
 
-
-        this.state = {}
+        this.state = {};
+        this.getNotifications();
 
     }
 
@@ -27,7 +27,7 @@ export default class ListNotifications extends Component {
     }
 
     displayEachNotification(){
-        return(
+        if(this.state.ListNotifications) return(
             <Table>
                 <thead>
                 <tr>
@@ -38,9 +38,9 @@ export default class ListNotifications extends Component {
                 </tr>
                 </thead>
                 <tbody>
-                {this.props.ListNotifications.map(currNotification =>
-                    <tr>
-                        <th scope="row">{currNotification.message}</th>
+                {this.state.ListNotifications.map(currNotification =>
+                    <tr style={{"font-weight":currNotification.unread?"bold":"normal"}}>
+                        <td>{currNotification.message}</td>
                         <td>
                             {currNotification.date['date'].month}
                             {'-'}
@@ -63,6 +63,7 @@ export default class ListNotifications extends Component {
                 </tbody>
             </Table>
         );
+        return null;
     }
 
 
@@ -71,7 +72,7 @@ export default class ListNotifications extends Component {
         if(currType === "invite"){
             return (<Col><Button onClick={()=>this.sendInviteResponse(notification.id, true)}>Accept</Button><Button onClick={()=>this.sendInviteResponse(notification.id, false)}>Decline</Button></Col>);
         }if(currType === "message" || currType === "alert"){
-            return (<Col><Button onClick={() => this.markAsRead(notification.id)}>Mark As Read</Button></Col>);
+            return (<Col><Button onClick={() => this.markAsRead(notification.id, !notification.unread)}>{notification.unread?"Mark As Read":"Delete"}</Button></Col>);
         }
     }
 
@@ -81,6 +82,9 @@ export default class ListNotifications extends Component {
                 if(response.statusCode == 200 && response.body) {
                    this.props.setAppState("matchID", response.body.id);
                     this.props.setAppPage("matchPage");
+                }
+                else{
+                    this.getNotifications();
                 }
             })
         )
@@ -94,14 +98,27 @@ export default class ListNotifications extends Component {
         }
     }
 
-    markAsRead(id){
-        sendServerRequestWithBody("markRead", {token:this.props.token, id: id}, this.props.serverPort).then(
+    markAsRead(id, deleteMessage){
+        sendServerRequestWithBody("markRead", {token:this.props.token, id: id, delete:deleteMessage}, this.props.serverPort).then(
             (response =>{
                 if(response.statusCode == 200 && response.body) {
-                    this.props.onChange("allNotifications", response.body);
+                    this.getNotifications();
                 }
             })
         );
+    }
+
+    getNotifications(){
+        const body = {
+            token: this.props.token,
+        };
+        sendServerRequestWithBody("notifications", body, this.props.serverPort).then(
+            (response =>{
+                if(response.statusCode == 200 && response.body) {
+                    this.setState({ListNotifications: response.body});
+                }
+            })
+        )
     }
 
 }

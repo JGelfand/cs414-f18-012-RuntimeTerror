@@ -62,7 +62,7 @@ class MicroServer {
             response.status(401);
             return "{\"message\": \"Authentication Error\"}";
         }
-        return gson.toJson(NotificationManager.markRead(markReadRequest.getAccountId(), markReadRequest.id));
+        return gson.toJson(NotificationManager.markRead(markReadRequest.getAccountId(), markReadRequest.id, markReadRequest.delete));
     }
 
 

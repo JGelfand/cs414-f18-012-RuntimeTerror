@@ -13,6 +13,11 @@ public class ChessBoard {
         }
     }
 
+    public ChessPiece[][] getBoard()
+    {
+	return this.board;
+    }
+
     public void initialize(){
         placePiece(new Rook(this, ChessPiece.Color.WHITE), "e1");
         placePiece(new Rook(this, ChessPiece.Color.WHITE), "e2");
@@ -50,7 +55,6 @@ public class ChessBoard {
             return false;
         try{
             ChessPiece destinationPiece = getPiece(position);
-	    //System.out.println("hi");
             if(destinationPiece == null || destinationPiece.getColor() != piece.getColor()) { //if destination is empty or an opponents piece
                 piece.setPosition(position);
                 int[] indexes = positionToIndexes(position);
@@ -79,7 +83,7 @@ public class ChessBoard {
 	return kpos; 
     }
 
-    private String getKingLocation(ChessPiece.Color color)
+    public String getKingLocation(ChessPiece.Color color) //public for king circle
     {
 	for (int k = 0; k < board.length; k++)
 	{
@@ -96,17 +100,16 @@ public class ChessBoard {
 
     //returns the validity of the move if the moving king is in check, or the move puts them in check
     //this is assuming that piece is moving to position
-    private boolean king_in_check(ChessPiece piece, String position)
+    public boolean king_in_check(ChessPiece piece, String position)
     {
 	try
 	{
 	    String kpos = getKingLocation(piece, position); //location of the king
 	    String oldPos = piece.getPosition();
 	    ChessPiece capPiece = getPiece(position);
-	    //System.out.println(kpos);
             if(!placePiece(piece, position)) //need to update the board first
 	    {
-		//System.out.println("huh?");
+
 	        return false; //move wasnt legal for other reasons...
  	    }
 	    int[] fromIndexes = positionToIndexes(oldPos);
@@ -115,7 +118,6 @@ public class ChessBoard {
 	    boolean ret = false;
             if (king_in_check(piece.getColor(), kpos))
 	    {
-		System.out.println("this move is invalid");
 	        ret = true;
 	    }
 	    placePiece(piece, oldPos); //undo the update to not change the state of the board
@@ -126,12 +128,11 @@ public class ChessBoard {
 	}
 	catch (IllegalPositionException e)
 	{
-	     //System.out.println("hi");
 	     return false;
 	}
     }
 
-    private boolean king_in_check(ChessPiece.Color color, String kpos)
+    public boolean king_in_check(ChessPiece.Color color, String kpos)
     {
 	for (int k = 0; k < board.length; k++)
 	{
@@ -212,9 +213,57 @@ public class ChessBoard {
 	return true; //no moves were found for the next turn, therefore it is stalemate. 
     }
 
+    public void handlePromotion(ChessPiece mover, String to, String promoteTo) throws IllegalPositionException
+    {
+	if (mover instanceof Pawn)
+	{
+       	    int[] indexes = positionToIndexes(to);
+	    if (to.equals("e6") || to.equals("e7"))
+	    {
+		 if (mover.getColor() == ChessPiece.Color.WHITE)
+		 {
+		    //promotion occurs
+		    if (promoteTo.equals("R") || promoteTo.equals("r")) //promote to rook
+		    {
+			ChessPiece piece = new Rook(this, ChessPiece.Color.WHITE);
+			piece.setPosition(to);
+ 	              	board[indexes[0]][indexes[1]] = piece;
+		    }
+		    else
+		    {
+			ChessPiece piece = new Bishop(this, ChessPiece.Color.WHITE);
+			piece.setPosition(to);
+			board[indexes[0]][indexes[1]] = piece;
+		    }
+                }
+	    }
+	    else if (to.equals("c1") || to.equals("c2"))
+	    {
+	 	if (mover.getColor() == ChessPiece.Color.BLACK)
+		{
+		    //promotion occurs
+		    if (promoteTo.equals("R") || promoteTo.equals("r"))
+		    {
+			ChessPiece piece = new Rook(this, ChessPiece.Color.BLACK);
+			piece.setPosition(to);
+			board[indexes[0]][indexes[1]] = piece;
+		    }
+		    else
+		    {
+			ChessPiece piece = new Bishop(this, ChessPiece.Color.BLACK);
+			piece.setPosition(to);
+			board[indexes[0]][indexes[1]] = piece;
+		    }
+		}
+	    }
+	}
+    }
 
+    public ChessPiece move(String from, String to) throws IllegalMoveException {
+	return this.move(from, to, "");
+    }
 
-    public void move(String from, String to) throws IllegalMoveException{
+    public ChessPiece move(String from, String to, String promotion) throws IllegalMoveException{
         try {
             ChessPiece fromPiece = getPiece(from);
             if(fromPiece == null){
@@ -230,12 +279,8 @@ public class ChessBoard {
             if(placePiece(fromPiece, to)){
                 int[] fromIndexes = positionToIndexes(from);
                 board[fromIndexes[0]][fromIndexes[1]] = null; //move has been made
-		//if(game_is_over(fromPiece)) //commented out because it does nothing
-		{
-		    //how do we want to handle this?
-		    //personally I want to change the return type and handle it above
-		    //perhaps to a boolean true if the game is over, false otherwise
-		}
+		handlePromotion(fromPiece, to, promotion);
+		return fromPiece;	
             }
             else {
                 throw new IllegalMoveException("Invalid move.");

@@ -7,4 +7,9 @@ public class MoveRequest extends AuthenticatedRequest {
     public String promoteTo;
     public boolean forfeit;
     public int matchId;
+
+    public void setFakeToken(AuthenticationToken token)
+    {
+	this.token = token;
+    }
 }

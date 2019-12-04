@@ -77,7 +77,6 @@ export default class App extends Component {
 
 
   onChange(statevar, value){
-      console.log("called onChange with "+statevar+", "+value);
       this.setState({[statevar]: value});
   }
 

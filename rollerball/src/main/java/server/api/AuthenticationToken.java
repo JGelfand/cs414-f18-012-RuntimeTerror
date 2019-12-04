@@ -35,6 +35,16 @@ public class AuthenticationToken {
         return newToken;
     }
 
+
+    public static AuthenticationToken createFakeToken(String user, long fakeTime, int id){
+        AuthenticationToken newToken = new AuthenticationToken();
+        newToken.user = user;
+        newToken.time = fakeTime;
+        newToken.signature = newToken.generateSignature();
+	newToken.id = id;
+        return newToken;
+    }
+
     private String generateSignature(){
         return Base64.toBase64String(SecureHashing.hash(id+","+user+","+time+","+secret));
     }

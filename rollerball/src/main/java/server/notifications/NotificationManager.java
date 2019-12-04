@@ -69,4 +69,17 @@ public class NotificationManager {
         }
         return response;
     }
+
+    public static boolean markRead(int accountID, int notificationID, boolean delete){
+        try(DatabaseHelper helper = DatabaseHelper.create()){
+            if(!delete)
+                helper.executePreparedStatement("UPDATE notifications SET unread = 0 WHERE id = ? AND recipient = ?;",notificationID, accountID);
+            else
+                helper.executePreparedStatement("DELETE FROM notifications WHERE id = ? AND recipient = ?;",notificationID, accountID);
+        }catch (SQLException | IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 }

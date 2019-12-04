@@ -55,7 +55,6 @@ public class ChessBoard {
             return false;
         try{
             ChessPiece destinationPiece = getPiece(position);
-	    //System.out.println("hi");
             if(destinationPiece == null || destinationPiece.getColor() != piece.getColor()) { //if destination is empty or an opponents piece
                 piece.setPosition(position);
                 int[] indexes = positionToIndexes(position);
@@ -108,10 +107,9 @@ public class ChessBoard {
 	    String kpos = getKingLocation(piece, position); //location of the king
 	    String oldPos = piece.getPosition();
 	    ChessPiece capPiece = getPiece(position);
-	    //System.out.println(kpos);
             if(!placePiece(piece, position)) //need to update the board first
 	    {
-		//System.out.println("huh?");
+
 	        return false; //move wasnt legal for other reasons...
  	    }
 	    int[] fromIndexes = positionToIndexes(oldPos);
@@ -120,7 +118,6 @@ public class ChessBoard {
 	    boolean ret = false;
             if (king_in_check(piece.getColor(), kpos))
 	    {
-		System.out.println("this move is invalid");
 	        ret = true;
 	    }
 	    placePiece(piece, oldPos); //undo the update to not change the state of the board
@@ -131,7 +128,6 @@ public class ChessBoard {
 	}
 	catch (IllegalPositionException e)
 	{
-	     //System.out.println("hi");
 	     return false;
 	}
     }

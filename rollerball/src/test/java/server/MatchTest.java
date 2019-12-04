@@ -46,15 +46,12 @@ public class MatchTest {
 		request.to = "b3";
 		
 		response = match.move(request);
-		//System.out.println(response.message);
 		Assert.assertTrue(response.success == true); //legal move for white
-		//System.out.println(match.getBoard());
 
 		request.from = "b3";
 		request.to = "b4";
 
 		response = match.move(request);
-		//System.out.println(response.success+" "+response.message);
 		Assert.assertTrue("white is moving on not his turn", response.success == false); //white cant move on black's turn
 
 		request.setFakeToken(blackToken);
@@ -148,7 +145,6 @@ public class MatchTest {
 		Assert.assertTrue(response.success == true); //do promotion, also works for "r" or "R" for rook and anything else for bishop
 		
 
-		System.out.println(match.getBoard());
 
 	}
 }

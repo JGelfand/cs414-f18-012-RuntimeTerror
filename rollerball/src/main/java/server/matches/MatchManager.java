@@ -81,7 +81,6 @@ public class MatchManager {
     }
 
     public static List<Map<String, Object>> getMatchesByUserId(int userId, boolean finishedGames){
-        System.out.println(finishedGames);
         ArrayList<Map<String, Object>> games = new ArrayList<>();
         try(DatabaseHelper helper = DatabaseHelper.create()){
             helper.executePreparedStatement("SELECT * FROM games WHERE finished = ? AND (white_player = ? OR black_player = ?);", (results ->{
@@ -111,13 +110,13 @@ public class MatchManager {
         return games;
     }
 
-    public static MoveResponse makeMove(MoveRequest moveRequest) {
+    public static MoveResponse makeMove(MoveRequest moveRequest)  {
         MoveResponse response = new MoveResponse();
         response.success = true;
         Match target = getMatchById(moveRequest.matchId, moveRequest.getAccountId());
-        try (DatabaseHelper helper = DatabaseHelper.create()){
+        try{
             response = target.move(moveRequest);
-            helper.executePreparedStatement("UPDATE games SET board = ? WHERE id = ?;", target.getBoard().serializeToBytes(), target.getId());
+            target.saveToDB();
         } catch (SQLException | IOException e) {
             response.success = false;
             response.message = e.getMessage();

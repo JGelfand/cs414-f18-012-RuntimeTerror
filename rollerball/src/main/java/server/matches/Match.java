@@ -114,11 +114,11 @@ public class Match {
         }
 	try{ //catch if the player is trying to move his opponents piece
 	    ChessPiece moving = board.getPiece(moveRequest.from);
-	    if ( moving == null || (moving.getColor() == ChessPiece.Color.WHITE && moveRequest.getAccountId() == blackId) || 
+	    if ( moving == null || (moving.getColor() == ChessPiece.Color.WHITE && moveRequest.getAccountId() == blackId) ||
 				   (moving.getColor() == ChessPiece.Color.BLACK && moveRequest.getAccountId() == whiteId) ) 
 	    {
 		response.success = false;
-		response.message = "Can't move your opponents piece, or positions were invalid";
+		response.message = moving ==null? "Start position needs to be a piece.": "Can't move your opponent's piece.";
 		return response;
 	    }
 	}
@@ -259,4 +259,11 @@ public class Match {
     public int getBlackId(){
         return blackId;
     }
+
+    public void saveToDB() throws SQLException, IOException {
+		try (DatabaseHelper helper = DatabaseHelper.create()) {
+			helper.executePreparedStatement("UPDATE games SET board = ?, turn = ?, white_circle = ?, black_circle = ?, white_forfeit = ?, black_forfeit = ?   WHERE id = ?;",
+					getBoard().serializeToBytes(), turn, whiteKCValid, blackKCValid, whiteForfeit, blackForfeit, getId());
+		}
+	}
 }

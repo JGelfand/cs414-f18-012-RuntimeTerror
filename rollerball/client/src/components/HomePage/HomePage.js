@@ -15,9 +15,6 @@ export default class HomePage extends Component {
         this.getGamesList = this.getGamesList.bind(this);
 
 
-        for(let key in props){
-            console.log("Prop key: "+key+". Value: "+props[key]);
-        }
         this.state={
             allNotifications: {},
             allInvites: {},

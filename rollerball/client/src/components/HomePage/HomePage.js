@@ -11,18 +11,19 @@ export default class HomePage extends Component {
     constructor(props) {
         super(props);
 
-        this.getTableList = this.getTableList.bind(this);
-
+        this.getGamesList = this.getGamesList.bind(this);
 
         for(let key in props){
             console.log("Prop key: "+key+". Value: "+props[key]);
         }
         this.state={
-            allNotifications: {},
             allInvites: {},
             showingNotifications: false,
             showingMatches: false,
-            allMatches: {}
+            showingCompletedGames: false,
+            allMatches: {},
+            completedMatches: {},
+            deregisterClicks: 0
         }
 
     }
@@ -35,7 +36,8 @@ export default class HomePage extends Component {
                     <h1>RollerBall HomePage</h1>
                     </Col>
                     <Col>
-                        <Button onClick={() => this.props.setAppPage('login')}>Logout</Button>
+                        <Button onClick={() => this.logout()}>Logout</Button>
+                        <Button onClick={() => this.deregisterStep()}>{this.getDeregisterMessage()}</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -44,55 +46,75 @@ export default class HomePage extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Button onClick={() => this.getTableList("notifications")}>View Notifications</Button>
-                    <Button onClick={() => this.getTableList("ViewCurrentGames")}>View Current Games</Button>
+                    <Button onClick={() => this.toggleNotifications()}>View Notifications</Button>
+                    <Button onClick={() => this.getGamesList("ViewCurrentGames")}>View Current Games</Button>
+                    <Button onClick={() => this.getGamesList("CompletedGames")}>View Completed Games</Button>
                 </Row>
                 {this.renderNotifications()}
                 {this.renderMatches()}
+                {this.renderCompletedMatches()}
             </Container>
         );
     }
 
 
-    getTableList(table){
-        if(table === 'notifications' || table === 'ViewCurrentGames') {
-            if(table === 'notifications' && this.state.showingNotifications === true) {
-                this.setState({showingNotifications: false});
-                return;
-            }
+    toggleNotifications() {
+        this.setState({showingNotifications: !this.state.showingNotifications});
+    }
+
+
+    getGamesList(table){
+        if(table === 'ViewCurrentGames' || table === 'CompletedGames') {
             if(table === 'ViewCurrentGames' && this.state.showingMatches === true) {
                 this.setState({showingMatches: false});
                 return;
+            }else if(table === "ViewCurrentGames"){
+                let body = {
+                    token: this.props.token,
+                    finishedGames: false,
+                    userID: this.props.token.id
+                };
+                this.sendRequest("ViewCurrentGames", body, "ViewCurrentGames");
             }
-
-            const body = {
-                token: this.props.token
-            };
-            sendServerRequestWithBody(table, body, this.props.serverPort).then(
-                (response) => {
-                    if (!response.body.message) {
-                        if(table === "notifications") {
-                            this.state.allNotifications = response.body;
-                            this.state.showingNotifications = true;
-                            this.setState(this.state);
-                        }if(table === "ViewCurrentGames"){
-                            console.log(response.body);
-                            this.state.allMatches = response.body;
-                            this.state.showingMatches = true;
-                            this.setState(this.state);
-                        }
-                    } else {
-                        console.log("Did not work");
-                    }
-                }
-            );
+            if(table === 'CompletedGames' && this.state.showingCompletedGames === true) {
+                this.setState({showingCompletedGames: false});
+            }else if(table === "CompletedGames"){
+                let body = {
+                    token: this.props.token,
+                    finishedGames: true,
+                    userID: this.props.token.id
+                };
+                this.sendRequest("ViewCurrentGames", body, "CompletedGames");
+            }
         }
     }
 
+
+    sendRequest(table, body, updateTable){
+        sendServerRequestWithBody(table, body, this.props.serverPort).then(
+            (response) => {
+                if (!response.body.message) {
+                    if(updateTable === "CompletedGames") {
+                        this.state.completedMatches = response.body;
+                        this.state.showingCompletedGames = true;
+                        this.setState(this.state);
+                    }if(updateTable === "ViewCurrentGames"){
+                        this.state.allMatches = response.body;
+                        this.state.showingMatches = true;
+                        this.setState(this.state);
+                    }
+                } else {
+                    console.log("Did not work");
+                }
+            }
+        );
+    }
+
+
     renderNotifications(){
         if(this.state.showingNotifications)
-            return <ListNotifications ListNotifications={this.state.allNotifications} setAppPage={this.props.setAppPage}
-                                      serverPort={this.props.serverPort} token={this.props.token} setAppState={this.props.setAppState}
+            return <ListNotifications setAppPage={this.props.setAppPage} setAppState={this.props.setAppState}
+                                      serverPort={this.props.serverPort} token={this.props.token}
             />;
         return null;
     }
@@ -102,8 +124,41 @@ export default class HomePage extends Component {
             return <ListMatches ListMatches={this.state.allMatches}
                                 setAppState={this.props.setAppState}
                                 setAppPage={this.props.setAppPage}
+                                gameType={"CurrentGames"}
             />;
         return null;
     }
 
+    renderCompletedMatches(){
+        if(this.state.showingCompletedGames)
+            return <ListMatches ListMatches={this.state.completedMatches}
+                                setAppState={this.props.setAppState}
+                                setAppPage={this.props.setAppPage}
+                                gameType={"CompletedGames"}
+            />;
+        return null;
+    }
+
+    logout(){
+        this.props.setAppPage('login');
+    }
+
+    deregisterStep(){
+        if(this.state.deregisterClicks < 5){
+            this.setState({deregisterClicks: this.state.deregisterClicks+1});
+        }
+        else{
+            sendServerRequestWithBody("deregister", {token:this.props.token}, this.props.serverPort).then(
+                ()=>this.logout()
+            );
+        }
+    }
+
+    getDeregisterMessage(){
+        let message = "Deregister";
+        for(let i=this.state.deregisterClicks;i>0;i--){
+            message = "Really "+message+"?";
+        }
+        return message;
+    }
 }

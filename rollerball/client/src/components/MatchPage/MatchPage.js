@@ -30,14 +30,14 @@ export default class MatchPage extends Component{
         super(props);
 
         this.getBoard = this.getBoard.bind(this);
-				this.handleBoardClick = this.handleBoardClick.bind(this)
+        this.handleBoardClick = this.handleBoardClick.bind(this);
 
         this.getBoard();
 
         this.state={
             matchInfo: null,
-						pos1:"",
-						pos2:""
+            pos1:"",
+            pos2:""
         }
 
     }
@@ -45,15 +45,19 @@ export default class MatchPage extends Component{
     render(){
         return(
         <Container>
-				<Row>
-						<Col>
-						<Button onClick={()=>this.props.setAppPage("homepage")}>Go to home</Button>
-						</Col>
-						<Col>
-								<Button onClick={() => this.props.setAppPage("login")}>Logout</Button>
-						</Col>
-				</Row>
-				{this.createBoard(this.state.matchInfo? this.state.matchInfo["board"] :null)}
+        <Row>
+            <Col>
+                <Button onClick={()=>this.props.setAppPage("homepage")}>Go to home</Button>
+            </Col>
+            <Col>
+                <Button onClick={this.getBoard}>Refresh</Button>
+            </Col>
+            <Col>
+                <Button onClick={() => this.props.setAppPage("login")}>Logout</Button>
+            </Col>
+        </Row>
+        {this.renderBasicInfo()}
+        {this.createBoard(this.state.matchInfo? this.state.matchInfo["board"] :null)}
         <Row>
             {this.renderMoveForm()}
         </Row>
@@ -96,14 +100,14 @@ export default class MatchPage extends Component{
 
 
 		createBoard(b){
-			let lets = ['a','b','c','d','e','f','g']
-			let nums = [7,6,5,4,3,2,1]
-			let output = []
+			let lets = ['a','b','c','d','e','f','g'];
+			let nums = [7,6,5,4,3,2,1];
+			let output = [];
 			if(b == null)
-				return (null);
+				return null;
 			let lines = b.split('\n');
 			for(let i = 1; i < lines.length; i+=2){
-				let columns = []
+				let columns = [];
 				let chars = lines[i].split("│");
 				for(let x = 0; x < chars.length; x++){
 					if(chars[x] !== ""){
@@ -123,7 +127,7 @@ export default class MatchPage extends Component{
 				fontSize:'30px',
 				marginTop:'-5px'
 			};
-			output.push(<Row>{lets.map(item => <label style={labelStyle}>{item}</label>)}</Row>)
+			output.push(<Row>{lets.map(item => <label style={labelStyle}>{item}</label>)}</Row>);
 
 			return (output);
 		}
@@ -189,5 +193,16 @@ export default class MatchPage extends Component{
 
         })
 
+    }
+
+    renderBasicInfo(){
+        if(this.state.matchInfo)
+            return(
+                <Row>
+                    You are {this.props.token.id == this.state.matchInfo.whiteId? "White": "Black"}. It is {this.state.matchInfo.turn? "White":"Black"}'s turn.
+                </Row>
+            );
+        else
+            return null;
     }
 }

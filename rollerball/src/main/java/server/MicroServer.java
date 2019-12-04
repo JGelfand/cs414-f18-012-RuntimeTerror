@@ -50,6 +50,32 @@ class MicroServer {
         Spark.post("/api/inviteAnswer", this::handleInviteResponses);
         Spark.post("/api/ViewCurrentGames", this::handleViewCurrentGamesResponse);
         Spark.post("/api/matches" , this::handleMatchResponse);
+        Spark.post("/api/deregister", this::handleDeregisterRequest);
+        Spark.post("/api/markRead" , this::handleMarkReadResponse);
+    }
+
+    private Object handleMarkReadResponse(Request request, Response response){
+        response.type("application/json");
+        Gson gson = new GsonBuilder().create();
+        MarkReadRequest markReadRequest = gson.fromJson(request.body(), MarkReadRequest.class);
+        if(!markReadRequest.verify()){
+            response.status(401);
+            return "{\"message\": \"Authentication Error\"}";
+        }
+        return gson.toJson(NotificationManager.markRead(markReadRequest.getAccountId(), markReadRequest.id, markReadRequest.delete));
+    }
+
+
+    private Object handleDeregisterRequest(Request request, Response response) {
+        response.type("application/json");
+        Gson gson = new GsonBuilder().create();
+
+        DeregisterRequest deregisterRequest = gson.fromJson(request.body(), DeregisterRequest.class);
+        if(!deregisterRequest.verify()){
+            response.status(401);
+            return "false";
+        }
+        return gson.toJson(AccountManager.deleteAccount(deregisterRequest.getAccountId()));
     }
 
     private Object handleMatchResponse(Request request, Response response){
@@ -97,12 +123,12 @@ class MicroServer {
         response.type("application/json");
         response.header("Access-Control-Allow-Origin", "*");
         Gson gson = new GsonBuilder().create();
-        AuthenticatedRequest matchesRequest = gson.fromJson(request.body(), AuthenticatedRequest.class);
+        MatchesRequest matchesRequest = gson.fromJson(request.body(), MatchesRequest.class);
         if(!matchesRequest.verify()){
             response.status(401);
             return "{\"message\": \"Authentication Error\"}";
         }
-        return gson.toJson(MatchManager.getMatchesByUserId(matchesRequest.getAccountId()));
+        return gson.toJson(MatchManager.getMatchesByUserId(matchesRequest.userID, matchesRequest.finishedGames));
     }
 
     private String handleMessageRequest(Request request, Response response) {

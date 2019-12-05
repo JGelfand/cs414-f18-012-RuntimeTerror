@@ -7,6 +7,7 @@ import server.api.InviteAnswer;
 import server.api.MoveRequest;
 import server.api.MoveResponse;
 import server.notifications.Notification;
+import server.notifications.NotificationManager;
 import server.utils.DatabaseHelper;
 
 import java.io.IOException;
@@ -41,12 +42,10 @@ public class MatchManager {
             if(answer.accept){
                 match= Match.createNewMatch(answer.inviteId, invite.sender, answer.getAccountId());
                 insertMatchIntoDatabase(match, helper);
-                helper.executePreparedStatement("INSERT INTO notifications(recipient, type, message) VALUES (?,\"alert\",?);",
-                        invite.sender, new Account(answer.getAccountId()).getUsername()+" has accepted your invitation. Match id is "+match.getId()+".");
+                NotificationManager.createAlert(invite.sender, new Account(answer.getAccountId()).getUsername()+" has accepted your invitation. Match id is "+match.getId()+".", helper);
             }
             else{
-                helper.executePreparedStatement("INSERT INTO notifications(recipient, type, message) VALUES (?,\"alert\",?);",
-                        invite.sender, new Account(answer.getAccountId()).getUsername()+" has declined your invitation.");
+                NotificationManager.createAlert(invite.sender, new Account(answer.getAccountId()).getUsername()+" has declined your invitation.", helper);
             }
             //delete invite either way
             helper.executePreparedStatement("DELETE FROM notifications WHERE id = ?;", answer.inviteId);
@@ -114,8 +113,14 @@ public class MatchManager {
         MoveResponse response = new MoveResponse();
         response.success = true;
         Match target = getMatchById(moveRequest.matchId, moveRequest.getAccountId());
+        boolean gameWasOver = target.getFinished();
         try{
             response = target.move(moveRequest);
+            if((!gameWasOver) && target.getFinished()){
+                String endMessage = "Game "+target.getId()+" is finished. "+response.gameOver+" wins.";
+                NotificationManager.createAlert(target.getBlackId(), endMessage);
+                NotificationManager.createAlert(target.getWhiteId(), endMessage);
+            }
             target.saveToDB();
         } catch (SQLException | IOException e) {
             response.success = false;

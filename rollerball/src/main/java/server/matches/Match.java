@@ -28,6 +28,7 @@ public class Match {
             base.add("whiteId", new JsonPrimitive(src.whiteId));
             base.add("blackId", new JsonPrimitive(src.blackId));
             base.add("board", new JsonPrimitive(src.board.toString()));
+            base.add("finished", new JsonPrimitive(src.finished));
             return base;
         }
     }
@@ -36,6 +37,7 @@ public class Match {
     private boolean whiteForfeit, blackForfeit;
     private int id;
     private int whiteId, blackId;
+    private boolean finished;
 
     private boolean whiteKCValid;
     private boolean blackKCValid;
@@ -64,6 +66,7 @@ public class Match {
         this.blackForfeit = results.getBoolean("black_forfeit");
 	this.whiteKCValid = results.getBoolean("white_circle");
 	this.blackKCValid = results.getBoolean("black_circle");
+	this.finished = results.getBoolean("finished");
     }
 
     private void updateFlag(ChessPiece movingPiece, String pos)
@@ -99,11 +102,23 @@ public class Match {
     public MoveResponse move(MoveRequest moveRequest)
     {
 	MoveResponse response = new MoveResponse();
+	if(this.finished){
+		response.success = false;
+		response.message = "Game is already finished.";
+		return response;
+	}
 	if (moveRequest.forfeit == true) //catch if you gave up
 	{
 		response.success = true;
-		response.message = "Never gonna give up";
-		response.gameOver = moveRequest.getAccountId() == blackId ? "BLACK" : "WHITE"; //mover lost as they resigned
+		if(moveRequest.getAccountId() == whiteId){
+			response.gameOver = "BLACK";
+			this.whiteForfeit = true;
+		}
+		else{
+			response.gameOver = "WHITE";
+			this.blackForfeit = true;
+		}
+		this.finished = true;
 		return response;
 	}
 	else if ((moveRequest.getAccountId() == whiteId && !turn) || (moveRequest.getAccountId() == blackId && turn)) //catch if moving on not your turn
@@ -139,6 +154,7 @@ public class Match {
 
 	    if (game_is_over(mover, moveRequest.to))
 	    {
+	    	finished = true;
 		if (game_is_won(mover, moveRequest.to))
 		{
 		    response.gameOver = mover.getColor() == ChessPiece.Color.WHITE ? "WHITE" : "BLACK"; //winner moved 
@@ -260,10 +276,12 @@ public class Match {
         return blackId;
     }
 
+    public boolean getFinished(){ return finished;}
+
     public void saveToDB() throws SQLException, IOException {
 		try (DatabaseHelper helper = DatabaseHelper.create()) {
-			helper.executePreparedStatement("UPDATE games SET board = ?, turn = ?, white_circle = ?, black_circle = ?, white_forfeit = ?, black_forfeit = ?   WHERE id = ?;",
-					getBoard().serializeToBytes(), turn, whiteKCValid, blackKCValid, whiteForfeit, blackForfeit, getId());
+			helper.executePreparedStatement("UPDATE games SET board = ?, turn = ?, white_circle = ?, black_circle = ?, white_forfeit = ?, black_forfeit = ?, finished = ?   WHERE id = ?;",
+					getBoard().serializeToBytes(), turn, whiteKCValid, blackKCValid, whiteForfeit, blackForfeit, finished, getId());
 		}
 	}
 }

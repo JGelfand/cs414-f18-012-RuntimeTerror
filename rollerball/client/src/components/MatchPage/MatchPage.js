@@ -164,7 +164,7 @@ export default class MatchPage extends Component{
 
     sendMove(moveFormEvent){
         moveFormEvent.preventDefault();
-        let move = {token: this.props.token, matchId: this.props.matchID};
+        let move = {token: this.props.token, matchId: this.props.matchID, promoteTo:"R"};
         move.to = event.target.elements.to.value;
         move.from = event.target.elements.from.value;
 

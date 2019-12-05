@@ -5,6 +5,8 @@ import server.accounts.AccountManager;
 import server.api.MessageRequest;
 import server.api.MessageResponse;
 import server.utils.DatabaseHelper;
+
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -81,5 +83,17 @@ public class NotificationManager {
             return false;
         }
         return true;
+    }
+
+    public static void createAlert(int sendTo, String message) {
+        try(DatabaseHelper helper = DatabaseHelper.create()) {
+            createAlert(sendTo, message, helper);
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void createAlert(int sendTo, String message, DatabaseHelper helper) throws SQLException {
+        helper.executePreparedStatement("INSERT INTO notifications(type, recipient, message) VALUES (\"alert\", ?, ?)", sendTo, message);
     }
 }

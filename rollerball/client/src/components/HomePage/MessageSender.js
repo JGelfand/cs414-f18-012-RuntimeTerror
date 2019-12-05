@@ -36,7 +36,7 @@ export default class MessageSender extends Component{
         return([
             <Form>
                 <FormGroup row>
-                <Label sm={3}>Send</Label>
+                <Label sm={1}>Send</Label>
                 <Dropdown sm={9} isOpen={this.state.dropDownOpen} toggle={this.toggleDropDown}>
                     <DropdownToggle caret>
                         {this.state.type}
@@ -46,20 +46,20 @@ export default class MessageSender extends Component{
                         <DropdownItem onClick={()=>this.setState({type:"invite"})}>invite</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
+                    <Label sm={2}>to</Label>
                 </FormGroup>
                 <FormGroup row>
-                <Label sm={2}>to</Label>
                 <Input sm={10} type={"text"}
                       onChange={event => this.setState({recipient: event.target.value})}
                       value={this.state.recipient}/>
                 </FormGroup>
                 <FormGroup row>
-                <Label>message</Label>
+                <Label>Message</Label>
                 <Input type={"text"}
                        onChange={event => this.setState({message: event.target.value})}
                        value={this.state.message}/>
                 </FormGroup>
-                <Button disabled={this.state.sendButtonDisabled} onClick={this.sendMessage}>Send</Button>
+                <Button disabled={this.state.sendButtonDisabled} onClick={this.sendMessage} color="primary">Send</Button>
             </Form>,
             <p>{this.state.errorMessage? this.state.errorMessage:""}</p>
             ]

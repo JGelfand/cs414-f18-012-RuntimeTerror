@@ -28,11 +28,11 @@ export default class HomePage extends Component {
             <Container>
                 <Row>
                     <Col>
-                        <h1>RollerBall HomePage</h1>
+                    <h1>Rollerball Home Page</h1>
                     </Col>
                     <Col>
-                        <Button onClick={() => this.logout()}>Logout</Button>
-                        <Button onClick={() => this.deregisterStep()}>{this.getDeregisterMessage()}</Button>
+                        <Button color="danger" onClick={() => this.logout()}>Logout</Button> &nbsp;
+                        <Button color="outline-danger" onClick={() => this.deregisterStep()}>{this.getDeregisterMessage()}</Button>
                     </Col>
                 </Row>
                 <Row>
@@ -41,9 +41,9 @@ export default class HomePage extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Button onClick={() => this.toggleNotifications()}>View Notifications</Button>
-                    <Button onClick={() => this.getGamesList("ViewCurrentGames")}>View Current Games</Button>
-                    <Button onClick={() => this.getGamesList("CompletedGames")}>View Completed Games</Button>
+                    <Button color="info" onClick={() => this.toggleNotifications()}>View Notifications</Button> &nbsp;
+                    <Button color="secondary" onClick={() => this.getGamesList("ViewCurrentGames")}>View Current Games</Button> &nbsp;
+                    <Button color="warning" onClick={() => this.getGamesList("CompletedGames")}>View Completed Games</Button>
                 </Row>
                 {this.renderNotifications()}
                 {this.renderMatches()}

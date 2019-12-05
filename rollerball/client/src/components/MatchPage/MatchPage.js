@@ -146,13 +146,13 @@ export default class MatchPage extends Component{
                 <FormGroup row>
                     <Label for="fromBox" sm={2}>From</Label>
                     <Col sm={10}>
-                        <Input type="text" name="from" id="fromBox" placeholder="format: [a-z][1-7]" />
+                        <Input type="text" name="from" id="fromBox" placeholder="format: [a-g][1-7]" />
                     </Col>
                 </FormGroup>
                 <FormGroup row>
                     <Label for="fromBox" sm={2}>To</Label>
                     <Col sm={10}>
-                        <Input type="text" name="to" id="toBox" placeholder="format: [a-z][1-7]" />
+                        <Input type="text" name="to" id="toBox" placeholder="format: [a-g][1-7]" />
                     </Col>
                 </FormGroup>
                 <FormGroup row>

@@ -21,7 +21,6 @@ export default class HomePage extends Component {
             completedMatches: {},
             deregisterClicks: 0
         }
-
     }
 
     render(){
@@ -29,7 +28,7 @@ export default class HomePage extends Component {
             <Container>
                 <Row>
                     <Col>
-                    <h1>RollerBall HomePage</h1>
+                        <h1>RollerBall HomePage</h1>
                     </Col>
                     <Col>
                         <Button onClick={() => this.logout()}>Logout</Button>
@@ -53,11 +52,9 @@ export default class HomePage extends Component {
         );
     }
 
-
     toggleNotifications() {
         this.setState({showingNotifications: !this.state.showingNotifications});
     }
-
 
     getGamesList(table){
         if(table === 'ViewCurrentGames' || table === 'CompletedGames') {
@@ -84,7 +81,6 @@ export default class HomePage extends Component {
             }
         }
     }
-
 
     sendRequest(table, body, updateTable){
         sendServerRequestWithBody(table, body, this.props.serverPort).then(

@@ -18,6 +18,8 @@ class Square extends React.Component {
             width: '60px'};
 	    if(this.props.black === true)
 	        squareCSS.background = '#414141';
+        if(this.props.yellow === true)
+            squareCSS.background = '#fff675';
 		return (
 			<button style={squareCSS} className="square" onClick={() => this.props.handler(this.props.pos)}>
 			{this.props.value}
@@ -71,7 +73,7 @@ export default class MatchPage extends Component{
 		handleBoardClick(pos){
 			console.log("handleboardclick " + pos);
 			if(this.state.pos1 === ""){
-				this.state.pos1 = pos;
+				this.setState({pos1:pos});
 				console.log("updated pos1: " + this.state.pos1);
 			}else if(this.state.pos1 !== "" && this.state.pos2 == ""){
 				this.state.pos2 = pos;
@@ -115,8 +117,10 @@ export default class MatchPage extends Component{
 					    if((i >= 5 && i < 11) && (x >= 3 && x <= 5)){
                             columns.push(<Square value={chars[x].trim()} pos={lets[x-1] + nums[i/2>>0]}
                                                  handler={this.handleBoardClick} black={true}/>)
-
-                        }else{
+                        }else if (this.state.pos1 == (lets[x-1]+nums[i/2>>0])){
+                            columns.push(<Square value={chars[x].trim()} pos={lets[x - 1] + nums[i / 2 >> 0]}
+                                                 handler={this.handleBoardClick} black={false} yellow={true}/>)
+                        } else {
                             columns.push(<Square value={chars[x].trim()} pos={lets[x - 1] + nums[i / 2 >> 0]}
                                                  handler={this.handleBoardClick} black={false}/>)
                         }

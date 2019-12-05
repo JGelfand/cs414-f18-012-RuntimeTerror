@@ -4,19 +4,20 @@ import {sendServerRequestWithBody} from "../../api/restfulAPI";
 
 class Square extends React.Component {
 	render() {
-		const squareCSS = {
-			background: '#fff',
-			border: '1px solid #999',
-			float: 'left',
-			fontSize: '50px',
-			lineHeight: '34px',
-			height: '60px',
-			marginRight: '-1px',
-			marginTop: '-1px',
-			padding: '0',
-			textAlign: 'center',
-			width: '60px'
-		};
+	    let squareCSS = {
+	        background: '#fff',
+            border: '1px solid #999',
+            float: 'left',
+            fontSize: '50px',
+            lineHeight: '34px',
+            height: '60px',
+            marginRight: '-1px',
+            marginTop: '-1px',
+            padding: '0',
+            textAlign: 'center',
+            width: '60px'};
+	    if(this.props.black === true)
+	        squareCSS.background = '#414141';
 		return (
 			<button style={squareCSS} className="square" onClick={() => this.props.handler(this.props.pos)}>
 			{this.props.value}
@@ -111,8 +112,14 @@ export default class MatchPage extends Component{
 				let chars = lines[i].split("│");
 				for(let x = 0; x < chars.length; x++){
 					if(chars[x] !== ""){
-						columns.push(<Square value={chars[x].trim()} pos={lets[x-1] + nums[i/2>>0]}
-																 handler={this.handleBoardClick}/>)
+					    if((i >= 5 && i < 11) && (x >= 3 && x <= 5)){
+                            columns.push(<Square value={chars[x].trim()} pos={lets[x-1] + nums[i/2>>0]}
+                                                 handler={this.handleBoardClick} black={true}/>)
+
+                        }else{
+                            columns.push(<Square value={chars[x].trim()} pos={lets[x - 1] + nums[i / 2 >> 0]}
+                                                 handler={this.handleBoardClick} black={false}/>)
+                        }
 					}
 				}
 				const leftLabelStyle = {
@@ -178,21 +185,17 @@ export default class MatchPage extends Component{
 
 
     getBoard(){
-
         const body ={
             matchID: this.props.matchID,
             token: this.props.token
         };
-
         sendServerRequestWithBody("matches" , body, this.props.serverPort).then(response =>{
 								console.log(response.body);
                 if(response.body === null)
                     console.log("No match found");
                 else
                     this.setState({matchInfo: response.body});
-
         })
-
     }
 
     renderBasicInfo(){

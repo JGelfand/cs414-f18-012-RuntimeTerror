@@ -57,7 +57,7 @@ export default class ListMatches extends Component {
         if(type === "CompletedGames")
             return (<Button onClick={() => this.displayMatch(matchID)}>View Game</Button>);
         if(type === "CurrentGames")
-            return (<Button onClick={() => this.displayMatch(matchID)}>Play!</Button>);
+            return (<Button color="success" onClick={() => this.displayMatch(matchID)}>Play!</Button>);
     }
 
 }

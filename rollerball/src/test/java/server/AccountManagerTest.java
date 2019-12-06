@@ -1,7 +1,7 @@
 package server;
 
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import server.accounts.AccountManager;
 import server.api.RegistrationRequest;

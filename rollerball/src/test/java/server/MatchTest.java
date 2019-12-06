@@ -145,6 +145,5 @@ public class MatchTest {
 		Assert.assertTrue(response.success == true); //do promotion, also works for "r" or "R" for rook and anything else for bishop
 		
 
-
 	}
 }

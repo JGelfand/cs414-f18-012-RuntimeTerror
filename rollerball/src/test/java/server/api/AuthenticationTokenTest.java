@@ -2,7 +2,7 @@ package server.api;
 
 import com.google.gson.Gson;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
 

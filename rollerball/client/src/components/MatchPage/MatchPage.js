@@ -29,6 +29,15 @@ class Square extends React.Component {
 }
 
 export default class MatchPage extends Component{
+    componentDidMount() {
+        let intervalHandle =  window.setInterval(this.getBoard, 5000);
+        this.setState({intervalHandle: intervalHandle});
+    }
+
+    componentWillUnmount() {
+        window.clearInterval(this.state.intervalHandle)
+    }
+
     constructor(props){
         super(props);
 
@@ -53,7 +62,7 @@ export default class MatchPage extends Component{
                 <Button onClick={()=>this.props.setAppPage("homepage")}>Go to home</Button>
             </Col>
             <Col>
-                <Button onClick={this.getBoard}>Refresh</Button>
+                <Button onClick={()=>this.forfeit()}>Forfeit</Button>
             </Col>
             <Col>
                 <Button onClick={() => this.props.setAppPage("login")}>Logout</Button>
@@ -86,7 +95,7 @@ export default class MatchPage extends Component{
 		}
 
 		boardClickMove(){
-			let move = {token: this.props.token, matchId: this.props.matchID};
+			let move = {token: this.props.token, matchId: this.props.matchID, promoteTo:"R"};
 			move.to = this.state.pos2;
 			move.from = this.state.pos1;
 			sendServerRequestWithBody("move", move, this.props.serverPort).then((response)=>
@@ -197,7 +206,7 @@ export default class MatchPage extends Component{
 								console.log(response.body);
                 if(response.body === null)
                     console.log("No match found");
-                else
+                else if(response.statusCode >=200 && response.statusCode <300)
                     this.setState({matchInfo: response.body});
         })
     }
@@ -206,10 +215,14 @@ export default class MatchPage extends Component{
         if(this.state.matchInfo)
             return(
                 <Row>
-                    You are {this.props.token.id == this.state.matchInfo.whiteId? "White": "Black"}. It is {this.state.matchInfo.turn? "White":"Black"}'s turn.
+                    You are {this.props.token.id == this.state.matchInfo.whiteId? "White": "Black"}. {this.state.matchInfo.finished?"This game is over.":"It is "+ (this.state.matchInfo.turn?"White":"Black")+"'s turn."}
                 </Row>
             );
         else
             return null;
+    }
+
+    forfeit(){
+        sendServerRequestWithBody("move", {token: this.props.token, matchId: this.props.matchID, forfeit:true}, this.props.serverPort).then(this.getBoard)
     }
 }

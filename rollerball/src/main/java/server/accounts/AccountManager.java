@@ -155,8 +155,11 @@ public class AccountManager {
 
 	public static boolean deleteAccount(int accountId){
 		try(DatabaseHelper helper = DatabaseHelper.create()) {
-			helper.executeStatement(String.format("DELETE FROM games WHERE white_player = %d OR black_player = %d ;", accountId, accountId));
-			helper.executeStatement(String.format("DELETE FROM notifications WHERE sender = %d OR recipient = %d ;", accountId, accountId));
+			helper.executeStatement(String.format("UPDATE games SET white_player = %d, finished = %b WHERE white_player = %d ;", 24, true, accountId));
+			helper.executeStatement(String.format("UPDATE games SET black_player = %d, finished = %b WHERE black_player = %d ;", 24, true, accountId));
+			helper.executeStatement(String.format("UPDATE notifications SET sender = %d WHERE sender = %d ;", 24, accountId));
+			helper.executeStatement(String.format("UPDATE notifications SET recipient = %d WHERE recipient = %d ;", 24, accountId));
+
 			helper.executeStatement("DELETE FROM users WHERE id = "+accountId+" ;");
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();

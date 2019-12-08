@@ -31,7 +31,7 @@ class Square extends React.Component {
 
 export default class MatchPage extends Component{
     componentDidMount() {
-        let intervalHandle =  window.setInterval(this.getBoard, 5000);
+        let intervalHandle =  window.setInterval(this.getBoard, 3000);
         this.setState({intervalHandle: intervalHandle});
     }
 
@@ -50,7 +50,8 @@ export default class MatchPage extends Component{
         this.state={
             matchInfo: null,
             pos1:"",
-            pos2:""
+            pos2:"",
+            gameWinner: ""
         }
 
     }
@@ -123,7 +124,7 @@ export default class MatchPage extends Component{
 					    if((i >= 5 && i < 11) && (x >= 3 && x <= 5)){
                             columns.push(<Square value={chars[x].trim()} pos={lets[x-1] + nums[i/2>>0]}
                                                  handler={this.handleBoardClick} black={true}/>)
-                        }else if (this.state.pos1 == (lets[x-1]+nums[i/2>>0])){
+                        }else if (this.state.pos1 === (lets[x-1]+nums[i/2>>0])){
                             columns.push(<Square value={chars[x].trim()} pos={lets[x - 1] + nums[i / 2 >> 0]}
                                                  handler={this.handleBoardClick} black={false} yellow={true}/>)
                         } else {
@@ -208,7 +209,7 @@ export default class MatchPage extends Component{
         if(this.state.matchInfo)
             return(
                 <Row>
-                    You are {this.props.token.id === this.state.matchInfo.whiteId? "White": "Black"}. {this.state.matchInfo.finished? this.getWinner():"It is "+ (this.state.matchInfo.turn?"White":"Black")+"'s turn."}
+                    You are {this.props.token.id === this.state.matchInfo.whiteId? "White": "Black"}. {this.state.matchInfo.finished? this.getWinner() :"It is "+ (this.state.matchInfo.turn?"White":"Black")+"'s turn."}
                 </Row>
             );
         else
@@ -216,15 +217,19 @@ export default class MatchPage extends Component{
     }
 
     getWinner(){
-        let message = "";
-        if(this.state.matchInfo.turn)
-            message = "Black has won the game! Time to gloat or weep and play again.";
+        if(this.state.gameWinner !== "")
+            return this.state.gameWinner;
+        if(this.state.matchInfo.turn === true)
+            return ("Black has won the game! Time to gloat or weep and play again.");
         else
-            message = "White has won! Time to gloat or weep and play again.";
-        return message;
+            return ("White has won the game! Time to gloat or weep and play again.");
     }
-
     forfeit(){
-        sendServerRequestWithBody("move", {token: this.props.token, matchId: this.props.matchID, forfeit:true}, this.props.serverPort).then(this.getBoard)
+        sendServerRequestWithBody("move", {token: this.props.token, matchId: this.props.matchID, forfeit:true}, this.props.serverPort).then((response)=>{
+            if(response.body.gameOver === "WHITE")
+                this.setState({gameWinner: "Black has forfeited. White wins the game! Time to gloat or weep and play again."});
+            else if(response.body.gameOver === "BLACK")
+                this.setState({gameWinner: "White has forfeited. Black wins the game! Time to gloat or weep and play again."});
+            this.getBoard});
     }
 }

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Container, Form, FormGroup, Label, Input, Row, Col} from "reactstrap";
 import {sendServerRequestWithBody} from "../../api/restfulAPI";
+import ErrorBanner from "../ErrorBanner";
 
 class Square extends React.Component {
 	render() {
@@ -80,14 +81,10 @@ export default class MatchPage extends Component{
     }
 
 		handleBoardClick(pos){
-			console.log("handleboardclick " + pos);
 			if(this.state.pos1 === ""){
 				this.setState({pos1:pos});
-				console.log("updated pos1: " + this.state.pos1);
 			}else if(this.state.pos1 !== "" && this.state.pos2 == ""){
 				this.state.pos2 = pos;
-				console.log("updated pos2: " + this.state.pos2);
-
 				this.boardClickMove();
 				this.state.pos1 = "";
 				this.state.pos2 = "";
@@ -105,7 +102,7 @@ export default class MatchPage extends Component{
 							this.getBoard();
 					}
 					else{
-							this.setState({errorMessage:response.body.message})
+							this.setState({errorMessage:<ErrorBanner message={response.body.message}/>});
 					}
 			})
 		}
@@ -181,9 +178,6 @@ export default class MatchPage extends Component{
         move.to = event.target.elements.to.value;
         move.from = event.target.elements.from.value;
 
-				console.log(move.to);
-				console.log(move.from);
-
         sendServerRequestWithBody("move", move, this.props.serverPort).then((response)=>
         {
             if(response.body.success){
@@ -191,7 +185,7 @@ export default class MatchPage extends Component{
                 this.getBoard();
             }
             else{
-                this.setState({errorMessage:response.body.message})
+                this.setState({errorMessage:<ErrorBanner message={response.body.message}/>});
             }
         })
     }
@@ -203,7 +197,6 @@ export default class MatchPage extends Component{
             token: this.props.token
         };
         sendServerRequestWithBody("matches" , body, this.props.serverPort).then(response =>{
-								console.log(response.body);
                 if(response.body === null)
                     console.log("No match found");
                 else if(response.statusCode >=200 && response.statusCode <300)

@@ -83,7 +83,7 @@ export default class MatchPage extends Component{
 		handleBoardClick(pos){
 			if(this.state.pos1 === ""){
 				this.setState({pos1:pos});
-			}else if(this.state.pos1 !== "" && this.state.pos2 == ""){
+			}else if(this.state.pos1 !== "" && this.state.pos2 === ""){
 				this.state.pos2 = pos;
 				this.boardClickMove();
 				this.state.pos1 = "";
@@ -208,11 +208,20 @@ export default class MatchPage extends Component{
         if(this.state.matchInfo)
             return(
                 <Row>
-                    You are {this.props.token.id == this.state.matchInfo.whiteId? "White": "Black"}. {this.state.matchInfo.finished?"This game is over.":"It is "+ (this.state.matchInfo.turn?"White":"Black")+"'s turn."}
+                    You are {this.props.token.id === this.state.matchInfo.whiteId? "White": "Black"}. {this.state.matchInfo.finished? this.getWinner():"It is "+ (this.state.matchInfo.turn?"White":"Black")+"'s turn."}
                 </Row>
             );
         else
             return null;
+    }
+
+    getWinner(){
+        let message = "";
+        if(this.state.matchInfo.turn)
+            message = "Black has won the game! Time to gloat or weep and play again.";
+        else
+            message = "White has won! Time to gloat or weep and play again.";
+        return message;
     }
 
     forfeit(){

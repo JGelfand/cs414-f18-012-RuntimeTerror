@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Container, Form, FormGroup, Label, Input, Row, Col} from "reactstrap";
 import {sendServerRequestWithBody} from "../../api/restfulAPI";
+import ErrorBanner from "../ErrorBanner";
 
 class Square extends React.Component {
 	render() {
@@ -30,7 +31,7 @@ class Square extends React.Component {
 
 export default class MatchPage extends Component{
     componentDidMount() {
-        let intervalHandle =  window.setInterval(this.getBoard, 5000);
+        let intervalHandle =  window.setInterval(this.getBoard, 3000);
         this.setState({intervalHandle: intervalHandle});
     }
 
@@ -49,7 +50,8 @@ export default class MatchPage extends Component{
         this.state={
             matchInfo: null,
             pos1:"",
-            pos2:""
+            pos2:"",
+            gameWinner: ""
         }
 
     }
@@ -80,14 +82,10 @@ export default class MatchPage extends Component{
     }
 
 		handleBoardClick(pos){
-			console.log("handleboardclick " + pos);
 			if(this.state.pos1 === ""){
 				this.setState({pos1:pos});
-				console.log("updated pos1: " + this.state.pos1);
-			}else if(this.state.pos1 !== "" && this.state.pos2 == ""){
+			}else if(this.state.pos1 !== "" && this.state.pos2 === ""){
 				this.state.pos2 = pos;
-				console.log("updated pos2: " + this.state.pos2);
-
 				this.boardClickMove();
 				this.state.pos1 = "";
 				this.state.pos2 = "";
@@ -105,7 +103,7 @@ export default class MatchPage extends Component{
 							this.getBoard();
 					}
 					else{
-							this.setState({errorMessage:response.body.message})
+							this.setState({errorMessage:<ErrorBanner message={response.body.message}/>});
 					}
 			})
 		}
@@ -126,7 +124,7 @@ export default class MatchPage extends Component{
 					    if((i >= 5 && i < 11) && (x >= 3 && x <= 5)){
                             columns.push(<Square value={chars[x].trim()} pos={lets[x-1] + nums[i/2>>0]}
                                                  handler={this.handleBoardClick} black={true}/>)
-                        }else if (this.state.pos1 == (lets[x-1]+nums[i/2>>0])){
+                        }else if (this.state.pos1 === (lets[x-1]+nums[i/2>>0])){
                             columns.push(<Square value={chars[x].trim()} pos={lets[x - 1] + nums[i / 2 >> 0]}
                                                  handler={this.handleBoardClick} black={false} yellow={true}/>)
                         } else {
@@ -181,9 +179,6 @@ export default class MatchPage extends Component{
         move.to = event.target.elements.to.value;
         move.from = event.target.elements.from.value;
 
-				console.log(move.to);
-				console.log(move.from);
-
         sendServerRequestWithBody("move", move, this.props.serverPort).then((response)=>
         {
             if(response.body.success){
@@ -191,7 +186,7 @@ export default class MatchPage extends Component{
                 this.getBoard();
             }
             else{
-                this.setState({errorMessage:response.body.message})
+                this.setState({errorMessage:<ErrorBanner message={response.body.message}/>});
             }
         })
     }
@@ -203,7 +198,6 @@ export default class MatchPage extends Component{
             token: this.props.token
         };
         sendServerRequestWithBody("matches" , body, this.props.serverPort).then(response =>{
-								console.log(response.body);
                 if(response.body === null)
                     console.log("No match found");
                 else if(response.statusCode >=200 && response.statusCode <300)
@@ -215,14 +209,31 @@ export default class MatchPage extends Component{
         if(this.state.matchInfo)
             return(
                 <Row>
-                    You are {this.props.token.id == this.state.matchInfo.whiteId? "White": "Black"}. {this.state.matchInfo.finished?"This game is over.":"It is "+ (this.state.matchInfo.turn?"White":"Black")+"'s turn."}
+                    You are {this.props.token.id === this.state.matchInfo.whiteId? "White": "Black"}. {this.state.matchInfo.finished? this.getWinner() :"It is "+ (this.state.matchInfo.turn?"White":"Black")+"'s turn."}
                 </Row>
             );
         else
             return null;
     }
 
+    getWinner(){
+        if(this.state.gameWinner !== "")
+            return this.state.gameWinner;
+        if(this.state.matchInfo.whiteForfeit)
+            return "White has forfeited. Black wins the game! Time to gloat or weep and play again.";
+        if(this.state.matchInfo.blackForfeit)
+            return "Black has forfeited. White wins the game! Time to gloat or weep and play again.";
+        if(this.state.matchInfo.turn === true)
+            return ("Black has won the game! Time to gloat or weep and play again.");
+        else
+            return ("White has won the game! Time to gloat or weep and play again.");
+    }
     forfeit(){
-        sendServerRequestWithBody("move", {token: this.props.token, matchId: this.props.matchID, forfeit:true}, this.props.serverPort).then(this.getBoard)
+        sendServerRequestWithBody("move", {token: this.props.token, matchId: this.props.matchID, forfeit:true}, this.props.serverPort).then((response)=>{
+            if(response.body.gameOver === "WHITE")
+                this.setState({gameWinner: "Black has forfeited. White wins the game! Time to gloat or weep and play again."});
+            else if(response.body.gameOver === "BLACK")
+                this.setState({gameWinner: "White has forfeited. Black wins the game! Time to gloat or weep and play again."});
+            this.getBoard});
     }
 }

@@ -18,7 +18,6 @@ export default class ListNotifications extends Component {
 
 
     render() {
-
         return(
             <div>
                 {this.displayEachNotification()}

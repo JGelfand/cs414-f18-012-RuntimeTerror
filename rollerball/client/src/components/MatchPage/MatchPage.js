@@ -219,6 +219,10 @@ export default class MatchPage extends Component{
     getWinner(){
         if(this.state.gameWinner !== "")
             return this.state.gameWinner;
+        if(this.state.matchInfo.whiteForfeit)
+            return "White has forfeited. Black wins the game! Time to gloat or weep and play again.";
+        if(this.state.matchInfo.blackForfeit)
+            return "Black has forfeited. White wins the game! Time to gloat or weep and play again.";
         if(this.state.matchInfo.turn === true)
             return ("Black has won the game! Time to gloat or weep and play again.");
         else

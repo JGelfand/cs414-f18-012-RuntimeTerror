@@ -156,8 +156,8 @@ export default class MatchPage extends Component{
         return (
             <Form onSubmit={(event)=>this.sendMove(event)}>
                 <FormGroup row> 
-                    <Label for="promoteSelect" sm={2}>Promote To:</Label>
-                    <Col sm={10}>
+                    <Label for="promoteSelect" sm={4}>Promote To:</Label>
+                    <Col sm={8}>
                         <Input type="select" onChange={(event)=>this.setState({promoteTo: event.target.value})}>
                             <option value="R" selected>Rook</option>
                             <option value="B">Bishop</option>

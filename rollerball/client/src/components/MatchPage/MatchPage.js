@@ -16,11 +16,17 @@ class Square extends React.Component {
             marginTop: '-1px',
             padding: '0',
             textAlign: 'center',
-            width: '60px'};
+            width: '60px',
+
+						};
 	    if(this.props.black === true)
 	        squareCSS.background = '#414141';
-        if(this.props.yellow === true)
-            squareCSS.background = '#fff675';
+        if(this.props.yellow === true){
+						squareCSS.border = "2px solid blue";
+						squareCSS.boxShadow = "blue 0px 0px 12px";
+						squareCSS.background = "rgb(230,230,255)";
+				}
+
 		return (
 			<button style={squareCSS} className="square" onClick={() => this.props.handler(this.props.pos)}>
 			{this.props.value}

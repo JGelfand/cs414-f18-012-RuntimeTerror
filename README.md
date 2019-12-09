@@ -9,6 +9,9 @@ Installation:
 3. `npm install --prefix client`
 4. Create a file in rollerball/src/main/resources/sql_login_info.txt, and in it put the username, some whitespace, and then the password for the account you wish to use to log in to the mysql database
 
-Build/Run:
+Build/Run (from rollerball directory):
 1. `npm run bundle --prefix client`
 2. `gradle run`
+
+Test (from rollerball directory):
+1. `gradle test`

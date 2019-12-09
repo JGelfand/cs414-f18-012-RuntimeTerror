@@ -51,6 +51,7 @@ export default class MatchPage extends Component{
             matchInfo: null,
             pos1:"",
             pos2:"",
+            promoteTo:"R",
             gameWinner: ""
         }
 
@@ -93,7 +94,7 @@ export default class MatchPage extends Component{
 		}
 
 		boardClickMove(){
-			let move = {token: this.props.token, matchId: this.props.matchID, promoteTo:"R"};
+			let move = {token: this.props.token, matchId: this.props.matchID, promoteTo:this.state.promoteTo};
 			move.to = this.state.pos2;
 			move.from = this.state.pos1;
 			sendServerRequestWithBody("move", move, this.props.serverPort).then((response)=>
@@ -154,6 +155,15 @@ export default class MatchPage extends Component{
     renderMoveForm(){
         return (
             <Form onSubmit={(event)=>this.sendMove(event)}>
+                <FormGroup row> 
+                    <Label for="promoteSelect" sm={2}>Promote To:</Label>
+                    <Col sm={10}>
+                        <Input type="select" onChange={(event)=>this.setState({promoteTo: event.target.value})}>
+                            <option value="R" selected>Rook</option>
+                            <option value="B">Bishop</option>
+                        </Input>
+                    </Col>
+                </FormGroup>
                 <FormGroup row>
                     <Label for="fromBox" sm={2}>From</Label>
                     <Col sm={10}>
@@ -161,7 +171,7 @@ export default class MatchPage extends Component{
                     </Col>
                 </FormGroup>
                 <FormGroup row>
-                    <Label for="fromBox" sm={2}>To</Label>
+                    <Label for="toBox" sm={2}>To</Label>
                     <Col sm={10}>
                         <Input type="text" name="to" id="toBox" placeholder="format: [a-g][1-7]" />
                     </Col>
@@ -175,7 +185,7 @@ export default class MatchPage extends Component{
 
     sendMove(moveFormEvent){
         moveFormEvent.preventDefault();
-        let move = {token: this.props.token, matchId: this.props.matchID, promoteTo:"R"};
+        let move = {token: this.props.token, matchId: this.props.matchID, promoteTo:this.state.promoteTo};
         move.to = event.target.elements.to.value;
         move.from = event.target.elements.from.value;
 

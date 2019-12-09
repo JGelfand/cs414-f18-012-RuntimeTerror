@@ -16,11 +16,21 @@ class Square extends React.Component {
             marginTop: '-1px',
             padding: '0',
             textAlign: 'center',
-            width: '60px'};
+            width: '60px',
+						MozUserSelect:'none',
+						WebkitUserSelect:'none',
+						msUserSelect:'none',
+						outline:'none',
+						fontFamily:'none'
+						};
 	    if(this.props.black === true)
 	        squareCSS.background = '#414141';
-        if(this.props.yellow === true)
-            squareCSS.background = '#fff675';
+        if(this.props.yellow === true){
+						squareCSS.border = "2px solid blue";
+						squareCSS.boxShadow = "blue 0px 0px 12px";
+						squareCSS.background = "rgb(230,230,255)";
+				}
+
 		return (
 			<button style={squareCSS} className="square" onClick={() => this.props.handler(this.props.pos)}>
 			{this.props.value}
@@ -206,11 +216,17 @@ export default class MatchPage extends Component{
     }
 
     renderBasicInfo(){
+			const turnStyle = {
+				marginLeft:'25px',
+				fontSize:'30px'
+			};
         if(this.state.matchInfo)
             return(
                 <Row>
+									<span style={turnStyle}>
                     You are {this.props.token.id === this.state.matchInfo.whiteId? "White": "Black"}. {this.state.matchInfo.finished? this.getWinner() :"It is "+ (this.state.matchInfo.turn?"White":"Black")+"'s turn."}
-                </Row>
+									</span>
+								</Row>
             );
         else
             return null;

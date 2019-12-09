@@ -20,7 +20,8 @@ class Square extends React.Component {
 						MozUserSelect:'none',
 						WebkitUserSelect:'none',
 						msUserSelect:'none',
-						outline:'none'
+						outline:'none',
+						fontFamily:'none'
 						};
 	    if(this.props.black === true)
 	        squareCSS.background = '#414141';

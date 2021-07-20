@@ -20,7 +20,7 @@
     "react-dom": "^16.7.0",
     "react-drag-listview": "^0.1.4",
     "react-geolocated": "^2.4.1",
-    "react-native": "^0.59.8",
+    "react-native": "^0.62.3",
     "reactstrap": "^7.0.2",
     "style-loader": "^0.23.1",
     "terser": "^3.14.1",
